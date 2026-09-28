@@ -419,7 +419,11 @@
   /* Carrusel con scroll nativo (scroll-snap): el navegador se encarga del
      arrastre en móvil, trackpad y rueda del mouse — mucho más confiable que
      calcular el arrastre a mano. Para clic-sostenido con mouse añadimos un
-     pequeño listener que solo mueve el scroll (ver JS "arrastrar con mouse"). */
+     pequeño listener que solo mueve el scroll (ver JS "arrastrar con mouse").
+     touch-action:pan-x deja que el dedo arrastre horizontalmente de forma
+     nativa (que es justo lo que este carrusel necesita); como el eje Y no
+     tiene overflow aquí, un arrastre vertical igual sube al scroll de la
+     página normalmente. */
   .hoja-viewport{
     position:relative;
     flex:1;
@@ -429,7 +433,7 @@
     overflow-y:hidden;
     scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;
-    touch-action:pan-y;
+    touch-action:pan-x;
     scrollbar-width:none;
     cursor:grab;
   }
@@ -995,8 +999,19 @@
 </section>
 
 <script>
-  // ---- RSVP link placeholder: reemplaza esta URL por el link real del formulario ----
-  document.getElementById('rsvpLink').href = 'https://forms.gle/REEMPLAZAR-CON-TU-LINK';
+  // ---- RSVP: mientras no haya un link real de formulario, el botón no debe
+  // salir a una URL rota (eso es lo que reportó Juan como "me saca"). Si más
+  // adelante hay un link real (Google Form, WhatsApp, etc.), se reemplaza
+  // rsvpHref abajo por esa URL real y el botón vuelve a abrir en pestaña nueva. ----
+  const rsvpHref = null; // ej: 'https://forms.gle/xxxxxxx'
+  const rsvpLink = document.getElementById('rsvpLink');
+  if (rsvpHref) {
+    rsvpLink.href = rsvpHref;
+  } else {
+    rsvpLink.removeAttribute('target');
+    rsvpLink.href = '#';
+    rsvpLink.addEventListener('click', (e) => e.preventDefault());
+  }
 
   // ---- Guest name placeholder: soporta ?invitado=Nombre en la URL para personalizar ----
   (function(){
