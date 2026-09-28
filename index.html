@@ -44,6 +44,11 @@
     --coral:#d9836a;
     --blue:#3f5e80;
     --leaf:#748a56;
+    /* papel kraft del sobre: gris-salvia mate, como en la referencia física */
+    --kraft:#8f9579;
+    --kraft-light:#a7ac8f;
+    --kraft-dark:#666c53;
+    --kraft-deep:#4d5240;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{height:100%;}
@@ -81,13 +86,14 @@
     padding:0 10px;
     background:var(--ivory);
   }
-  .floral-sprig{ display:block; margin:2px auto 16px; opacity:0.92; }
+  .floral-sprig{ display:block; margin:2px auto 16px; opacity:0.96; }
   .corner-floral{
     position:absolute;
     pointer-events:none;
-    opacity:0.85;
     z-index:1;
   }
+  .corner-floral-env{ width:100px; height:auto; opacity:0.96; }
+  .corner-floral-letter{ width:62px; height:auto; opacity:0.88; }
 
   /* ================= HERO WRAPPER (stages 1 & 2 stacked) ================= */
   .hero-wrap{
@@ -135,29 +141,42 @@
     height:calc(min(78vw, 300px) * 0.68);
     cursor:pointer;
     transform-style:preserve-3d;
+    transform:rotate(-0.8deg);
   }
   .env-body{
     position:absolute;
     inset:0;
-    background:linear-gradient(160deg, var(--charcoal-soft), var(--charcoal));
-    border:1px solid var(--gold-line);
+    background:
+      radial-gradient(ellipse 140% 90% at 18% -10%, rgba(255,255,255,0.20), transparent 55%),
+      linear-gradient(155deg, var(--kraft-light) 0%, var(--kraft) 46%, var(--kraft-dark) 100%);
+    border:1px solid rgba(77,82,64,0.5);
     border-radius:2px;
-    box-shadow:0 30px 60px rgba(30,26,14,0.4);
+    box-shadow:
+      0 2px 0 rgba(255,255,255,0.12) inset,
+      0 -30px 46px rgba(30,32,20,0.22) inset,
+      0 22px 34px rgba(25,24,14,0.30),
+      0 44px 70px rgba(25,24,14,0.30);
     overflow:hidden;
   }
   .env-body::before{
+    /* grano de papel kraft */
     content:"";
-    position:absolute; inset:8px;
-    border:1px solid rgba(195,160,94,0.28);
+    position:absolute; inset:0;
+    opacity:0.5;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.37  0 0 0 0 0.28  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .env-body::after{
-    /* bottom V pocket line */
+    /* pliegues del sobre: cada línea lleva un hilo claro (cresta) y uno
+       oscuro (sombra) para que el papel se vea doblado, no solo dibujado */
     content:"";
     position:absolute;
     left:0; right:0; bottom:0;
-    height:70%;
-    background:linear-gradient(155deg, transparent 49.3%, rgba(195,160,94,0.2) 49.6%, rgba(195,160,94,0.2) 50.4%, transparent 50.7%),
-               linear-gradient(25deg, transparent 49.3%, rgba(195,160,94,0.2) 49.6%, rgba(195,160,94,0.2) 50.4%, transparent 50.7%);
+    height:72%;
+    background:
+      linear-gradient(155deg, transparent 49.0%, rgba(255,255,255,0.22) 49.5%, rgba(77,82,64,0.4) 50.3%, transparent 51%),
+      linear-gradient(25deg, transparent 49.0%, rgba(255,255,255,0.22) 49.5%, rgba(77,82,64,0.4) 50.3%, transparent 51%),
+      radial-gradient(ellipse 60% 45% at 50% 100%, rgba(25,24,14,0.28), transparent 70%);
   }
   .env-card-peek{
     position:absolute;
@@ -180,9 +199,12 @@
     position:absolute;
     left:0; right:0; top:0;
     height:58%;
-    background:linear-gradient(155deg, var(--charcoal-soft) 45%, var(--charcoal) 100%);
+    background:
+      linear-gradient(200deg, rgba(255,255,255,0.16), transparent 40%),
+      linear-gradient(155deg, var(--kraft) 0%, var(--kraft-dark) 65%, var(--kraft-deep) 100%);
     clip-path:polygon(0 0, 100% 0, 50% 100%);
-    border:1px solid var(--gold-line);
+    border:1px solid rgba(77,82,64,0.5);
+    box-shadow:0 10px 18px rgba(25,24,14,0.22);
     transform-origin:top center;
     transform-style:preserve-3d;
     transition:transform 1.1s cubic-bezier(.4,.1,.2,1);
@@ -191,6 +213,13 @@
     justify-content:center;
     align-items:flex-start;
     padding-top:8%;
+  }
+  .env-flap::after{
+    content:"";
+    position:absolute; inset:0;
+    opacity:0.4;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.37  0 0 0 0 0.28  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .envelope.opening .env-flap{
     transform:rotateX(-178deg);
@@ -622,11 +651,12 @@
   }
   .hoja-floral{
     position:absolute;
-    left:10px; bottom:38px;
-    width:40px; height:46px;
-    opacity:0.55;
+    left:8px; bottom:36px;
+    width:58px; height:auto;
+    opacity:0.92;
     pointer-events:none;
     z-index:1;
+    filter:drop-shadow(0 3px 8px rgba(20,18,10,0.35));
   }
 
   .hoja-backdrop-tap{
@@ -682,92 +712,10 @@
     <div class="eyebrow">Guardar la fecha ya quedó atrás</div>
     <h1 class="env-names">Ana <span class="amp">&amp;</span> Juan</h1>
     <div class="divider"></div>
-    <svg class="floral-sprig" width="132" height="46" viewBox="0 0 132 46" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M8 30 C 34 14, 96 14, 124 30" stroke="var(--leaf)" stroke-width="1" opacity="0.55" fill="none"/>
-      <path d="M46 22 C 54 19, 60 11, 57 2 C 50 6, 43 15, 46 22 Z" fill="var(--leaf)" opacity="0.55"/>
-      <path d="M86 22 C 78 19, 72 11, 75 2 C 82 6, 89 15, 86 22 Z" fill="var(--leaf)" opacity="0.55"/>
-      <g transform="translate(30,25) scale(0.42)">
-        <g fill="var(--rose)" opacity="0.9">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-      <g transform="translate(66,16) scale(0.5)">
-        <g fill="var(--coral)" opacity="0.92">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-      <g transform="translate(102,25) scale(0.4)">
-        <g fill="var(--blue)" opacity="0.85">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-    </svg>
+    <img class="floral-sprig" src="flor_fila.png" alt="" width="164" height="57" aria-hidden="true">
 
-    <svg class="corner-floral" style="left:-4px; bottom:8%;" width="66" height="78" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
-      <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
-      <path d="M26 40 C 34 38, 40 30, 38 22 C 30 24, 22 32, 26 40 Z" fill="var(--leaf)" opacity="0.5"/>
-      <g transform="translate(20,76) scale(0.55)">
-        <g fill="var(--rose)" opacity="0.9">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-      <g transform="translate(33,18) scale(0.62)">
-        <g fill="var(--coral)" opacity="0.92">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-    </svg>
-    <svg class="corner-floral" style="right:-4px; bottom:8%; transform:scaleX(-1);" width="66" height="78" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
-      <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
-      <path d="M26 40 C 34 38, 40 30, 38 22 C 30 24, 22 32, 26 40 Z" fill="var(--leaf)" opacity="0.5"/>
-      <g transform="translate(20,76) scale(0.55)">
-        <g fill="var(--blue)" opacity="0.85">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-      <g transform="translate(33,18) scale(0.62)">
-        <g fill="var(--rose)" opacity="0.9">
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-        </g>
-        <circle r="3" fill="var(--gold)"/>
-      </g>
-    </svg>
+    <img class="corner-floral corner-floral-env" style="left:-10px; bottom:4%;" src="flor_cascada.png" alt="" aria-hidden="true">
+    <img class="corner-floral corner-floral-env" style="right:-10px; bottom:4%; transform:scaleX(-1);" src="flor_cascada.png" alt="" aria-hidden="true">
 
     <div class="envelope" id="envelope">
       <div class="env-card-peek" id="envPeek"><span class="peek-mark">A&amp;J</span></div>
@@ -791,71 +739,11 @@
       <p class="letter-msg">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia.</p>
 
       <div class="letter-names">Ana <span class="amp">&amp;</span> Juan</div>
-      <svg class="floral-sprig letter-sprig" width="100" height="35" viewBox="0 0 132 46" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M8 30 C 34 14, 96 14, 124 30" stroke="var(--leaf)" stroke-width="1" opacity="0.5" fill="none"/>
-        <path d="M46 22 C 54 19, 60 11, 57 2 C 50 6, 43 15, 46 22 Z" fill="var(--leaf)" opacity="0.5"/>
-        <path d="M86 22 C 78 19, 72 11, 75 2 C 82 6, 89 15, 86 22 Z" fill="var(--leaf)" opacity="0.5"/>
-        <g transform="translate(30,25) scale(0.4)">
-          <g fill="var(--rose)" opacity="0.88">
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-          </g>
-          <circle r="2.8" fill="var(--gold)"/>
-        </g>
-        <g transform="translate(66,16) scale(0.48)">
-          <g fill="var(--coral)" opacity="0.9">
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-          </g>
-          <circle r="2.8" fill="var(--gold)"/>
-        </g>
-        <g transform="translate(102,25) scale(0.38)">
-          <g fill="var(--blue)" opacity="0.82">
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-          </g>
-          <circle r="2.8" fill="var(--gold)"/>
-        </g>
-      </svg>
+      <img class="floral-sprig letter-sprig" src="flor_fila.png" alt="" width="126" height="44" aria-hidden="true">
       <div class="letter-date">30 · 01 · 2027</div>
 
-      <svg class="corner-floral" style="left:6px; bottom:6px; opacity:0.7;" width="50" height="58" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
-        <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
-        <g transform="translate(20,76) scale(0.55)">
-          <g fill="var(--coral)" opacity="0.85">
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-          </g>
-          <circle r="2.8" fill="var(--gold)"/>
-        </g>
-      </svg>
-      <svg class="corner-floral" style="right:6px; bottom:6px; opacity:0.7; transform:scaleX(-1);" width="50" height="58" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
-        <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
-        <g transform="translate(20,76) scale(0.55)">
-          <g fill="var(--rose)" opacity="0.85">
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-          </g>
-          <circle r="2.8" fill="var(--gold)"/>
-        </g>
-      </svg>
+      <img class="corner-floral corner-floral-letter" style="left:2px; bottom:2px; opacity:0.85;" src="flor_coral.png" alt="" aria-hidden="true">
+      <img class="corner-floral corner-floral-letter" style="right:2px; bottom:2px; opacity:0.85; transform:scaleX(-1);" src="flor_peony.png" alt="" aria-hidden="true">
     </div>
 
     <button class="continue-btn" id="continueBtn">Ver detalles</button>
@@ -894,20 +782,7 @@
               <div class="slide-title">Hacienda<br>La Victoria</div>
               <p class="slide-text">Te esperamos para celebrar rodeados de quienes más queremos.</p>
               <a class="slide-cta" href="https://www.google.com/maps/search/?api=1&query=Hacienda+La+Victoria" target="_blank" rel="noopener">Ver mapa</a>
-              <svg class="hoja-floral" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" fill="none"/>
-                <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)"/>
-                <g transform="translate(24,32) scale(0.6)">
-                  <g fill="var(--rose)">
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-                  </g>
-                  <circle r="2.8" fill="var(--gold)"/>
-                </g>
-              </svg>
+              <img class="hoja-floral" src="flor_peony.png" alt="" aria-hidden="true">
               <div class="hoja-close-hint">Toca fuera o en la ✕ para volver</div>
             </div>
           </div>
@@ -928,20 +803,7 @@
               <div class="slide-eyebrow">Detalles</div>
               <div class="slide-title">Horario &amp;<br>Etiqueta</div>
               <p class="slide-text">Ceremonia · 3:00 PM<br>Recepción a continuación<br><br>Dress code: Formal / Elegante</p>
-              <svg class="hoja-floral" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" fill="none"/>
-                <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)"/>
-                <g transform="translate(24,32) scale(0.6)">
-                  <g fill="var(--coral)">
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-                  </g>
-                  <circle r="2.8" fill="var(--gold)"/>
-                </g>
-              </svg>
+              <img class="hoja-floral" src="flor_coral.png" alt="" aria-hidden="true">
               <div class="hoja-close-hint">Toca fuera o en la ✕ para volver</div>
             </div>
           </div>
@@ -963,20 +825,7 @@
               <div class="slide-title">RSVP &amp;<br>Regalos</div>
               <p class="slide-text">Tu confirmación nos ayuda a organizar cada detalle.</p>
               <a class="slide-cta" id="rsvpLink" href="#" target="_blank" rel="noopener">Confirmar asistencia</a>
-              <svg class="hoja-floral" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" fill="none"/>
-                <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)"/>
-                <g transform="translate(24,32) scale(0.6)">
-                  <g fill="var(--blue)">
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
-                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
-                  </g>
-                  <circle r="2.8" fill="var(--gold)"/>
-                </g>
-              </svg>
+              <img class="hoja-floral" src="flor_azul.png" alt="" aria-hidden="true">
               <div class="hoja-close-hint">Toca fuera o en la ✕ para volver</div>
             </div>
           </div>
