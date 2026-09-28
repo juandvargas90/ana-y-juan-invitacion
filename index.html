@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ana &amp; Juan · Invitación de Boda</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://juandvargas90.github.io/ana-y-juan-invitacion/">
+<meta property="og:site_name" content="Ana &amp; Juan">
+<meta property="og:title" content="Ana &amp; Juan · Nos casamos">
+<meta property="og:description" content="30 de enero de 2027 · Hacienda La Victoria. Abre la carta para ver todos los detalles.">
+<meta property="og:image" content="https://juandvargas90.github.io/ana-y-juan-invitacion/foto_pareja.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ana &amp; Juan · Nos casamos">
+<meta name="twitter:description" content="30 de enero de 2027 · Hacienda La Victoria.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Tenor+Sans&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* Paleta ajustada a la propuesta de tarjeta compartida: marfil cálido,
+       verde oliva, dorado champagne y acentos florales (rosa, coral, azul, verde). */
+    --ivory:#f7f0e2;
+    --ivory-soft:#efe4cd;
+    --ivory-line:rgba(51,63,40,0.18);
+    --ink:#2c3521;
+    --olive:#333f28;
+    --olive-soft:#4a5a3a;
+    --olive-dim:rgba(51,63,40,0.68);
+    --olive-faint:rgba(51,63,40,0.4);
+    --charcoal:#333f28;
+    --charcoal-soft:#3f4d31;
+    --cream:#f7f0e2;
+    --cream-dim:rgba(51,63,40,0.68);
+    --paper:#efe4cd;
+    --gold:#c3a05e;
+    --gold-soft:#e2c894;
+    --gold-deep:#8a6a35;
+    --gold-line:rgba(195,160,94,0.55);
+    --rose:#d69aa1;
+    --coral:#d9836a;
+    --blue:#3f5e80;
+    --leaf:#748a56;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Tenor Sans', sans-serif;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(195,160,94,0.14), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(116,138,86,0.10), transparent 60%),
+      var(--ivory);
+    color:var(--olive);
+    overflow-x:hidden;
+    min-height:100svh;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:50;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .divider{
+    margin:18px auto;
+    width:96px;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    position:relative;
+  }
+  .divider::after{
+    content:"❦";
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    color:var(--gold-deep);
+    font-size:12px;
+    padding:0 10px;
+    background:var(--ivory);
+  }
+  .floral-sprig{ display:block; margin:2px auto 16px; opacity:0.92; }
+  .corner-floral{
+    position:absolute;
+    pointer-events:none;
+    opacity:0.85;
+    z-index:1;
+  }
+
+  /* ================= HERO WRAPPER (stages 1 & 2 stacked) ================= */
+  .hero-wrap{
+    position:relative;
+    min-height:100svh;
+  }
+
+  /* ================= STAGE 1 — ENVELOPE ================= */
+  .envelope-stage{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+    perspective:1800px;
+    transition:opacity .8s ease;
+  }
+  .envelope-stage.hidden{
+    opacity:0;
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:6px;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+    margin-bottom:22px;
+    text-align:center;
+  }
+  .env-names{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(32px, 8vw, 46px);
+    text-align:center;
+    margin-bottom:30px;
+  }
+  .env-names .amp{ color:var(--gold); font-style:normal; margin:0 8px; }
+
+  .envelope{
+    position:relative;
+    width:min(78vw, 300px);
+    height:calc(min(78vw, 300px) * 0.68);
+    cursor:pointer;
+    transform-style:preserve-3d;
+  }
+  .env-body{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(160deg, var(--charcoal-soft), var(--charcoal));
+    border:1px solid var(--gold-line);
+    border-radius:2px;
+    box-shadow:0 30px 60px rgba(30,26,14,0.4);
+    overflow:hidden;
+  }
+  .env-body::before{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid rgba(195,160,94,0.28);
+  }
+  .env-body::after{
+    /* bottom V pocket line */
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:70%;
+    background:linear-gradient(155deg, transparent 49.3%, rgba(195,160,94,0.2) 49.6%, rgba(195,160,94,0.2) 50.4%, transparent 50.7%),
+               linear-gradient(25deg, transparent 49.3%, rgba(195,160,94,0.2) 49.6%, rgba(195,160,94,0.2) 50.4%, transparent 50.7%);
+  }
+  .env-card-peek{
+    position:absolute;
+    left:6%; right:6%; top:-4%;
+    height:60%;
+    background:var(--paper);
+    border:1px solid var(--gold-line);
+    z-index:2;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 1s cubic-bezier(.22,.9,.3,1), opacity .6s ease;
+  }
+  .env-card-peek .peek-mark{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    color:var(--ink);
+    opacity:0.35;
+    font-size:22px;
+  }
+  .env-flap{
+    position:absolute;
+    left:0; right:0; top:0;
+    height:58%;
+    background:linear-gradient(155deg, var(--charcoal-soft) 45%, var(--charcoal) 100%);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    border:1px solid var(--gold-line);
+    transform-origin:top center;
+    transform-style:preserve-3d;
+    transition:transform 1.1s cubic-bezier(.4,.1,.2,1);
+    z-index:4;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding-top:8%;
+  }
+  .envelope.opening .env-flap{
+    transform:rotateX(-178deg);
+  }
+  .envelope.opening .env-card-peek{
+    transform:translateY(-46%);
+  }
+  .seal{
+    position:absolute;
+    top:42%; left:50%;
+    transform:translate(-50%,-50%);
+    width:72px; height:72px;
+    z-index:5;
+    transition:opacity .5s ease, transform .5s ease;
+    filter:drop-shadow(0 4px 10px rgba(20,18,10,0.45));
+  }
+  .seal img{ display:block; width:100%; height:100%; }
+  .envelope.opening .seal{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(0.6);
+  }
+  .env-hint{
+    margin-top:30px;
+    font-size:11px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:var(--olive-faint);
+    text-align:center;
+    animation:pulseHint 2.6s ease-in-out infinite;
+  }
+  @keyframes pulseHint{
+    0%,100%{ opacity:0.55; }
+    50%{ opacity:1; }
+  }
+
+  /* ================= STAGE 2 — LETTER ================= */
+  .letter-stage{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:56px 20px 40px;
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 1s ease .1s, transform 1s ease .1s;
+    pointer-events:none;
+  }
+  .letter-stage.show{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .letter-card{
+    max-width:420px;
+    width:100%;
+    background:linear-gradient(170deg, rgba(195,160,94,0.14), transparent 55%), var(--ivory-soft);
+    border:1px solid var(--gold-line);
+    padding:46px 26px 30px;
+    text-align:center;
+    position:relative;
+    box-shadow:0 24px 50px rgba(51,63,40,0.14);
+  }
+  .letter-card::before{
+    content:"";
+    position:absolute; inset:9px;
+    border:1px solid rgba(195,160,94,0.3);
+    pointer-events:none;
+  }
+  /* el sello "cierra" la carta, montado sobre el borde superior como si la
+     hubiera sellado */
+  .letter-seal{
+    position:absolute;
+    top:0; left:50%;
+    transform:translate(-50%,-52%);
+    width:58px; height:58px;
+    z-index:2;
+    filter:drop-shadow(0 3px 8px rgba(51,63,40,0.35));
+  }
+  .letter-seal img{ display:block; width:100%; height:100%; }
+  .guest-label{
+    font-size:10.5px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+    margin-bottom:8px;
+  }
+  .guest-name{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:clamp(19px, 4.6vw, 23px);
+    color:var(--olive);
+    margin-bottom:20px;
+  }
+  .letter-photo{
+    width:100%;
+    aspect-ratio:3/4;
+    object-fit:cover;
+    border:1px solid var(--gold-line);
+    display:block;
+    margin:0 auto 22px;
+  }
+  .letter-msg{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:clamp(16px, 3.6vw, 18px);
+    line-height:1.7;
+    color:var(--olive-dim);
+    max-width:340px;
+    margin:0 auto 20px;
+  }
+  .letter-names{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(30px, 7vw, 38px);
+    color:var(--olive);
+  }
+  .letter-names .amp{ color:var(--gold); font-style:normal; margin:0 8px; }
+  .letter-date{
+    margin-top:10px;
+    font-size:13px;
+    letter-spacing:4px;
+    color:var(--gold-deep);
+  }
+  .letter-sprig{ margin-top:16px; }
+
+  .continue-btn{
+    margin-top:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    background:none;
+    border:none;
+    color:var(--olive-dim);
+    font-family:'Tenor Sans', sans-serif;
+    font-size:10.5px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    animation:bob 2.4s ease-in-out infinite;
+  }
+  .continue-btn::after{
+    content:"";
+    width:1px; height:24px;
+    background:linear-gradient(180deg, rgba(51,63,40,0.5), transparent);
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(6px); }
+  }
+
+  /* ================= STAGE 3 — HOJAS (tarjetas transparentes) ================= */
+  /* Nota: esta sección se mantiene sin "transform" en .detalles-stage a propósito.
+     Un ancestro con transform activo se vuelve el "contenedor" de cualquier hijo
+     con position:fixed (como la hoja expandida), lo que rompía sus coordenadas.
+     Por eso el efecto de entrada usa solo opacidad. */
+  .detalles-stage{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    padding-top:44px;
+    opacity:0;
+    transition:opacity 1s ease;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .detalles-stage.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .detalles-backdrop{
+    position:absolute; inset:0;
+    background-image:url('bg_stage_blur.jpg');
+    background-size:cover;
+    background-position:center;
+    z-index:0;
+  }
+  .detalles-scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(43,39,24,0.5) 0%, rgba(43,39,24,0.26) 32%, rgba(43,39,24,0.38) 68%, rgba(30,27,16,0.68) 100%);
+    z-index:0;
+  }
+  .detalles-header, .hojas-overview, .footer-note{ position:relative; z-index:1; }
+
+  .detalles-header{
+    text-align:center;
+    padding:0 20px 22px;
+  }
+  .detalles-seal{
+    width:34px; height:34px;
+    margin:0 auto 14px;
+    opacity:0.92;
+    filter:drop-shadow(0 2px 6px rgba(20,18,10,0.4));
+  }
+  .detalles-seal img{ display:block; width:100%; height:100%; }
+  /* esta franja sigue apoyada en la foto + velo oscuro, así que su texto
+     se mantiene claro aunque el resto del sitio ya sea de fondo marfil */
+  .detalles-header .eyebrow{ margin-bottom:10px; color:var(--gold-soft); }
+  .detalles-header h2{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(22px, 5vw, 28px);
+    margin-bottom:12px;
+    color:var(--cream);
+  }
+  .hoja-hint{
+    font-size:10px;
+    letter-spacing:2.2px;
+    text-transform:uppercase;
+    color:rgba(247,240,226,0.55);
+    transition:opacity .3s ease;
+  }
+  .hojas-overview.card-expanded .hoja-hint{ opacity:0; }
+
+  .hojas-overview{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  /* Carrusel con scroll nativo (scroll-snap): el navegador se encarga del
+     arrastre en móvil, trackpad y rueda del mouse — mucho más confiable que
+     calcular el arrastre a mano. Para clic-sostenido con mouse añadimos un
+     pequeño listener que solo mueve el scroll (ver JS "arrastrar con mouse"). */
+  .hoja-viewport{
+    position:relative;
+    flex:1;
+    display:flex;
+    align-items:center;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+    scrollbar-width:none;
+    cursor:grab;
+  }
+  .hoja-viewport::-webkit-scrollbar{ display:none; }
+  .hoja-viewport.dragging{ cursor:grabbing; scroll-snap-type:none; }
+
+  .hoja-track{
+    display:flex;
+    align-items:center;
+    width:100%;
+    padding:0 9%;
+  }
+  .hoja{
+    flex:0 0 82%;
+    scroll-snap-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px 16px;
+  }
+
+  .hoja-card{
+    position:relative;
+    width:100%;
+    max-width:300px;
+    height:min(54vh, 420px);
+    border-radius:8px;
+    overflow:hidden;
+    cursor:pointer;
+    background:rgba(247,240,226,0.08);
+    border:1px solid rgba(195,160,94,0.5);
+    backdrop-filter:blur(6px) saturate(1.1);
+    -webkit-backdrop-filter:blur(6px) saturate(1.1);
+    box-shadow:0 14px 32px rgba(20,18,10,0.3);
+    opacity:0.68;
+    transform:scale(0.9) rotate(var(--tilt, 0deg));
+    transition:transform .4s ease, opacity .4s ease, box-shadow .4s ease;
+  }
+  .hoja:nth-child(odd) .hoja-card{ --tilt: -3deg; }
+  .hoja:nth-child(even) .hoja-card{ --tilt: 3deg; }
+  /* cada hoja tiene un acento floral distinto: verde natural, rosa empolvado
+     y coral, además del dorado que las une a todas */
+  .hoja:nth-child(1) .hoja-mark, .hoja:nth-child(1) .slide-mark{ color:var(--leaf); }
+  .hoja:nth-child(2) .hoja-mark, .hoja:nth-child(2) .slide-mark{ color:var(--rose); }
+  .hoja:nth-child(3) .hoja-mark, .hoja:nth-child(3) .slide-mark{ color:var(--coral); }
+  /* la hoja centrada (detectada por scroll) se ve al frente, nítida y opaca;
+     las que asoman a los lados quedan translúcidas, como hojas superpuestas */
+  .hoja-card.active{
+    opacity:1;
+    transform:scale(1) rotate(0deg);
+    box-shadow:0 22px 50px rgba(20,18,10,0.4);
+  }
+  .hoja-card.expanded{
+    position:fixed;
+    top:6vh; left:5vw; bottom:6vh; right:5vw;
+    max-width:none;
+    width:auto; height:auto;
+    border-radius:10px;
+    opacity:1;
+    transform:none;
+    z-index:200;
+    cursor:default;
+  }
+  .hoja-bg{
+    position:absolute; inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0.5;
+    transition:opacity .5s ease;
+  }
+  .hoja-bg::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(43,39,24,0.14) 0%, rgba(35,32,20,0.6) 100%);
+  }
+  .hoja-card.expanded .hoja-bg{ opacity:0.78; }
+
+  .hoja-peek{
+    position:absolute; inset:0;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:20px;
+    text-align:center;
+    transition:opacity .25s ease;
+  }
+  .hoja-mark{ font-size:20px; color:var(--gold-soft); opacity:0.95; }
+  .hoja-peek-label{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(21px, 5.4vw, 26px);
+    color:var(--cream);
+  }
+  .hoja-peek-sub{
+    font-size:9.5px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:rgba(247,240,226,0.6);
+  }
+  .hoja-peek-tap{
+    margin-top:8px;
+    font-size:9px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:rgba(226,200,148,0.8);
+  }
+  .hoja-card.expanded .hoja-peek{ opacity:0; pointer-events:none; }
+
+  .hoja-detail{
+    position:absolute; inset:0;
+    z-index:3;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:36px 26px 30px;
+    opacity:0;
+    transition:opacity .3s ease .12s;
+    pointer-events:none;
+  }
+  .hoja-card.expanded .hoja-detail{ opacity:1; pointer-events:auto; }
+
+  .hoja-close{
+    position:absolute;
+    top:16px; right:16px;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(35,32,20,0.5);
+    border:1px solid var(--gold-line);
+    color:var(--cream);
+    font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    z-index:4;
+    opacity:0;
+    transition:opacity .25s ease .15s;
+  }
+  .hoja-card.expanded .hoja-close{ opacity:1; }
+
+  .slide-mark{ font-size:20px; color:var(--gold); margin-bottom:12px; }
+  .slide-eyebrow{
+    font-size:10.5px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:12px;
+  }
+  .slide-title{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(24px, 6vw, 30px);
+    line-height:1.2;
+    margin-bottom:14px;
+    color:var(--cream);
+  }
+  .slide-text{
+    font-size:13px;
+    line-height:1.8;
+    color:rgba(247,240,226,0.78);
+    margin-bottom:18px;
+  }
+  .slide-cta{
+    display:inline-block;
+    font-size:10.5px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--olive);
+    background:linear-gradient(135deg, var(--gold-soft), var(--gold));
+    padding:10px 20px;
+    text-decoration:none;
+    font-family:'Tenor Sans', sans-serif;
+  }
+  .hoja-close-hint{
+    position:absolute;
+    bottom:16px; left:16px; right:16px;
+    font-size:9px;
+    letter-spacing:1.3px;
+    text-transform:uppercase;
+    color:rgba(247,240,226,0.5);
+  }
+  .hoja-floral{
+    position:absolute;
+    left:10px; bottom:38px;
+    width:40px; height:46px;
+    opacity:0.55;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  .hoja-backdrop-tap{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:199;
+  }
+
+  /* Los punticos son solo un indicador de posición: no se hace clic en ellos.
+     Reflejan cuál hoja está centrada en el carrusel (scroll nativo). */
+  .hojas-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px 20px 30px;
+    transition:opacity .25s ease;
+    pointer-events:none;
+  }
+  .hojas-overview.card-expanded .hojas-nav{ opacity:0; }
+  .dots{ display:flex; gap:8px; }
+  .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:rgba(247,240,226,0.32);
+    transition:all .3s ease;
+  }
+  .dot.active{ background:var(--gold-soft); transform:scale(1.4); }
+
+  .footer-note{
+    padding:0 24px 44px;
+    text-align:center;
+    font-size:10.5px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:rgba(247,240,226,0.45);
+    transition:opacity .25s ease;
+  }
+  .footer-note b{ color:var(--gold-soft); font-weight:400; letter-spacing:2px; }
+  .footer-seal{
+    width:22px; height:22px;
+    margin:0 auto 10px;
+    opacity:0.8;
+  }
+  .footer-seal img{ display:block; width:100%; height:100%; }
+  .hojas-overview.card-expanded ~ .footer-note{ opacity:0; }
+</style>
+</head>
+<body>
+
+<div class="hero-wrap">
+  <!-- ============ STAGE 1: ENVELOPE ============ -->
+  <section class="envelope-stage" id="envelopeStage">
+    <div class="eyebrow">Guardar la fecha ya quedó atrás</div>
+    <h1 class="env-names">Ana <span class="amp">&amp;</span> Juan</h1>
+    <div class="divider"></div>
+    <svg class="floral-sprig" width="132" height="46" viewBox="0 0 132 46" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M8 30 C 34 14, 96 14, 124 30" stroke="var(--leaf)" stroke-width="1" opacity="0.55" fill="none"/>
+      <path d="M46 22 C 54 19, 60 11, 57 2 C 50 6, 43 15, 46 22 Z" fill="var(--leaf)" opacity="0.55"/>
+      <path d="M86 22 C 78 19, 72 11, 75 2 C 82 6, 89 15, 86 22 Z" fill="var(--leaf)" opacity="0.55"/>
+      <g transform="translate(30,25) scale(0.42)">
+        <g fill="var(--rose)" opacity="0.9">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+      <g transform="translate(66,16) scale(0.5)">
+        <g fill="var(--coral)" opacity="0.92">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+      <g transform="translate(102,25) scale(0.4)">
+        <g fill="var(--blue)" opacity="0.85">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+    </svg>
+
+    <svg class="corner-floral" style="left:-4px; bottom:8%;" width="66" height="78" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
+      <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
+      <path d="M26 40 C 34 38, 40 30, 38 22 C 30 24, 22 32, 26 40 Z" fill="var(--leaf)" opacity="0.5"/>
+      <g transform="translate(20,76) scale(0.55)">
+        <g fill="var(--rose)" opacity="0.9">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+      <g transform="translate(33,18) scale(0.62)">
+        <g fill="var(--coral)" opacity="0.92">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+    </svg>
+    <svg class="corner-floral" style="right:-4px; bottom:8%; transform:scaleX(-1);" width="66" height="78" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
+      <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
+      <path d="M26 40 C 34 38, 40 30, 38 22 C 30 24, 22 32, 26 40 Z" fill="var(--leaf)" opacity="0.5"/>
+      <g transform="translate(20,76) scale(0.55)">
+        <g fill="var(--blue)" opacity="0.85">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+      <g transform="translate(33,18) scale(0.62)">
+        <g fill="var(--rose)" opacity="0.9">
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="var(--gold)"/>
+      </g>
+    </svg>
+
+    <div class="envelope" id="envelope">
+      <div class="env-card-peek" id="envPeek"><span class="peek-mark">A&amp;J</span></div>
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="seal"><img src="seal_gold.png" alt="Sello A&amp;J"></div>
+    </div>
+
+    <div class="env-hint">Toca el sobre para abrir la invitación</div>
+  </section>
+
+  <!-- ============ STAGE 2: LETTER ============ -->
+  <section class="letter-stage" id="letterStage">
+    <div class="letter-card">
+      <div class="letter-seal"><img src="seal_gold.png" alt="Sello A&amp;J"></div>
+      <div class="guest-label">Para</div>
+      <div class="guest-name" id="guestName">Estimados invitados</div>
+
+      <img class="letter-photo" src="foto_pareja.jpg" alt="Ana y Juan">
+
+      <p class="letter-msg">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia.</p>
+
+      <div class="letter-names">Ana <span class="amp">&amp;</span> Juan</div>
+      <svg class="floral-sprig letter-sprig" width="100" height="35" viewBox="0 0 132 46" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 30 C 34 14, 96 14, 124 30" stroke="var(--leaf)" stroke-width="1" opacity="0.5" fill="none"/>
+        <path d="M46 22 C 54 19, 60 11, 57 2 C 50 6, 43 15, 46 22 Z" fill="var(--leaf)" opacity="0.5"/>
+        <path d="M86 22 C 78 19, 72 11, 75 2 C 82 6, 89 15, 86 22 Z" fill="var(--leaf)" opacity="0.5"/>
+        <g transform="translate(30,25) scale(0.4)">
+          <g fill="var(--rose)" opacity="0.88">
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+          </g>
+          <circle r="2.8" fill="var(--gold)"/>
+        </g>
+        <g transform="translate(66,16) scale(0.48)">
+          <g fill="var(--coral)" opacity="0.9">
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+          </g>
+          <circle r="2.8" fill="var(--gold)"/>
+        </g>
+        <g transform="translate(102,25) scale(0.38)">
+          <g fill="var(--blue)" opacity="0.82">
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+          </g>
+          <circle r="2.8" fill="var(--gold)"/>
+        </g>
+      </svg>
+      <div class="letter-date">30 · 01 · 2027</div>
+
+      <svg class="corner-floral" style="left:6px; bottom:6px; opacity:0.7;" width="50" height="58" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
+        <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
+        <g transform="translate(20,76) scale(0.55)">
+          <g fill="var(--coral)" opacity="0.85">
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+          </g>
+          <circle r="2.8" fill="var(--gold)"/>
+        </g>
+      </svg>
+      <svg class="corner-floral" style="right:6px; bottom:6px; opacity:0.7; transform:scaleX(-1);" width="50" height="58" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" opacity="0.5" fill="none"/>
+        <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)" opacity="0.5"/>
+        <g transform="translate(20,76) scale(0.55)">
+          <g fill="var(--rose)" opacity="0.85">
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+          </g>
+          <circle r="2.8" fill="var(--gold)"/>
+        </g>
+      </svg>
+    </div>
+
+    <button class="continue-btn" id="continueBtn">Ver detalles</button>
+  </section>
+</div>
+
+<!-- ============ STAGE 3: HOJAS TRANSPARENTES ============ -->
+<section class="detalles-stage" id="detallesStage">
+  <div class="detalles-backdrop"></div>
+  <div class="detalles-scrim"></div>
+
+  <div class="detalles-header">
+    <div class="detalles-seal"><img src="seal_gold.png" alt="Sello A&amp;J"></div>
+    <div class="eyebrow">Todo lo que necesitas saber</div>
+    <h2>Detalles de la boda</h2>
+    <div class="hoja-hint" id="hojaHint">Desliza para explorar · toca para ver el detalle</div>
+  </div>
+
+  <div class="hojas-overview" id="hojasOverview">
+    <div class="hoja-viewport" id="hojaViewport">
+      <div class="hoja-track" id="hojaTrack">
+
+        <div class="hoja">
+          <div class="hoja-card">
+            <div class="hoja-bg" style="background-image:url('bg_hacienda.jpg');"></div>
+            <div class="hoja-peek">
+              <div class="hoja-mark">✦</div>
+              <div class="hoja-peek-label">Ubicación</div>
+              <div class="hoja-peek-sub">Dónde celebramos</div>
+              <div class="hoja-peek-tap">Toca para ver</div>
+            </div>
+            <div class="hoja-detail">
+              <button class="hoja-close" aria-label="Cerrar">✕</button>
+              <div class="slide-mark">✦</div>
+              <div class="slide-eyebrow">Ubicación</div>
+              <div class="slide-title">Hacienda<br>La Victoria</div>
+              <p class="slide-text">Te esperamos para celebrar rodeados de quienes más queremos.</p>
+              <a class="slide-cta" href="https://www.google.com/maps/search/?api=1&query=Hacienda+La+Victoria" target="_blank" rel="noopener">Ver mapa</a>
+              <svg class="hoja-floral" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" fill="none"/>
+                <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)"/>
+                <g transform="translate(24,32) scale(0.6)">
+                  <g fill="var(--rose)">
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+                  </g>
+                  <circle r="2.8" fill="var(--gold)"/>
+                </g>
+              </svg>
+              <div class="hoja-close-hint">Toca fuera o en la ✕ para volver</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hoja">
+          <div class="hoja-card">
+            <div class="hoja-bg" style="background-image:url('bg_capilla.jpg');"></div>
+            <div class="hoja-peek">
+              <div class="hoja-mark">❦</div>
+              <div class="hoja-peek-label">Horario</div>
+              <div class="hoja-peek-sub">Cuándo &amp; cómo vestir</div>
+              <div class="hoja-peek-tap">Toca para ver</div>
+            </div>
+            <div class="hoja-detail">
+              <button class="hoja-close" aria-label="Cerrar">✕</button>
+              <div class="slide-mark">❦</div>
+              <div class="slide-eyebrow">Detalles</div>
+              <div class="slide-title">Horario &amp;<br>Etiqueta</div>
+              <p class="slide-text">Ceremonia · 3:00 PM<br>Recepción a continuación<br><br>Dress code: Formal / Elegante</p>
+              <svg class="hoja-floral" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" fill="none"/>
+                <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)"/>
+                <g transform="translate(24,32) scale(0.6)">
+                  <g fill="var(--coral)">
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+                  </g>
+                  <circle r="2.8" fill="var(--gold)"/>
+                </g>
+              </svg>
+              <div class="hoja-close-hint">Toca fuera o en la ✕ para volver</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hoja">
+          <div class="hoja-card">
+            <div class="hoja-bg" style="background-image:url('bg_arco.jpg');"></div>
+            <div class="hoja-peek">
+              <div class="hoja-mark">✦</div>
+              <div class="hoja-peek-label">RSVP</div>
+              <div class="hoja-peek-sub">Confirmar asistencia</div>
+              <div class="hoja-peek-tap">Toca para ver</div>
+            </div>
+            <div class="hoja-detail">
+              <button class="hoja-close" aria-label="Cerrar">✕</button>
+              <div class="slide-mark">✦</div>
+              <div class="slide-eyebrow">Confirmación</div>
+              <div class="slide-title">RSVP &amp;<br>Regalos</div>
+              <p class="slide-text">Tu confirmación nos ayuda a organizar cada detalle.</p>
+              <a class="slide-cta" id="rsvpLink" href="#" target="_blank" rel="noopener">Confirmar asistencia</a>
+              <svg class="hoja-floral" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 86 C 20 66, 28 46, 34 20" stroke="var(--leaf)" stroke-width="1.1" fill="none"/>
+                <path d="M14 70 C 22 68, 28 60, 26 52 C 18 54, 10 62, 14 70 Z" fill="var(--leaf)"/>
+                <g transform="translate(24,32) scale(0.6)">
+                  <g fill="var(--blue)">
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(72)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(144)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(216)"/>
+                    <ellipse cx="0" cy="-10" rx="4.6" ry="9.4" transform="rotate(288)"/>
+                  </g>
+                  <circle r="2.8" fill="var(--gold)"/>
+                </g>
+              </svg>
+              <div class="hoja-close-hint">Toca fuera o en la ✕ para volver</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="hojas-nav" id="hojasNav">
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+
+  <div class="hoja-backdrop-tap" id="hojaBackdropTap"></div>
+
+  <div class="footer-note">
+    <div class="footer-seal"><img src="seal_gold.png" alt="Sello A&amp;J"></div>
+    30 · 01 · 2027 · Hacienda La Victoria · <b>#AnaYJuan2027</b>
+  </div>
+</section>
+
+<script>
+  // ---- RSVP link placeholder: reemplaza esta URL por el link real del formulario ----
+  document.getElementById('rsvpLink').href = 'https://forms.gle/REEMPLAZAR-CON-TU-LINK';
+
+  // ---- Guest name placeholder: soporta ?invitado=Nombre en la URL para personalizar ----
+  (function(){
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get('invitado');
+    if (guest) {
+      document.getElementById('guestName').textContent = decodeURIComponent(guest.replace(/\+/g,' '));
+    }
+  })();
+
+  // ---- STAGE 1 -> 2: open envelope ----
+  const envelope = document.getElementById('envelope');
+  const envelopeStage = document.getElementById('envelopeStage');
+  const letterStage = document.getElementById('letterStage');
+  let opened = false;
+
+  envelope.addEventListener('click', () => {
+    if (opened) return;
+    opened = true;
+    envelope.classList.add('opening');
+    setTimeout(() => {
+      envelopeStage.classList.add('hidden');
+      letterStage.classList.add('show');
+    }, 950);
+  });
+
+  // ---- STAGE 2 -> 3: reveal detalles ----
+  const detallesStage = document.getElementById('detallesStage');
+  document.getElementById('continueBtn').addEventListener('click', () => {
+    detallesStage.classList.add('show');
+    detallesStage.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  // ---- Hojas: carrusel con scroll nativo + expandir/colapsar ----
+  // Rediseño deliberadamente simple: el navegador maneja el arrastre (dedo,
+  // trackpad, rueda del mouse) vía scroll-snap nativo, así funciona igual de
+  // bien en cualquier dispositivo sin cálculos manuales propensos a fallar.
+  const cards = document.querySelectorAll('.hoja-card');
+  const viewport = document.getElementById('hojaViewport');
+  const overview = document.getElementById('hojasOverview');
+  const backdropTap = document.getElementById('hojaBackdropTap');
+  const dotsWrap = document.getElementById('dots');
+  let expandedCard = null;
+  let activeIndex = 0;
+
+  // los punticos son solo indicador de posición, no reciben clics
+  cards.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(d);
+  });
+  const dots = document.querySelectorAll('.dot');
+
+  // detecta cuál hoja está centrada en el carrusel y la marca "activa"
+  // (nítida y opaca); las demás quedan translúcidas, asomando a los lados
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const idx = Array.from(cards).indexOf(entry.target);
+      const isActive = entry.intersectionRatio > 0.6;
+      entry.target.classList.toggle('active', isActive);
+      if (isActive) {
+        activeIndex = idx;
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { root: viewport, threshold: [0.6] });
+  cards.forEach((card) => io.observe(card));
+
+  // ---- arrastrar con mouse en computador (el celular ya usa scroll nativo) ----
+  let isPointerDown = false, dragStartX = 0, dragStartScroll = 0, moved = false;
+  viewport.addEventListener('mousedown', (e) => {
+    if (expandedCard) return;
+    isPointerDown = true;
+    moved = false;
+    viewport.classList.add('dragging');
+    dragStartX = e.clientX;
+    dragStartScroll = viewport.scrollLeft;
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!isPointerDown) return;
+    const dx = e.clientX - dragStartX;
+    if (Math.abs(dx) > 4) moved = true;
+    viewport.scrollLeft = dragStartScroll - dx;
+  });
+  window.addEventListener('mouseup', () => {
+    isPointerDown = false;
+    viewport.classList.remove('dragging');
+  });
+
+  // ---- expandir / colapsar: solo abre/cierra una clase, sin medir píxeles ----
+  // (nada de "transform" en los ancestros de .detalles-stage, así que
+  // position:fixed funciona directo, sin necesidad de reparentar al <body>)
+  function expandCard(card){
+    if (expandedCard) return;
+    card.classList.add('expanded');
+    overview.classList.add('card-expanded');
+    backdropTap.style.display = 'block';
+    expandedCard = card;
+  }
+  function collapseCard(card){
+    if (!card) return;
+    card.classList.remove('expanded');
+    overview.classList.remove('card-expanded');
+    backdropTap.style.display = 'none';
+    expandedCard = null;
+  }
+
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      if (moved) { moved = false; return; } // fue arrastre, no toque
+      if (expandedCard) return;
+      if (card.classList.contains('active')) {
+        expandCard(card);
+      } else {
+        // tocar una hoja que asoma la trae al centro, sin abrirla todavía
+        card.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+      }
+    });
+    card.querySelector('.hoja-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      collapseCard(card);
+    });
+  });
+
+  // tocar fuera de la hoja (el fondo) también cierra
+  backdropTap.addEventListener('click', () => collapseCard(expandedCard));
+</script>
+
+</body>
+</html>
