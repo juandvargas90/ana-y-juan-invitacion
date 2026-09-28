@@ -142,6 +142,20 @@
     cursor:pointer;
     transform-style:preserve-3d;
     transform:rotate(-0.8deg);
+    box-shadow:
+      0 22px 34px rgba(25,24,14,0.30),
+      0 44px 70px rgba(25,24,14,0.30);
+    border-radius:2px;
+  }
+  /* recorta todo lo que "asome" (la hoja/carta) exactamente al rectángulo
+     del sobre, para que nunca se vea una forma rara saliéndose por los
+     lados o por arriba -- solo la solapa (triangular) va por fuera de este
+     recorte, porque ella sí se abre en 3D hacia atrás */
+  .env-pocket{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    border-radius:2px;
   }
   .env-body{
     position:absolute;
@@ -153,9 +167,7 @@
     border-radius:2px;
     box-shadow:
       0 2px 0 rgba(255,255,255,0.12) inset,
-      0 -30px 46px rgba(30,32,20,0.22) inset,
-      0 22px 34px rgba(25,24,14,0.30),
-      0 44px 70px rgba(25,24,14,0.30);
+      0 -30px 46px rgba(30,32,20,0.22) inset;
     overflow:hidden;
   }
   .env-body::before{
@@ -180,13 +192,14 @@
   }
   .env-card-peek{
     position:absolute;
-    left:6%; right:6%; top:-4%;
-    height:60%;
+    left:16%; right:16%; top:4%;
+    height:50%;
     background:var(--paper);
     border:1px solid var(--gold-line);
     z-index:2;
+    opacity:0;
     display:flex; align-items:center; justify-content:center;
-    transition:transform 1s cubic-bezier(.22,.9,.3,1), opacity .6s ease;
+    transition:transform 1.05s cubic-bezier(.22,.9,.3,1), opacity .4s ease .35s;
   }
   .env-card-peek .peek-mark{
     font-family:'Cormorant Garamond', serif;
@@ -225,7 +238,8 @@
     transform:rotateX(-178deg);
   }
   .envelope.opening .env-card-peek{
-    transform:translateY(-46%);
+    opacity:1;
+    transform:translateY(-52%);
   }
   .seal{
     position:absolute;
@@ -718,8 +732,10 @@
     <img class="corner-floral corner-floral-env" style="right:-10px; bottom:4%; transform:scaleX(-1);" src="flor_cascada.png" alt="" aria-hidden="true">
 
     <div class="envelope" id="envelope">
-      <div class="env-card-peek" id="envPeek"><span class="peek-mark">A&amp;J</span></div>
-      <div class="env-body"></div>
+      <div class="env-pocket">
+        <div class="env-body"></div>
+        <div class="env-card-peek" id="envPeek"><span class="peek-mark">A&amp;J</span></div>
+      </div>
       <div class="env-flap"></div>
       <div class="seal"><img src="seal_gold.png" alt="Sello A&amp;J"></div>
     </div>
