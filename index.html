@@ -377,14 +377,14 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 }
 .hojas-visor::-webkit-scrollbar{ display:none; } /* oculta la barra en Chrome/Safari */
 .hojas-visor.arrastrando{ cursor:grabbing; scroll-snap-type:none; } /* arrastre con mouse */
-.hojas-fila{ display:flex; align-items:center; width:100%; padding:0 9%; } /* fila de tarjetas */
-.hoja{ flex:0 0 82%; scroll-snap-align:center; display:flex; justify-content:center; padding:6px 10px 18px; } /* posición en el carrusel */
-@media (min-width:700px){ .hoja{ flex-basis:340px; } .hojas-fila{ padding:0 calc(50% - 170px); } } /* computador: ancho fijo */
+.hojas-fila{ display:flex; align-items:center; } /* fila de tarjetas (los espacios laterales los calcula el script) */
+.hojas-borde{ flex:0 0 auto; } /* espacio a cada lado para poder centrar la primera y la última */
+.hoja{ flex:0 0 auto; width:min(82vw, 340px); scroll-snap-align:center; display:flex; justify-content:center; padding:6px 10px 18px; } /* posición en el carrusel */
 
 .tarjeta{
   position:relative;          /* referencia de capas */
   width:100%; max-width:310px; /* tamaño */
-  height:min(60vh, 470px);    /* alto */
+  height:clamp(300px, 60vh, 470px); /* alto (mínimo legible en pantallas bajas) */
   cursor:pointer;             /* se puede tocar */
   border:7px solid #fbf6ea;   /* borde blanco cálido de foto impresa */
   border-radius:3px;          /* esquinas suaves */
@@ -428,8 +428,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .vela-detalle{
   top:9%;                     /* más arriba que el resumen */
   max-height:78%;             /* deja ver flores abajo */
-  overflow-y:auto;            /* texto largo se desplaza dentro */
-  padding:26px 22px 24px;     /* más aire */
+  display:flex; flex-direction:column; /* el contenido ocupa el alto disponible */
+  padding:0;                  /* el aire va en la zona desplazable */
   opacity:0;                  /* oculto mientras está cerrada */
   pointer-events:none;        /* no recibe toques */
   transition:opacity .4s ease; /* transición */
@@ -463,7 +463,23 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .captura-toques{ position:fixed; inset:0; z-index:199; display:none; } /* capa invisible: tocar fuera cierra (sin oscurecer) */
 .captura-toques.activa{ display:block; } /* activa con una tarjeta abierta */
 
-.puntos{ display:flex; justify-content:center; gap:9px; padding:10px 0 28px; } /* indicador de posición */
+.carrusel{ position:relative; } /* contenedor del carrusel y sus flechas */
+.flecha{
+  position:absolute; top:50%; z-index:2; /* a media altura del carrusel */
+  width:44px; height:44px; border-radius:50%; /* círculo */
+  border:1px solid rgba(195,160,94,.7); background:var(--marfil-vela); /* papel con filete dorado */
+  color:var(--oliva-osc); font-family:var(--f-display); font-size:24px; line-height:1; /* la flecha */
+  display:none; align-items:center; justify-content:center; cursor:pointer; /* oculta por defecto */
+  box-shadow:1px 2px 2px var(--sombra-contacto), 4px 10px 16px -6px var(--sombra); /* misma luz */
+  transform:translateY(-50%); transition:opacity .3s ease; /* centrada verticalmente */
+}
+.flecha:disabled{ opacity:0; pointer-events:none; } /* se oculta en los extremos */
+.flecha-ant{ left:max(16px, calc(50% - 300px)); } /* izquierda */
+.flecha-sig{ right:max(16px, calc(50% - 300px)); } /* derecha */
+@media (hover:hover) and (pointer:fine){ .flecha{ display:flex; } } /* solo en equipos con mouse */
+.puntos{ display:flex; justify-content:center; gap:4px; padding:4px 0 22px; } /* indicador de posición */
+.punto{ display:block; } /* el punto es un círculo visible */
+.punto-btn{ background:none; border:none; padding:0; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; } /* área tocable de cada punto */
 .punto{ width:6px; height:6px; border-radius:50%; background:var(--tinta-tenue); opacity:.5; transition:all .3s ease; } /* punto */
 .punto.activo{ background:var(--oro-osc); opacity:1; transform:scale(1.4); } /* punto actual */
 .pie{ padding:6px 16px 48px; text-align:center; font-size:10.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta-suave); } /* pie */
@@ -476,18 +492,34 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 /* ---------- carta: bendición de los padres y conteo ---------- */
 .bendicion{ margin:4px auto 20px; max-width:30ch; } /* bloque de los padres */
 .bendicion-titulo{ font-family:var(--f-display); font-style:italic; font-size:15px; color:var(--tinta-suave); margin-bottom:10px; } /* "Con la bendición de nuestros padres" */
-.padres{ display:flex; flex-direction:column; align-items:center; gap:8px; } /* las dos parejas */
+.padres{ display:flex; flex-direction:column; align-items:center; gap:4px; } /* las dos parejas */
+.padres-rol{ font-size:9px; letter-spacing:2.6px; text-transform:uppercase; color:var(--oro-osc); } /* "Padres de la novia / del novio" */
 .padres-pareja{ font-family:var(--f-display); font-size:16.5px; font-weight:500; color:var(--oliva-osc); line-height:1.3; } /* nombres */
 .padres-pareja .cruz{ font-family:var(--f-texto); font-size:11px; color:var(--oro-osc); margin-left:2px; vertical-align:2px; } /* la cruz † */
 .memoria{ display:block; font-style:italic; font-weight:400; font-size:13px; color:var(--tinta-suave); } /* "quien nos acompaña desde el cielo" */
-.padres-sep{ width:46px; height:1px; background:linear-gradient(90deg, transparent, var(--oro), transparent); } /* línea dorada entre parejas */
+.padres-sep{ margin:8px 0 6px; width:46px; height:1px; background:linear-gradient(90deg, transparent, var(--oro), transparent); } /* línea dorada entre parejas */
 .conteo-carta{ margin-top:14px; display:inline-flex; align-items:center; gap:10px; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); } /* "faltan 110 días" */
 .conteo-carta::before, .conteo-carta::after{ content:""; width:18px; height:1px; background:var(--oro); opacity:.7; } /* hilos dorados a los lados */
 .conteo-hojas{ margin-top:10px; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); } /* conteo en el encabezado de las hojas */
 
 /* ---------- panel de detalle más amplio para hojas con mucho contenido ---------- */
-.vela-detalle{ top:5%; max-height:88%; width:min(86%, 400px); } /* más espacio en las hojas abiertas */
+.vela-detalle{ top:4%; max-height:90%; width:min(88%, 420px); } /* más espacio en las hojas abiertas */
 .vela-cuerpo{ margin-top:6px; } /* contenido de la hoja */
+.vela-scroll{
+  overflow-y:auto;            /* el contenido largo se desplaza DENTRO del marco */
+  padding:26px 22px 26px;     /* aire interior (el marco dorado queda siempre por fuera) */
+  scrollbar-width:none;       /* sin barra visible (Firefox) */
+  -ms-overflow-style:none;    /* sin barra visible (Edge antiguo) */
+  overscroll-behavior:contain; /* al llegar al final no arrastra la página de atrás */
+  -webkit-overflow-scrolling:touch; /* desplazamiento suave en iPhone */
+  min-height:0;               /* permite encogerse dentro del panel */
+}
+.vela-scroll::-webkit-scrollbar{ display:none; } /* sin barra visible (Chrome, Safari) */
+.vela-scroll.mas-abajo{ -webkit-mask-image:linear-gradient(#000 calc(100% - 34px), transparent); mask-image:linear-gradient(#000 calc(100% - 34px), transparent); } /* se desvanece abajo: hay más por ver */
+.vela-scroll.mas-arriba{ -webkit-mask-image:linear-gradient(transparent, #000 30px); mask-image:linear-gradient(transparent, #000 30px); } /* se desvanece arriba */
+.vela-scroll.mas-arriba.mas-abajo{ -webkit-mask-image:linear-gradient(transparent, #000 30px, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(transparent, #000 30px, #000 calc(100% - 34px), transparent); } /* ambos lados */
+.vela-detalle::before{ z-index:2; } /* el marco dorado siempre por encima del contenido que se desplaza */
+.tarjeta-lugar{ flex:0 0 auto; } /* hueco que guarda el lugar de la tarjeta abierta */
 .vela-texto.centro{ margin:10px 0 12px; } /* texto centrado sin tanto aire */
 .vela-texto.pequeno{ font-size:11.5px; line-height:1.6; margin:8px 0 0; } /* texto pequeño */
 .botones{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; } /* dos botones juntos */
@@ -638,12 +670,13 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
       <div class="para">Para</div> <!-- etiqueta -->
       <div class="invitado" data-invitado>Nuestros queridos invitados</div> <!-- nombre (se personaliza con ?invitado=) -->
       <div class="foto-marco"><img src="foto_pareja.webp" alt="Ana y Juan"></div> <!-- foto -->
-      <p class="mensaje">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia.</p> <!-- mensaje -->
+      <p class="mensaje">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia: una historia que nace del amor y el ejemplo de nuestras familias, y que hoy celebramos con la bendición de nuestros padres.</p> <!-- mensaje que lleva a la bendición -->
       <div class="bendicion"> <!-- bendición de los padres -->
-        <div class="bendicion-titulo">Con la bendición de nuestros padres</div> <!-- título -->
         <div class="padres"> <!-- las dos parejas -->
+          <div class="padres-rol">Padres de la novia</div> <!-- quiénes son -->
           <div class="padres-pareja">Jorge Mejía · Rosa Niño<span class="cruz">†</span><span class="memoria">quien nos acompaña desde el cielo</span></div> <!-- padres de Ana -->
           <div class="padres-sep"></div> <!-- línea dorada -->
+          <div class="padres-rol">Padres del novio</div> <!-- quiénes son -->
           <div class="padres-pareja">Miguel Vargas · Carmen Velandia</div> <!-- padres de Juan -->
         </div>
       </div>
@@ -666,7 +699,11 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
     <div class="conteo-hojas" data-conteo="corto"></div> <!-- conteo regresivo -->
     <div class="hojas-pista" style="margin-top:8px">Desliza para explorar · toca para ver el detalle</div> <!-- instrucción -->
   </div>
-  <div class="hojas-visor" id="visor"><div class="hojas-fila" id="filaHojas"></div></div> <!-- carrusel (se llena desde el script) -->
+  <div class="carrusel"> <!-- carrusel con flechas -->
+    <button class="flecha flecha-ant" id="flechaAnt" aria-label="Hoja anterior">‹</button> <!-- flecha atrás (solo con mouse) -->
+    <div class="hojas-visor" id="visor" tabindex="0" aria-label="Detalles de la boda"><div class="hojas-fila" id="filaHojas"></div></div> <!-- carrusel (se llena desde el script) -->
+    <button class="flecha flecha-sig" id="flechaSig" aria-label="Hoja siguiente">›</button> <!-- flecha adelante (solo con mouse) -->
+  </div>
   <div class="puntos" id="puntos"></div> <!-- indicador -->
   <div class="pie">30 · 01 · 2027 · Hacienda La Victoria · <b>#AnaYJuan2027</b></div> <!-- pie -->
 </section>
@@ -680,8 +717,9 @@ const FECHA_BODA = Date.UTC(2027, 0, 30, 20, 0, 0);         // 30 ene 2027, 3:00
 const FIN_BODA = Date.UTC(2027, 0, 31, 4, 0, 0);            // 11:00 p. m. hora Colombia (fin de la fiesta)
 const LIMITE_RSVP = Date.UTC(2026, 11, 5, 4, 59, 59);       // viernes 4 dic 2026, 11:59 p. m. hora Colombia
 const RSVP_LINK = null;                                     // link del formulario de confirmación (null = aún no definido)
-const MAPS_LINK = 'https://maps.app.goo.gl/op3kRZ2u4dYumrVn8'; // entrada de la Hacienda La Victoria en Google Maps
-const WAZE_LINK = 'https://waze.com/ul?ll=4.900076,-74.182905&navigate=yes'; // misma entrada en Waze
+const PLACE_ID = 'ChIJO-JeFph_QI4RgqkaGzHyoTI';            // identificador de "Hacienda La Victoria - Subachoque" en Google
+const MAPS_LINK = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Hacienda La Victoria - Subachoque') + '&query_place_id=' + PLACE_ID; // abre la ficha con nombre, fotos y reseñas
+const WAZE_LINK = 'https://www.waze.com/live-map/directions?to=place.' + PLACE_ID; // Waze con el lugar como destino (mismo identificador)
 const CUENTA = {                                            // CUENTA FICTICIA: reemplazar por la real antes de enviar
   banco: 'Bancolombia',                                     // banco
   tipo: 'Cuenta de ahorros',                                // tipo de cuenta
@@ -867,18 +905,24 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
         <div class="vela-toca">Toca para ver</div>
       </div>
       <div class="vela vela-detalle">
-        <img class="vela-flor" src="${h.flor}" alt="">
-        <div class="vela-ante">${h.ante}</div>
-        <div class="vela-titulo">${h.tituloDetalle}</div>
-        <div class="vela-cuerpo">${h.cuerpo()}</div>
+        <div class="vela-scroll">
+          <img class="vela-flor" src="${h.flor}" alt="">
+          <div class="vela-ante">${h.ante}</div>
+          <div class="vela-titulo">${h.tituloDetalle}</div>
+          <div class="vela-cuerpo">${h.cuerpo()}</div>
+        </div>
       </div>
       <button class="cerrar" aria-label="Cerrar">✕</button>
     </div>`;                                                // foto + resumen + detalle + cerrar
   fila.appendChild(hoja);                                   // agrega la hoja
-  const punto = document.createElement('div');              // punto indicador
+  const btn = document.createElement('button');             // área tocable del punto
+  btn.className = 'punto-btn';                              // clase
+  btn.setAttribute('aria-label', 'Ir a ' + h.titulo);       // nombre accesible
+  const punto = document.createElement('span');             // el punto visible
   punto.className = 'punto' + (i === 0 ? ' activo' : '');   // el primero activo
-  puntosWrap.appendChild(punto);                            // agrega el punto
+  btn.appendChild(punto); puntosWrap.appendChild(btn);      // agrega el punto
 });
+['afterbegin', 'beforeend'].forEach(pos => fila.insertAdjacentHTML(pos, '<div class="hojas-borde"></div>')); // espacios a ambos lados
 
 // botón "Copiar número" de la cuenta
 document.addEventListener('click', async e => {             // escucha clics en toda la página
@@ -1058,32 +1102,75 @@ function aplicarParalaje() {                                // aplica una vez po
 // ================== CARRUSEL DE HOJAS ==================
 let carruselListo = false;                                  // evita iniciar dos veces
 let abiertaT = null;                                        // tarjeta abierta
+let ocupado = false;                                        // evita abrir/cerrar dos veces seguidas
+
+// --- bloquear el scroll de la página SIN perder la posición (funciona también en iPhone) ---
+let scrollGuardado = 0;                                     // dónde estaba la página
+function bloquearScroll() {                                 // congela la página donde está
+  scrollGuardado = scrollY;                                 // guarda la posición
+  const b = document.body.style;                            // estilos del body
+  b.position = 'fixed'; b.top = -scrollGuardado + 'px';     // el body queda fijo, desplazado igual que antes
+  b.left = '0'; b.right = '0'; b.width = '100%';            // ocupa el ancho completo
+}
+function desbloquearScroll() {                              // devuelve la página a su lugar
+  const b = document.body.style;                            // estilos del body
+  b.position = b.top = b.left = b.right = b.width = '';     // quita el bloqueo
+  scrollTo(0, scrollGuardado);                              // vuelve exactamente a donde estaba
+}
+
 function iniciarCarrusel() {                                // se llama al mostrar las hojas
   if (carruselListo) return;                                // ya iniciado
   carruselListo = true;                                     // marca
   const visor = $('visor');                                 // contenedor con scroll
-  const tarjetas = [...document.querySelectorAll('.tarjeta')]; // tarjetas
+  const hojas = [...document.querySelectorAll('.hoja')];    // posiciones del carrusel
+  const tarjetas = hojas.map(h => h.querySelector('.tarjeta')); // tarjetas
   const puntos = [...document.querySelectorAll('.punto')];  // puntos
   const captura = $('capturaToques');                       // capa para tocar fuera
+  const bordes = [...document.querySelectorAll('.hojas-borde')]; // espacios a los lados
+
+  // --- espacios laterales: permiten centrar la PRIMERA y la ÚLTIMA tarjeta en cualquier pantalla ---
+  function ajustarBordes() {                                // calcula el espacio de cada lado
+    const w = Math.max(0, (visor.clientWidth - hojas[0].offsetWidth) / 2); // mitad del espacio sobrante
+    bordes.forEach(b => { b.style.width = w + 'px'; });     // lo aplica a ambos lados
+  }
+  ajustarBordes();                                          // primera vez
 
   // --- una sola tarjeta protagonista: la más cercana al centro ---
+  let actual = 0;                                           // índice de la tarjeta centrada
   let rafActiva = 0;                                        // control de cuadros
   function marcarActiva() {                                 // busca la tarjeta más centrada
     rafActiva = 0;                                          // libera
+    if (abiertaT) return;                                   // con una abierta no se recalcula
     const v = visor.getBoundingClientRect();                // caja del carrusel
     const centro = v.left + v.width / 2;                    // centro horizontal
     let mejor = 0, dist = Infinity;                         // la más cercana hasta ahora
-    tarjetas.forEach((t, i) => {                            // por cada tarjeta
-      const h = t.parentElement.getBoundingClientRect();    // caja de su posición (sin efecto de escala)
-      const d = Math.abs(h.left + h.width / 2 - centro);    // distancia al centro
+    hojas.forEach((h, i) => {                               // por cada posición
+      const r = h.getBoundingClientRect();                  // su caja
+      const d = Math.abs(r.left + r.width / 2 - centro);    // distancia al centro
       if (d < dist) { dist = d; mejor = i; }                // guarda la mejor
     });
+    actual = mejor;                                         // recuerda la centrada
     tarjetas.forEach((t, i) => t.classList.toggle('activa', i === mejor)); // solo una activa
     puntos.forEach((p, i) => p.classList.toggle('activo', i === mejor));   // su punto
+    $('flechaAnt').disabled = mejor === 0;                  // sin flecha atrás en la primera
+    $('flechaSig').disabled = mejor === hojas.length - 1;   // sin flecha adelante en la última
+  }
+  function irA(i) {                                         // centra la tarjeta i
+    i = Math.max(0, Math.min(hojas.length - 1, i));         // dentro de los límites
+    const h = hojas[i];                                     // su posición
+    const destinoX = h.offsetLeft - (visor.clientWidth - h.offsetWidth) / 2; // scroll para centrarla
+    visor.scrollTo({ left: destinoX, behavior: reducido ? 'auto' : 'smooth' }); // desliza
   }
   visor.addEventListener('scroll', () => { if (!rafActiva) rafActiva = requestAnimationFrame(marcarActiva); }); // al desplazar
-  addEventListener('resize', marcarActiva);                 // al cambiar el tamaño
+  addEventListener('resize', () => { ajustarBordes(); marcarActiva(); }); // al cambiar el tamaño o girar el celular
   marcarActiva();                                           // estado inicial
+  $('flechaAnt').addEventListener('click', () => irA(actual - 1)); // flecha atrás
+  $('flechaSig').addEventListener('click', () => irA(actual + 1)); // flecha adelante
+  puntos.forEach((p, i) => p.parentElement.addEventListener('click', () => irA(i))); // los puntos también llevan a su tarjeta
+  visor.addEventListener('keydown', e => {                  // teclado en el carrusel
+    if (e.key === 'ArrowRight') irA(actual + 1);            // flecha derecha
+    if (e.key === 'ArrowLeft') irA(actual - 1);             // flecha izquierda
+  });
 
   // --- arrastrar con mouse en computador ---
   let presionado = false, xInicio = 0, scrollInicio = 0, movido = false; // estado del arrastre
@@ -1099,63 +1186,87 @@ function iniciarCarrusel() {                                // se llama al mostr
     if (Math.abs(dx) > 4) movido = true;                    // fue arrastre
     visor.scrollLeft = scrollInicio - dx;                   // mueve el carrusel
   });
-  addEventListener('mouseup', () => { presionado = false; visor.classList.remove('arrastrando'); }); // suelta
+  addEventListener('mouseup', () => {                       // suelta
+    if (!presionado) return;                                // no estaba arrastrando
+    presionado = false; visor.classList.remove('arrastrando'); // termina
+    if (movido) irA(actual);                                // se acomoda en la tarjeta más cercana
+  });
 
-  // --- abrir: la tarjeta crece desde su tamaño y lugar originales ---
+  // --- abrir: la tarjeta crece desde su lugar y se muda a la página principal ---
+  // (mudarla fuera del carrusel evita que Safari de iPhone la recorte o no la muestre)
   function destino() {                                      // tamaño final de la tarjeta abierta
-    const w = Math.min(innerWidth * 0.9, 520);              // ancho
-    const h = innerHeight * 0.9;                            // alto
-    return { top: innerHeight * 0.05, left: (innerWidth - w) / 2, width: w, height: h }; // centrada
+    const w = Math.min(innerWidth * 0.92, 520);             // ancho (nunca más de 520 px)
+    const h = Math.min(innerHeight * 0.9, 900);             // alto (nunca más de 900 px)
+    return { top: (innerHeight - h) / 2, left: (innerWidth - w) / 2, width: w, height: h }; // centrada
   }
   function poner(t, r) {                                    // aplica posición y tamaño
     t.style.top = r.top + 'px'; t.style.left = r.left + 'px'; // posición
     t.style.width = r.width + 'px'; t.style.height = r.height + 'px'; // tamaño
   }
   function expandir(t) {                                    // abre una tarjeta
-    if (abiertaT) return;                                   // solo una
-    abiertaT = t;                                           // la recuerda
-    const r = t.getBoundingClientRect();                    // dónde está ahora
-    t._origen = { top: r.top, left: r.left, width: r.width, height: r.height }; // guarda su lugar
-    t.parentElement.style.minHeight = t.parentElement.offsetHeight + 'px'; // conserva el espacio en el carrusel
-    t.classList.add('expandida');                           // pasa a posición fija...
-    poner(t, t._origen);                                    // ...exactamente donde estaba
+    if (abiertaT || ocupado) return;                        // solo una a la vez
+    ocupado = true; abiertaT = t;                           // la recuerda
+    const r = t.getBoundingClientRect();                    // dónde está ahora en pantalla
+    const lugar = document.createElement('div');            // marcador de su lugar en el carrusel
+    lugar.className = 'tarjeta-lugar';                      // clase del marcador
+    lugar.style.width = t.offsetWidth + 'px'; lugar.style.height = t.offsetHeight + 'px'; // mismo tamaño
+    t.before(lugar); t._lugar = lugar;                      // lo deja en su sitio
+    bloquearScroll();                                       // congela la página (sin moverla)
+    document.body.appendChild(t);                           // la tarjeta pasa a la página principal
+    t.classList.add('expandida');                           // posición fija...
+    poner(t, r);                                            // ...exactamente donde estaba
     t.getBoundingClientRect();                              // aplica antes de animar
     t.classList.add('animando');                            // activa la transición
     poner(t, destino());                                    // crece hasta su tamaño final
-    raiz.classList.add('bloqueado');                        // sin scroll de fondo
     captura.classList.add('activa');                        // tocar fuera cierra
     setTimeout(() => {                                      // cuando terminó de crecer...
       t.classList.add('abierta');                           // ...aparece el detalle
+      revisarDesplazamiento(t.querySelector('.vela-scroll')); // muestra el desvanecido si hay más contenido
       t.querySelector('.cerrar').focus({ preventScroll: true }); // foco en cerrar
-    }, 450 * T);
+      ocupado = false;                                      // libre
+    }, 480 * T);
   }
   function cerrar() {                                       // cierra la tarjeta abierta
     const t = abiertaT;                                     // tarjeta
-    if (!t) return;                                         // nada abierto
+    if (!t || ocupado) return;                              // nada abierto o en movimiento
+    ocupado = true;                                         // en movimiento
     t.classList.remove('abierta');                          // oculta el detalle
-    poner(t, t._origen);                                    // regresa a su lugar original
+    poner(t, t._lugar.getBoundingClientRect());             // regresa a su lugar exacto
     captura.classList.remove('activa');                     // quita la capa
     setTimeout(() => {                                      // al terminar el regreso...
-      t.classList.remove('expandida', 'animando');          // ...vuelve al carrusel
+      t.classList.remove('expandida', 'animando');          // ...vuelve a ser parte del carrusel
       t.style.top = t.style.left = t.style.width = t.style.height = ''; // limpia estilos
-      t.parentElement.style.minHeight = '';                 // libera el espacio
-      raiz.classList.remove('bloqueado');                   // vuelve el scroll
-      abiertaT = null;                                      // ninguna abierta
-    }, 620 * T);
+      t._lugar.replaceWith(t);                              // vuelve a su sitio en el carrusel
+      t.querySelector('.vela-scroll').scrollTop = 0;        // el panel queda listo desde arriba
+      desbloquearScroll();                                  // la página sigue donde estaba
+      abiertaT = null; ocupado = false;                     // libre
+      t.focus({ preventScroll: true });                     // foco de vuelta en la tarjeta
+    }, 640 * T);
   }
-  addEventListener('resize', () => { if (abiertaT && abiertaT.classList.contains('abierta')) poner(abiertaT, destino()); }); // se ajusta si gira el celular
-  tarjetas.forEach(t => {                                   // por cada tarjeta
-    t.addEventListener('click', () => {                     // al tocarla
-      if (movido) { movido = false; return; }               // fue arrastre
+  addEventListener('resize', () => { if (abiertaT && !ocupado) poner(abiertaT, destino()); }); // se ajusta si gira el celular
+  tarjetas.forEach((t, i) => {                              // por cada tarjeta
+    t.addEventListener('click', e => {                      // al tocarla
+      if (e.target.closest('a, button')) return;            // botones y links funcionan solos
+      if (movido) { movido = false; return; }               // fue arrastre, no toque
       if (abiertaT) return;                                 // ya hay una abierta
-      if (t.classList.contains('activa')) expandir(t);      // la protagonista se abre
-      else t.parentElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); // las otras se centran
+      if (i === actual) { expandir(t); return; }            // la centrada se abre de una vez
+      irA(i);                                               // las laterales primero se centran...
+      setTimeout(() => expandir(t), reducido ? 30 : 420);   // ...y luego se abren
     });
-    t.addEventListener('keydown', e => { if (e.key === 'Enter' && !abiertaT) expandir(t); }); // Enter abre
+    t.addEventListener('keydown', e => { if (e.key === 'Enter' && !abiertaT && e.target === t) expandir(t); }); // Enter abre
     t.querySelector('.cerrar').addEventListener('click', e => { e.stopPropagation(); cerrar(); }); // botón cerrar
+    const sc = t.querySelector('.vela-scroll');             // zona desplazable del panel
+    sc.addEventListener('scroll', () => revisarDesplazamiento(sc), { passive: true }); // actualiza el desvanecido
   });
   captura.addEventListener('click', cerrar);                // tocar fuera cierra
   addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); }); // Escape cierra
+}
+
+// desvanece suavemente el borde superior/inferior del panel cuando hay más contenido por ver
+function revisarDesplazamiento(sc) {
+  if (!sc) return;                                          // sin panel
+  sc.classList.toggle('mas-arriba', sc.scrollTop > 4);      // hay contenido arriba
+  sc.classList.toggle('mas-abajo', sc.scrollTop + sc.clientHeight < sc.scrollHeight - 4); // hay contenido abajo
 }
 
 // ================== BOTÓN "VER DETALLES" ==================
