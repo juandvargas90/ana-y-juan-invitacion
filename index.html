@@ -473,6 +473,98 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .capa-petalos{ position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden; } /* capa */
 .petalo{ position:absolute; top:-70px; filter:drop-shadow(3px 6px 4px rgba(30,28,16,.22)); } /* contenedor con sombra */
 
+/* ---------- carta: bendición de los padres y conteo ---------- */
+.bendicion{ margin:4px auto 20px; max-width:30ch; } /* bloque de los padres */
+.bendicion-titulo{ font-family:var(--f-display); font-style:italic; font-size:15px; color:var(--tinta-suave); margin-bottom:10px; } /* "Con la bendición de nuestros padres" */
+.padres{ display:flex; flex-direction:column; align-items:center; gap:8px; } /* las dos parejas */
+.padres-pareja{ font-family:var(--f-display); font-size:16.5px; font-weight:500; color:var(--oliva-osc); line-height:1.3; } /* nombres */
+.padres-pareja .cruz{ font-family:var(--f-texto); font-size:11px; color:var(--oro-osc); margin-left:2px; vertical-align:2px; } /* la cruz † */
+.memoria{ display:block; font-style:italic; font-weight:400; font-size:13px; color:var(--tinta-suave); } /* "quien nos acompaña desde el cielo" */
+.padres-sep{ width:46px; height:1px; background:linear-gradient(90deg, transparent, var(--oro), transparent); } /* línea dorada entre parejas */
+.conteo-carta{ margin-top:14px; display:inline-flex; align-items:center; gap:10px; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); } /* "faltan 110 días" */
+.conteo-carta::before, .conteo-carta::after{ content:""; width:18px; height:1px; background:var(--oro); opacity:.7; } /* hilos dorados a los lados */
+.conteo-hojas{ margin-top:10px; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); } /* conteo en el encabezado de las hojas */
+
+/* ---------- panel de detalle más amplio para hojas con mucho contenido ---------- */
+.vela-detalle{ top:5%; max-height:88%; width:min(86%, 400px); } /* más espacio en las hojas abiertas */
+.vela-cuerpo{ margin-top:6px; } /* contenido de la hoja */
+.vela-texto.centro{ margin:10px 0 12px; } /* texto centrado sin tanto aire */
+.vela-texto.pequeno{ font-size:11.5px; line-height:1.6; margin:8px 0 0; } /* texto pequeño */
+.botones{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; } /* dos botones juntos */
+
+/* ---------- calendario ---------- */
+.calendario{ margin:14px auto 4px; max-width:280px; } /* caja del calendario */
+.cal-mes{ font-family:var(--f-display); font-style:italic; font-size:20px; color:var(--oliva-osc); margin-bottom:8px; } /* "Enero 2027" */
+.cal-mes span{ font-style:normal; font-size:13px; letter-spacing:3px; color:var(--oro-osc); margin-left:4px; } /* año */
+.cal-grilla{ display:grid; grid-template-columns:repeat(7, 1fr); row-gap:4px; border-top:1px solid rgba(195,160,94,.5); border-bottom:1px solid rgba(195,160,94,.5); padding:8px 0; } /* cuadrícula de 7 columnas */
+.cal-dia{ font-size:9px; letter-spacing:1.5px; color:var(--oro-osc); padding-bottom:4px; } /* L M M J V S D */
+.cal-num{ position:relative; font-family:var(--f-display); font-size:15px; color:var(--tinta-suave); line-height:28px; font-variant-numeric:tabular-nums; } /* cada día */
+.cal-boda{ color:var(--oliva-osc); font-weight:600; font-size:17px; } /* el 30, resaltado */
+.corazon{ position:absolute; left:50%; top:50%; width:46px; height:46px; transform:translate(-50%,-52%); overflow:visible; pointer-events:none; } /* corazón alrededor del 30 */
+.corazon path{ fill:none; stroke:var(--oro-osc); stroke-width:2.2; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset 1.6s cubic-bezier(.5,.1,.3,1) .5s; } /* trazo que se dibuja */
+.tarjeta.abierta .corazon path{ stroke-dashoffset:0; } /* al abrir la hoja, el corazón se dibuja a mano */
+
+/* ---------- conteo completo ---------- */
+.conteo-grande{ display:flex; justify-content:center; gap:8px; margin:6px 0 16px; } /* cuatro casillas */
+.conteo-grande div{ min-width:56px; padding:8px 4px 6px; border:1px solid rgba(195,160,94,.55); background:rgba(255,255,255,.35); } /* casilla */
+.conteo-grande b{ display:block; font-family:var(--f-display); font-weight:500; font-size:24px; color:var(--oliva-osc); line-height:1; font-variant-numeric:tabular-nums; } /* número */
+.conteo-grande span{ display:block; margin-top:4px; font-size:8.5px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* etiqueta */
+.conteo-fin{ font-family:var(--f-display); font-style:italic; font-size:22px; color:var(--oliva-osc); } /* mensaje del día */
+
+/* ---------- itinerario ---------- */
+.itinerario{ list-style:none; position:relative; margin:16px auto 4px; max-width:290px; text-align:left; } /* lista */
+.itinerario::before{ content:""; position:absolute; left:21px; top:10px; bottom:10px; width:1px; background:linear-gradient(var(--oro), rgba(195,160,94,.25)); } /* hilo dorado vertical */
+.itinerario li{
+  position:relative;          /* referencia */
+  display:grid; grid-template-columns:44px 64px 1fr; align-items:center; /* ícono · hora · momento */
+  padding:7px 0;              /* aire entre momentos */
+  opacity:0; transform:translateY(8px); /* empieza oculto */
+  transition:opacity .5s ease, transform .5s ease; /* aparece */
+  transition-delay:calc(.35s + var(--i) * .14s); /* uno tras otro */
+}
+.tarjeta.abierta .itinerario li{ opacity:1; transform:none; } /* visibles al abrir */
+.itin-icono{ width:42px; height:42px; border-radius:50%; background:var(--marfil); border:1px solid rgba(195,160,94,.6); display:flex; align-items:center; justify-content:center; color:var(--oro-osc); position:relative; z-index:1; } /* círculo del ícono, sobre el hilo */
+.itin-icono svg{ width:22px; height:22px; } /* ícono de línea */
+.itin-icono img{ width:38px; height:38px; object-fit:contain; } /* ícono en acuarela (cuando llegue) */
+.itin-hora{ font-family:var(--f-display); font-size:21px; font-weight:500; color:var(--oliva-osc); text-align:right; padding-right:12px; font-variant-numeric:tabular-nums; line-height:1; } /* hora */
+.itin-hora small{ display:block; font-family:var(--f-texto); font-size:8px; letter-spacing:1.6px; text-transform:uppercase; color:var(--oro-osc); margin-top:3px; } /* p. m. */
+.itin-momento{ font-family:var(--f-display); font-style:italic; font-size:17px; color:var(--tinta); line-height:1.2; border-left:1px solid rgba(195,160,94,.4); padding-left:12px; } /* actividad */
+
+/* ---------- notas con ícono (parqueadero, frío) ---------- */
+.nota-icono{ display:flex; align-items:center; gap:10px; justify-content:center; text-align:left; font-size:12px; line-height:1.5; color:var(--tinta); margin:4px auto 16px; max-width:300px; } /* nota */
+.parqueo, .frio{ flex:0 0 28px; height:28px; border-radius:50%; border:1px solid var(--oro); color:var(--oro-osc); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-weight:600; font-size:16px; } /* círculo dorado */
+.frio svg{ width:16px; height:16px; } /* luna */
+
+/* ---------- vestimenta ---------- */
+.vestir{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 12px; text-align:center; } /* dos columnas */
+.vestir p{ font-size:12px; line-height:1.6; color:var(--tinta-suave); } /* descripción */
+.vestir-quien{ font-family:var(--f-display); font-style:italic; font-size:18px; color:var(--oliva-osc); margin-bottom:4px; } /* Caballeros / Damas */
+.muestras{ display:flex; justify-content:center; gap:6px; margin-top:8px; } /* tonos sugeridos */
+.muestras i, .reservados-fila i{ width:20px; height:20px; border-radius:50%; background:var(--c); box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 1px 2px 3px rgba(30,28,16,.25); display:block; } /* muestra de color */
+.reservados{ border-top:1px solid rgba(195,160,94,.5); padding-top:12px; } /* bloque de reservados */
+.reservados-titulo{ font-size:9.5px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:10px; } /* título */
+.reservados-fila{ display:flex; justify-content:center; gap:18px; } /* tres colores */
+.reservados-fila span{ display:flex; flex-direction:column; align-items:center; gap:4px; font-family:var(--f-display); font-size:15px; color:var(--oliva-osc); } /* color + nombre */
+.reservados-fila i{ width:30px; height:30px; } /* muestras más grandes */
+.reservados-fila small{ font-family:var(--f-texto); font-size:8.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--tinta-tenue); } /* para quién */
+.vestir + .reservados + .nota-icono{ margin-top:14px; } /* separación con la nota de frío */
+
+/* ---------- regalos ---------- */
+.mini-sobre{ position:relative; width:110px; height:74px; margin:14px auto 6px; background:var(--oliva) url('papel_oliva.webp') center / 200px auto; box-shadow:1px 2px 2px var(--sombra-contacto), 4px 10px 14px -4px var(--sombra); transform:rotate(-3deg); } /* sobrecito oliva */
+.mini-solapa{ position:absolute; inset:0 0 40% 0; background:inherit; clip-path:polygon(0 0, 100% 0, 50% 100%); filter:brightness(.92); } /* solapa */
+.mini-sobre img{ position:absolute; left:50%; top:60%; width:30px; transform:translate(-50%,-50%); filter:drop-shadow(1px 2px 1px rgba(20,16,8,.4)); } /* sello */
+.cuenta{ margin-top:4px; padding:12px; border:1px solid rgba(195,160,94,.5); background:rgba(255,255,255,.3); } /* datos de la cuenta */
+.cuenta-nota{ font-size:9.5px; letter-spacing:1.8px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:6px; } /* encabezado */
+.cuenta-dato{ font-size:12px; color:var(--tinta-suave); } /* banco y titular */
+.cuenta-numero{ font-family:var(--f-display); font-size:22px; font-weight:500; color:var(--oliva-osc); letter-spacing:1px; margin:2px 0; font-variant-numeric:tabular-nums; user-select:all; } /* número */
+.boton-copiar{ margin-top:8px; background:none; border:1px solid var(--oro); color:var(--oro-osc); font-size:9.5px; letter-spacing:2px; text-transform:uppercase; padding:7px 14px; cursor:pointer; } /* copiar */
+
+/* ---------- confirmación ---------- */
+.plazo{ display:inline-block; font-size:10px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); border-top:1px solid rgba(195,160,94,.5); border-bottom:1px solid rgba(195,160,94,.5); padding:6px 4px; margin:-4px 0 14px; } /* días para confirmar */
+.pedidos{ text-align:center; margin-bottom:16px; } /* sin niños / sin mascotas */
+.pedidos p{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.5; color:var(--tinta-suave); margin-bottom:10px; } /* cada pedido */
+.pedidos b{ font-weight:600; font-style:normal; color:var(--oliva-osc); } /* resaltado */
+
 @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si se pide */
 </style>
 </head>
@@ -546,9 +638,18 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
       <div class="invitado" data-invitado>Nuestros queridos invitados</div> <!-- nombre (se personaliza con ?invitado=) -->
       <div class="foto-marco"><img src="foto_pareja.webp" alt="Ana y Juan"></div> <!-- foto -->
       <p class="mensaje">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia.</p> <!-- mensaje -->
+      <div class="bendicion"> <!-- bendición de los padres -->
+        <div class="bendicion-titulo">Con la bendición de nuestros padres</div> <!-- título -->
+        <div class="padres"> <!-- las dos parejas -->
+          <div class="padres-pareja">Jorge Mejía · Rosa Niño<span class="cruz">†</span><span class="memoria">quien nos acompaña desde el cielo</span></div> <!-- padres de Ana -->
+          <div class="padres-sep"></div> <!-- línea dorada -->
+          <div class="padres-pareja">Miguel Vargas · Carmen Velandia</div> <!-- padres de Juan -->
+        </div>
+      </div>
       <div class="nombres">Ana<span class="y">&amp;</span>Juan</div> <!-- nombres -->
       <div class="fecha">30 · 01 · 2027</div> <!-- fecha -->
       <div class="lugar">Hacienda La Victoria</div> <!-- lugar -->
+      <div class="conteo-carta" data-conteo="corto"></div> <!-- conteo regresivo sutil -->
     </div>
   </article>
 
@@ -561,7 +662,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
     <div class="mini-sello"><img src="sello.webp" alt=""></div> <!-- sello pequeño -->
     <div class="antetitulo">Todo lo que necesitas saber</div> <!-- antetítulo -->
     <h2>Detalles de la boda</h2> <!-- título -->
-    <div class="hojas-pista">Desliza para explorar · toca para ver el detalle</div> <!-- instrucción -->
+    <div class="conteo-hojas" data-conteo="corto"></div> <!-- conteo regresivo -->
+    <div class="hojas-pista" style="margin-top:8px">Desliza para explorar · toca para ver el detalle</div> <!-- instrucción -->
   </div>
   <div class="hojas-visor" id="visor"><div class="hojas-fila" id="filaHojas"></div></div> <!-- carrusel (se llena desde el script) -->
   <div class="puntos" id="puntos"></div> <!-- indicador -->
@@ -572,40 +674,151 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 <div class="capa-petalos" id="capaPetalos" aria-hidden="true"></div> <!-- pétalos -->
 
 <script>
-// ================== CONTENIDO DE LAS HOJAS ==================
-// Para agregar hojas nuevas basta con añadir un objeto a esta lista.
-// Fondos disponibles: hoja_01_peonias ... hoja_08_detalle (.webp)
-const RSVP_LINK = null; // link real del formulario de confirmación; null = botón desactivado
-const HOJAS = [ // hojas en el orden en que se muestran
-  { // hoja 1
-    fondo: 'hoja_07_arco.webp',          // foto floral de fondo
-    flor: 'esq_1.webp',                  // ramillete de acuarela
-    titulo: 'Ubicación',                 // título en la tarjeta cerrada
-    sub: 'Dónde celebramos',             // subtítulo
-    ante: 'Ubicación',                   // antetítulo del detalle
-    tituloDetalle: 'Hacienda<br>La Victoria', // título del detalle
-    texto: 'Te esperamos para celebrar rodeados de quienes más queremos.', // texto
-    boton: { texto: 'Ver mapa', link: 'https://www.google.com/maps/search/?api=1&query=Hacienda+La+Victoria' } // botón
+// ================== DATOS DE LA BODA ==================
+const FECHA_BODA = Date.UTC(2027, 0, 30, 20, 0, 0);         // 30 ene 2027, 3:00 p. m. hora Colombia (UTC-5 = 20:00 UTC)
+const FIN_BODA = Date.UTC(2027, 0, 31, 4, 0, 0);            // 11:00 p. m. hora Colombia (fin de la fiesta)
+const LIMITE_RSVP = Date.UTC(2026, 11, 5, 4, 59, 59);       // viernes 4 dic 2026, 11:59 p. m. hora Colombia
+const RSVP_LINK = null;                                     // link del formulario de confirmación (null = aún no definido)
+const MAPS_LINK = 'https://maps.app.goo.gl/op3kRZ2u4dYumrVn8'; // entrada de la Hacienda La Victoria en Google Maps
+const WAZE_LINK = 'https://waze.com/ul?ll=4.900076,-74.182905&navigate=yes'; // misma entrada en Waze
+const CUENTA = {                                            // CUENTA FICTICIA: reemplazar por la real antes de enviar
+  banco: 'Bancolombia',                                     // banco
+  tipo: 'Cuenta de ahorros',                                // tipo de cuenta
+  numero: '000-000000-00',                                  // número (ficticio)
+  titular: 'Ana Milena Mejía Niño'                          // titular
+};
+const ITINERARIO = [                                        // momentos del día (img: ícono en acuarela cuando exista)
+  { hora: '3:00', momento: 'Llegada y bienvenida', icono: 'bienvenida', img: null }, // llegada
+  { hora: '4:00', momento: 'Ceremonia religiosa',  icono: 'argollas',   img: null }, // ceremonia
+  { hora: '5:00', momento: 'Sesión de fotos',      icono: 'camara',     img: null }, // fotos
+  { hora: '6:00', momento: 'Brindis',              icono: 'copas',      img: null }, // brindis
+  { hora: '7:00', momento: 'Cena',                 icono: 'cena',       img: null }, // cena
+  { hora: '8:00', momento: 'Vals y rumba',         icono: 'musica',     img: null }, // fiesta
+  { hora: '11:00', momento: 'Despedida',           icono: 'luna',       img: null }  // despedida
+];
+// íconos provisionales en línea dorada (24x24); se reemplazan por las acuarelas cuando lleguen
+const ICONOS = {
+  bienvenida: '<path d="M5 21V11a7 7 0 0 1 14 0v10M3 21h18M9 21v-5a3 3 0 0 1 6 0v5"/><path d="M7 8.5l1 .8M17 8.5l-1 .8M12 4v1.2"/>', // arco
+  argollas: '<circle cx="9" cy="14.5" r="5"/><circle cx="15" cy="14.5" r="5"/><path d="M15 5.2l1.4-1.9 1.4 1.9-1.4 1.9z"/>', // argollas
+  camara: '<rect x="3" y="7.5" width="18" height="12.5" rx="2"/><circle cx="12" cy="13.7" r="3.8"/><path d="M8.2 7.5l1.4-2.7h4.8l1.4 2.7M17.6 10.3h.01"/>', // cámara
+  copas: '<path d="M5.5 3.5h4.2l-.4 5.2a1.7 1.7 0 0 1-3.4 0zM7.6 10.4v8M5.6 18.4h4M14.3 3.5h4.2l-.4 5.2a1.7 1.7 0 0 1-3.4 0zM16.4 10.4v8M14.4 18.4h4"/><path d="M12 2.2v2.2M10.9 3.3h2.2"/>', // copas
+  cena: '<circle cx="12.5" cy="13" r="6"/><circle cx="12.5" cy="13" r="3.4"/><path d="M3.5 4v5.5M2.5 4v3.4a1 1 0 0 0 2 0V4M3.5 9.5V21M21.5 4c-1.4 1-1.9 3-1.9 6h1.9v11"/>', // plato y cubiertos
+  musica: '<path d="M9 18V6.5l10-2.2V16M9 10l10-2.2"/><circle cx="6.6" cy="18" r="2.4"/><circle cx="16.6" cy="16" r="2.4"/>', // notas
+  luna: '<path d="M19.5 14.6A8 8 0 1 1 9.4 4.5a6.4 6.4 0 0 0 10.1 10.1z"/><path d="M17 2.8l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z"/>' // luna y estrella
+};
+const svgIcono = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`; // arma el ícono
+
+// ================== PERSONALIZACIÓN (?invitado=Nombre&cupos=2) ==================
+const params = new URLSearchParams(location.search);        // parámetros del link
+const nombreInvitado = params.get('invitado');              // nombre del invitado
+const cupos = parseInt(params.get('cupos'), 10);            // número de cupos (puede no venir)
+if (nombreInvitado) {                                       // si viene el nombre...
+  document.querySelector('[data-invitado]').textContent = nombreInvitado; // ...lo escribe en la carta
+}
+function textoCupos() {                                     // frase de cupos para la hoja de confirmación
+  if (cupos === 1) return 'Hemos reservado <b>1 cupo</b> en tu honor.'; // una persona
+  if (cupos > 1) return `Hemos reservado <b>${cupos} cupos</b> en su honor.`; // varias personas
+  return 'Tu invitación es personal.';                      // sin dato de cupos
+}
+
+// ================== HOJAS: CONTENIDO DE CADA UNA ==================
+// calendario de enero de 2027 (empieza viernes); el 30 lleva un corazón dibujado a mano
+function htmlCalendario() {
+  const dias = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];         // encabezados (lunes a domingo)
+  let celdas = dias.map(d => `<span class="cal-dia">${d}</span>`).join(''); // fila de días de la semana
+  for (let i = 0; i < 4; i++) celdas += '<span></span>';    // 1 de enero es viernes: 4 espacios vacíos antes
+  for (let d = 1; d <= 31; d++) {                           // los 31 días
+    celdas += d === 30                                      // el día de la boda...
+      ? `<span class="cal-num cal-boda">30<svg class="corazon" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M52 86 C30 70 8 52 12 30 C15 14 34 8 47 24 C52 30 50 31 51 29 C58 12 80 6 89 22 C99 42 76 66 50 87 C46 90 44 88 47 85"/></svg></span>` // ...con el corazón
+      : `<span class="cal-num">${d}</span>`;               // los demás días
+  }
+  return `<div class="calendario"><div class="cal-mes">Enero <span>2027</span></div><div class="cal-grilla">${celdas}</div></div>`; // calendario completo
+}
+const linkCalendario = 'https://calendar.google.com/calendar/render?action=TEMPLATE' + // Google Calendar
+  '&text=' + encodeURIComponent('Boda Ana & Juan') +       // título del evento
+  '&dates=20270130T200000Z/20270131T040000Z' +              // de 3:00 p. m. a 11:00 p. m. hora Colombia
+  '&location=' + encodeURIComponent('Hacienda La Victoria') + // lugar
+  '&details=' + encodeURIComponent('¡Te esperamos! Más detalles en la invitación: https://juandvargas90.github.io/ana-y-juan-invitacion/'); // detalle
+
+const HOJAS = [                                             // hojas en el orden del carrusel
+  { // 1 · la fecha
+    fondo: 'hoja_01_peonias.webp', flor: 'esq_1.webp',      // foto y ramillete
+    titulo: 'La fecha', sub: 'Sábado 30 de enero',          // tarjeta cerrada
+    ante: 'Guarda la fecha', tituloDetalle: 'Sábado 30 de enero', // encabezado del detalle
+    cuerpo: () => `${htmlCalendario()}
+      <p class="vela-texto centro"><b>3:00 p. m.</b> · Llegada de invitados</p>
+      <div class="conteo-grande" data-conteo="completo"></div>
+      <a class="boton-oliva" href="${linkCalendario}" target="_blank" rel="noopener">Agregar a mi calendario</a>`
   },
-  { // hoja 2
-    fondo: 'hoja_01_peonias.webp',       // foto floral
-    flor: 'esq_2.webp',                  // ramillete
-    titulo: 'Horario',                   // título
-    sub: 'Cuándo y cómo vestir',         // subtítulo
-    ante: 'Detalles',                    // antetítulo
-    tituloDetalle: 'Horario &amp;<br>Etiqueta', // título del detalle
-    texto: '<b>Ceremonia</b> · 3:00 p. m.<br>Recepción a continuación<br><br><b>Código de vestimenta</b><br>Formal · Elegante', // texto
-    boton: null                          // sin botón
+  { // 2 · itinerario
+    fondo: 'hoja_07_arco.webp', flor: 'esq_2.webp',         // foto y ramillete
+    titulo: 'Itinerario', sub: 'Así será nuestro día',      // tarjeta cerrada
+    ante: 'Sábado 30 de enero', tituloDetalle: 'Itinerario', // encabezado
+    cuerpo: () => `<ol class="itinerario">${ITINERARIO.map((m, i) => `
+      <li style="--i:${i}">
+        <span class="itin-icono">${m.img ? `<img src="${m.img}" alt="">` : svgIcono(m.icono)}</span>
+        <span class="itin-hora">${m.hora}<small>p. m.</small></span>
+        <span class="itin-momento">${m.momento}</span>
+      </li>`).join('')}</ol>`                               // línea de tiempo
   },
-  { // hoja 3
-    fondo: 'hoja_02_delphinium.webp',    // foto floral
-    flor: 'esq_3.webp',                  // ramillete
-    titulo: 'RSVP',                      // título
-    sub: 'Confirmar asistencia',         // subtítulo
-    ante: 'Confirmación',                // antetítulo
-    tituloDetalle: 'RSVP &amp;<br>Regalos', // título del detalle
-    texto: 'Tu confirmación nos ayuda a organizar cada detalle.', // texto
-    boton: { texto: 'Confirmar asistencia', link: RSVP_LINK } // botón
+  { // 3 · ubicación
+    fondo: 'hoja_06_follaje.webp', flor: 'esq_3.webp',      // foto y ramillete
+    titulo: 'Ubicación', sub: 'Hacienda La Victoria',       // tarjeta cerrada
+    ante: 'Ceremonia y celebración', tituloDetalle: 'Hacienda<br>La Victoria', // encabezado
+    cuerpo: () => `<p class="vela-texto">La ceremonia y la fiesta serán en el mismo lugar. Te esperamos para celebrar rodeados de quienes más queremos.</p>
+      <div class="nota-icono"><span class="parqueo">P</span>Contamos con amplio parqueadero</div>
+      <div class="botones">
+        <a class="boton-oliva" href="${MAPS_LINK}" target="_blank" rel="noopener">Google Maps</a>
+        <a class="boton-oliva" href="${WAZE_LINK}" target="_blank" rel="noopener">Waze</a>
+      </div>`
+  },
+  { // 4 · vestimenta
+    fondo: 'hoja_03_dalias.webp', flor: 'esq_4.webp',       // foto y ramillete
+    titulo: 'Vestimenta', sub: 'Formal · vestido largo',    // tarjeta cerrada
+    ante: 'Código de vestimenta', tituloDetalle: 'Formal', // encabezado
+    cuerpo: () => `<div class="vestir">
+        <div><div class="vestir-quien">Caballeros</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p>
+          <div class="muestras"><i style="--c:#1f1f1c" title="Negro"></i><i style="--c:#3b3e42" title="Gris oxford"></i><i style="--c:#3d4a2f" title="Verde oliva"></i><i style="--c:#4a3628" title="Café"></i></div></div>
+        <div><div class="vestir-quien">Damas</div><p>Vestido largo.</p></div>
+      </div>
+      <div class="reservados">
+        <div class="reservados-titulo">Colores reservados para los novios y sus padres</div>
+        <div class="reservados-fila">
+          <span><i style="--c:#2f4a78"></i>Azul<small>caballeros</small></span>
+          <span><i style="--c:#fbf9f3"></i>Blanco<small>damas</small></span>
+          <span><i style="--c:#f2a48a"></i>Salmón<small>damas</small></span>
+        </div>
+        <p class="vela-texto pequeno">Con cariño, les pedimos reservar estos colores para nosotros y nuestros padres.</p>
+      </div>
+      <div class="nota-icono"><span class="frio">${svgIcono('luna')}</span>La noche en la hacienda es fría: te recomendamos llevar abrigo, chal o saco.</div>`
+  },
+  { // 5 · regalos
+    fondo: 'hoja_04_margaritas.webp', flor: 'esq_1.webp',   // foto y ramillete
+    titulo: 'Regalos', sub: 'Lluvia de sobres',             // tarjeta cerrada
+    ante: 'Regalos', tituloDetalle: 'Lluvia de sobres',     // encabezado
+    cuerpo: () => `<div class="mini-sobre" aria-hidden="true"><span class="mini-solapa"></span><img src="sello.webp" alt=""></div>
+      <p class="vela-texto">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, el día de la boda tendremos una <b>lluvia de sobres</b>.</p>
+      <div class="cuenta">
+        <div class="cuenta-nota">Si prefieres hacerlo por transferencia:</div>
+        <div class="cuenta-dato">${CUENTA.banco} · ${CUENTA.tipo}</div>
+        <div class="cuenta-numero" id="numeroCuenta">${CUENTA.numero}</div>
+        <div class="cuenta-dato">${CUENTA.titular}</div>
+        <button class="boton-copiar" data-copiar="${CUENTA.numero}">Copiar número</button>
+      </div>`
+  },
+  { // 6 · confirmación
+    fondo: 'hoja_02_delphinium.webp', flor: 'esq_3.webp',   // foto y ramillete
+    titulo: 'Confirmación', sub: 'Antes del 4 de diciembre', // tarjeta cerrada
+    ante: 'Confirma tu asistencia', tituloDetalle: 'Te esperamos', // encabezado
+    cuerpo: () => `<p class="vela-texto">${textoCupos()} Por favor confírmanos antes del <b>viernes 4 de diciembre</b>.</p>
+      <div class="plazo" data-conteo="rsvp"></div>
+      <div class="pedidos">
+        <p>Hemos preparado una celebración pensada para adultos; con todo nuestro cariño, les pedimos que esta vez nos acompañen <b>sin niños</b>.</p>
+        <p>Por las condiciones del lugar, no será posible ingresar con <b>mascotas</b>… ni siquiera Jado podrá acompañarnos 🐾</p>
+      </div>
+      ${RSVP_LINK
+        ? `<a class="boton-oliva" href="${RSVP_LINK}" target="_blank" rel="noopener">Confirmar asistencia</a>`
+        : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">Confirmar asistencia</a><div class="vela-texto pequeno">El enlace para confirmar estará disponible muy pronto.</div>`}`
   }
 ];
 
@@ -615,12 +828,6 @@ const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches; // ¿pi
 const T = reducido ? 0.03 : 1;                              // factor de tiempo (casi cero con movimiento reducido)
 const esperar = ms => new Promise(r => setTimeout(r, ms * T)); // pausa con el factor de tiempo
 const raiz = document.documentElement;                      // elemento <html>
-
-// ================== PERSONALIZAR EL INVITADO (?invitado=Nombre) ==================
-const nombreInvitado = new URLSearchParams(location.search).get('invitado'); // lee el nombre del link
-if (nombreInvitado) {                                       // si viene...
-  document.querySelector('[data-invitado]').textContent = nombreInvitado; // ...lo escribe en la carta
-}
 
 // ================== COPIA DE LA CARTA DENTRO DEL SOBRE ==================
 // La carta que sale del sobre es una copia EXACTA de la carta real, a escala.
@@ -649,12 +856,6 @@ const puntosWrap = $('puntos');                             // contenedor de pun
 HOJAS.forEach((h, i) => {                                   // por cada hoja
   const hoja = document.createElement('div');               // posición del carrusel
   hoja.className = 'hoja';                                  // clase
-  let botonHTML = '';                                       // botón (si hay)
-  if (h.boton) {                                            // si la hoja tiene botón
-    botonHTML = h.boton.link                                // con link real...
-      ? `<a class="boton-oliva" href="${h.boton.link}" target="_blank" rel="noopener">${h.boton.texto}</a>` // ...abre en otra pestaña
-      : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">${h.boton.texto}</a>`; // ...si no, desactivado
-  }
   hoja.innerHTML = `
     <div class="tarjeta" tabindex="0" role="button" aria-label="${h.titulo}">
       <div class="tarjeta-foto" style="background-image:url('${h.fondo}')"></div>
@@ -668,8 +869,7 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
         <img class="vela-flor" src="${h.flor}" alt="">
         <div class="vela-ante">${h.ante}</div>
         <div class="vela-titulo">${h.tituloDetalle}</div>
-        <p class="vela-texto">${h.texto}</p>
-        ${botonHTML}
+        <div class="vela-cuerpo">${h.cuerpo()}</div>
       </div>
       <button class="cerrar" aria-label="Cerrar">✕</button>
     </div>`;                                                // foto + resumen + detalle + cerrar
@@ -678,6 +878,57 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
   punto.className = 'punto' + (i === 0 ? ' activo' : '');   // el primero activo
   puntosWrap.appendChild(punto);                            // agrega el punto
 });
+
+// botón "Copiar número" de la cuenta
+document.addEventListener('click', async e => {             // escucha clics en toda la página
+  const b = e.target.closest('[data-copiar]');              // ¿fue en un botón de copiar?
+  if (!b) return;                                           // si no, nada
+  e.stopPropagation();                                      // no cierra la tarjeta
+  try {                                                     // intenta copiar al portapapeles
+    await navigator.clipboard.writeText(b.dataset.copiar);  // copia el número
+    b.textContent = 'Copiado ✓';                            // confirma
+  } catch {                                                 // si el navegador no deja copiar...
+    const r = document.createRange();                       // ...selecciona el número en pantalla
+    r.selectNodeContents($('numeroCuenta'));                // el texto del número
+    getSelection().removeAllRanges(); getSelection().addRange(r); // lo deja seleccionado para copiar a mano
+    b.textContent = 'Número seleccionado';                  // avisa
+  }
+  setTimeout(() => { b.textContent = 'Copiar número'; }, 2200); // vuelve al texto original
+});
+
+// ================== CONTEO REGRESIVO ==================
+// data-conteo="corto"    → una línea: "faltan 110 días"
+// data-conteo="completo" → días, horas, minutos y segundos
+// data-conteo="rsvp"     → días que quedan para confirmar
+const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`; // singular o plural
+function actualizarConteos() {                              // recalcula todos los conteos
+  const ahora = Date.now();                                 // hora actual
+  const falta = FECHA_BODA - ahora;                         // milisegundos hasta la boda
+  const d = Math.floor(falta / 864e5);                      // días completos
+  const h = Math.floor(falta / 36e5) % 24;                  // horas restantes
+  const m = Math.floor(falta / 6e4) % 60;                   // minutos restantes
+  const s = Math.floor(falta / 1e3) % 60;                   // segundos restantes
+  let corto;                                                // texto corto
+  if (ahora >= FIN_BODA) corto = 'Gracias por acompañarnos'; // después de la fiesta
+  else if (falta <= 0) corto = '¡Hoy nos casamos!';         // durante la boda
+  else if (d === 0) corto = `¡Es hoy! · faltan ${plural(h, 'hora', 'horas')}`; // el mismo día
+  else corto = `Faltan ${plural(d, 'día', 'días')}`;        // días que faltan
+  document.querySelectorAll('[data-conteo="corto"]').forEach(el => { el.textContent = corto; }); // aplica el corto
+  document.querySelectorAll('[data-conteo="completo"]').forEach(el => { // aplica el completo
+    if (falta <= 0) { el.innerHTML = `<div class="conteo-fin">${corto}</div>`; return; } // ya llegó el día
+    const dos = n => String(n).padStart(2, '0');            // dos dígitos (05, 09…)
+    el.innerHTML = [[d, d === 1 ? 'día' : 'días'], [dos(h), 'horas'], [dos(m), 'min'], [dos(s), 'seg']] // cuatro casillas
+      .map(([n, t]) => `<div><b>${n}</b><span>${t}</span></div>`).join(''); // número y etiqueta
+  });
+  const quedan = Math.ceil((LIMITE_RSVP - ahora) / 864e5);  // días para confirmar
+  document.querySelectorAll('[data-conteo="rsvp"]').forEach(el => { // aplica el de confirmación
+    el.textContent = quedan > 1 ? `Quedan ${quedan} días para confirmar`  // varios días
+      : quedan === 1 ? 'Último día para confirmar'          // el último día
+      : 'El plazo de confirmación terminó';                 // ya pasó
+  });
+}
+actualizarConteos();                                        // primera vez
+setInterval(actualizarConteos, 1000);                       // cada segundo
 
 // ================== ABRIR EL SOBRE ==================
 const sobre = $('sobre');                                   // el sobre
