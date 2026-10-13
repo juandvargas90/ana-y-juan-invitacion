@@ -26,11 +26,12 @@
 <link rel="preload" as="image" href="sello.webp"> <!-- sello de cera -->
 
 <style>
-/* Concepto: "flat lay" de papelería fina sobre una mesa de lino — todo se ve
-   como objetos reales fotografiados desde arriba: sobre, carta y tarjetas. */
+/* Concepto: "flat lay" de papelería fina sobre una mesa de lino. Todo se trata como
+   objetos reales vistos desde arriba, con UNA sola luz (arriba a la izquierda):
+   por eso todas las sombras caen hacia abajo y a la derecha. */
 :root{
   --oliva:#3d4a2f;            /* verde oliva del sobre */
-  --oliva-osc:#2b3520;        /* oliva oscuro para sombras y texto fuerte */
+  --oliva-osc:#2b3520;        /* oliva oscuro para texto fuerte */
   --tinta:#33402a;            /* color del texto principal */
   --tinta-suave:rgba(51,64,42,0.72); /* texto secundario */
   --tinta-tenue:rgba(51,64,42,0.45); /* texto de pistas */
@@ -39,14 +40,17 @@
   --oro:#c3a05e;              /* dorado champagne */
   --oro-claro:#e6cf9c;        /* brillo del dorado */
   --oro-osc:#8a6a35;          /* dorado profundo para textos pequeños */
-  --sombra:rgba(38,34,20,0.32); /* sombra cálida de objetos sobre la mesa */
+  --sombra:rgba(38,34,20,0.32); /* sombra cálida sobre la mesa */
+  --sombra-contacto:rgba(30,28,16,0.24); /* sombra corta de contacto */
+  /* sombras con la misma dirección de luz para TODOS los objetos */
+  --sombra-objeto:drop-shadow(1px 2px 1.5px var(--sombra-contacto)) drop-shadow(6px 12px 12px var(--sombra));
   --f-display:'Cormorant Garamond', 'Garamond', 'Times New Roman', serif; /* fuente de títulos */
   --f-texto:'Tenor Sans', 'Gill Sans', 'Helvetica Neue', sans-serif;      /* fuente de textos */
   color-scheme:light;         /* diseño de un solo tema (papelería clara) */
 }
 *{ box-sizing:border-box; margin:0; padding:0; } /* reinicio básico de cajas */
 html{ background:#efe6d4; }   /* color de respaldo mientras carga el lino */
-html.bloqueado, html.bloqueado body{ overflow:hidden; height:100%; } /* sin scroll hasta abrir el sobre */
+html.bloqueado, html.bloqueado body{ overflow:hidden; height:100%; } /* sin scroll mientras se abre el sobre o una hoja */
 body{
   font-family:var(--f-texto); /* fuente de texto por defecto */
   color:var(--tinta);         /* color de texto por defecto */
@@ -55,129 +59,138 @@ body{
   overflow-x:hidden;          /* nunca scroll horizontal */
   -webkit-font-smoothing:antialiased; /* letras más finas en Mac/iPhone */
 }
-@supports (-webkit-touch-callout:none){ body{ background-attachment:scroll; } } /* iPhone no soporta fondo fijo: lo deja normal */
+@supports (-webkit-touch-callout:none){ body{ background-attachment:scroll; } } /* iPhone no soporta fondo fijo */
 [hidden]{ display:none !important; } /* el atributo hidden siempre oculta */
 img{ max-width:100%; display:block; } /* imágenes nunca más anchas que su caja */
 button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 :focus-visible{ outline:2px solid var(--oro-osc); outline-offset:3px; } /* foco visible con teclado */
 
-/* ---------- capa de decoración (flores fotográficas sobre la mesa) ---------- */
+/* ---------- flores y ramitas sobre la mesa ----------
+   El contenedor (.decor) lleva la sombra y el paralaje SIN girar; la imagen de adentro
+   es la que gira. Así la sombra siempre cae hacia abajo-derecha, gire lo que gire. */
 .decor{
   position:absolute;          /* se ubica libre dentro de su escena */
   pointer-events:none;        /* no bloquea toques */
   user-select:none;           /* no se puede seleccionar */
-  /* paralaje: se mueve un poco según el mouse o la inclinación del celular */
-  transform:translate(calc(var(--px,0) * var(--d,1) * 1px), calc(var(--py,0) * var(--d,1) * 1px)) rotate(var(--r,0deg)) scale(var(--s,1));
-  filter:drop-shadow(6px 10px 9px var(--sombra)); /* sombra realista proyectada sobre el lino */
+  transform:translate(calc(var(--px,0) * var(--d,1) * 1px), calc(var(--py,0) * var(--d,1) * 1px)); /* paralaje (solo desplazamiento) */
+  filter:var(--sombra-objeto); /* sombra con la dirección de luz común */
   opacity:0;                  /* empieza invisible para la entrada */
-  animation:aparecer 1.4s ease forwards; /* aparece suavemente */
+  animation:aparecer 1.6s ease forwards; /* aparece suavemente */
   animation-delay:var(--delay,0s); /* cada flor con su propio retraso */
-  transition:transform .25s ease-out; /* suaviza el paralaje */
+  transition:transform .3s ease-out; /* suaviza el paralaje */
 }
-@keyframes aparecer{ to{ opacity:1; } } /* animación de aparición */
+.decor img{ width:100%; transform:rotate(var(--r,0deg)); } /* la imagen gira dentro del contenedor */
+@keyframes aparecer{ to{ opacity:1; } } /* entrada */
+@keyframes desaparecer{ from{ opacity:1; } to{ opacity:0; } } /* salida */
 
 /* ======================= ESCENA 1 · EL SOBRE ======================= */
 .escena-sobre{
-  position:relative;          /* referencia para las flores decorativas */
+  position:relative;          /* referencia para las flores */
   min-height:100svh;          /* ocupa toda la pantalla */
   display:flex;               /* organiza el contenido en columna */
   flex-direction:column;      /* uno debajo del otro */
   align-items:center;         /* centrado horizontal */
   justify-content:center;     /* centrado vertical */
-  padding:48px 16px 40px;     /* aire alrededor (con margen lateral de 16px) */
-  overflow:hidden;            /* recorta las flores que salen del borde */
-  transition:opacity .8s ease; /* desvanecimiento al salir */
+  padding:48px 16px 40px;     /* aire alrededor (margen lateral 16px) */
+  overflow:hidden;            /* recorta lo que sale por los bordes */
 }
-.escena-sobre.saliendo{ opacity:0; } /* se desvanece tras abrir el sobre */
+.escena-sobre.flotando{ position:fixed; inset:0; z-index:3; pointer-events:none; } /* durante el traspaso queda encima, sin ocupar espacio */
+.escena-sobre.alejando .decor{ animation:desaparecer 1.4s ease forwards; } /* las flores se desvanecen */
+.escena-sobre.alejando .encabezado,
+.escena-sobre.alejando .pista{ opacity:0; transition:opacity 1.2s ease; } /* los textos se desvanecen */
+.escena-sobre.alejando .pista{ animation:none; } /* la pista deja de parpadear para poder desvanecerse */
 .encabezado{ position:relative; z-index:3; text-align:center; } /* textos sobre las flores */
 .antetitulo{
   font-size:10.5px;           /* texto pequeño */
   letter-spacing:3.2px;       /* letras espaciadas estilo papelería */
   text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.9); /* halo claro para leerse sobre flores */
   text-transform:uppercase;   /* en mayúsculas */
-  color:var(--oro-osc);       /* dorado profundo legible sobre lino */
+  color:var(--oro-osc);       /* dorado profundo */
   margin-bottom:14px;         /* separación con los nombres */
 }
 .nombres{
   font-family:var(--f-display); /* serif elegante */
   font-style:italic;          /* cursiva */
   font-weight:500;            /* peso medio */
-  font-size:clamp(36px, 9vw, 52px); /* tamaño que se adapta a la pantalla */
+  font-size:clamp(36px, 9vw, 52px); /* tamaño adaptable */
   color:var(--oliva-osc);     /* verde oliva oscuro */
   line-height:1.05;           /* interlineado compacto */
 }
 .nombres .y{ color:var(--oro); font-style:normal; margin:0 .18em; } /* el "&" en dorado */
-.fecha-mini{
-  margin-top:10px;            /* separación con los nombres */
-  font-size:12px;             /* texto pequeño */
-  letter-spacing:4px;         /* espaciado elegante */
-  color:var(--tinta-suave);   /* color secundario */
-}
+.fecha-mini{ margin-top:10px; font-size:12px; letter-spacing:4px; color:var(--tinta-suave); } /* fecha bajo los nombres */
 
 /* --- el sobre --- */
 .sobre-zona{
   position:relative;          /* referencia del sobre */
-  z-index:2;                  /* por encima de las flores de fondo */
-  margin:clamp(70px, 14vh, 130px) 0 34px; /* deja espacio arriba para que la solapa se abra */
-  perspective:1300px;         /* profundidad 3D para el giro de la solapa */
+  z-index:2;                  /* por encima de las flores */
+  margin:clamp(70px, 14vh, 130px) 0 34px; /* espacio arriba para la solapa abierta */
   opacity:0;                  /* entra con animación */
-  animation:entrarSobre 1.2s cubic-bezier(.2,.8,.2,1) .2s forwards; /* cae suavemente sobre la mesa */
+  animation:entrarSobre 1.2s cubic-bezier(.2,.8,.2,1) .2s forwards; /* se posa sobre la mesa */
 }
-@keyframes entrarSobre{ from{ opacity:0; transform:translateY(18px) scale(.97); } to{ opacity:1; transform:none; } } /* entrada del sobre */
+@keyframes entrarSobre{ from{ opacity:0; transform:translateY(18px) scale(.97); } to{ opacity:1; transform:none; } } /* entrada */
 .sobre{
   --w:min(84vw, 400px);       /* ancho del sobre */
   position:relative;          /* referencia de sus capas */
   width:var(--w);             /* ancho */
-  height:calc(var(--w) * 0.7); /* alto proporcional (sobre rectangular) */
-  cursor:pointer;             /* indica que se puede tocar */
+  height:calc(var(--w) * 0.7); /* alto (proporción de sobre real) */
+  cursor:pointer;             /* se puede tocar */
   transform:rotate(-1.6deg);  /* leve inclinación, como dejado sobre la mesa */
-  transform-style:preserve-3d; /* permite el giro 3D de la solapa */
-  border-radius:2px;          /* esquinas apenas suavizadas como papel real */
-  box-shadow:
-    0 1px 1px rgba(30,28,16,.25),     /* contacto con la mesa */
-    0 10px 18px -4px var(--sombra),   /* sombra media */
-    0 28px 48px -10px var(--sombra);  /* sombra larga y difusa */
-  -webkit-tap-highlight-color:transparent; /* sin destello azul al tocar en el celular */
+  perspective:1400px;         /* profundidad 3D para la solapa y el sello */
+  -webkit-tap-highlight-color:transparent; /* sin destello azul al tocar */
 }
 .papel-oliva{
   background:
-    linear-gradient(150deg, rgba(255,255,255,.10) 0%, transparent 38%, rgba(0,0,0,.12) 100%), /* luz desde arriba a la izquierda */
-    url('papel_oliva.webp') center / 420px auto, /* textura real de papel algodón */
+    linear-gradient(150deg, rgba(255,255,255,.10) 0%, transparent 38%, rgba(0,0,0,.12) 100%), /* luz desde arriba-izquierda */
+    url('papel_oliva.webp') center / 420px auto, /* textura de papel algodón */
     var(--oliva);             /* color de respaldo */
 }
-/* interior del sobre (se ve por la abertura cuando la solapa se abre) */
-.sobre-fondo{ position:absolute; inset:0; z-index:0; border-radius:2px; } /* pared trasera interior */
-.sobre-fondo::before{
-  content:"";                 /* capa decorativa */
-  position:absolute;          /* sobre la pared trasera */
-  left:5%; right:5%; top:4%; bottom:30%; /* forro con margen oliva, como en la referencia */
-  background:url('liner.webp') center / cover; /* forro floral en acuarela */
-  box-shadow:inset 0 6px 12px rgba(0,0,0,.28); /* sombra interior: se siente dentro del sobre */
+/* piezas del sobre que se alejan juntas al final (la carta NO) */
+.sobre-fondo, .bolsillo-sombra, .solapa-sombra{
+  transition:transform 2s cubic-bezier(.55,0,.75,.45), opacity .6s ease 1.9s; /* baja y luego se desvanece */
 }
-/* la carta guardada dentro del sobre */
-.carta-dentro{
-  position:absolute;          /* dentro del sobre */
-  left:6%; right:6%; top:7%; height:84%; /* tamaño un poco menor que el sobre */
-  z-index:2;                  /* entre el fondo y el bolsillo */
-  background:url('papel_marfil.webp') center / cover, var(--marfil); /* papel marfil real */
-  box-shadow:0 1px 3px rgba(0,0,0,.18); /* leve sombra del papel */
-  display:flex;               /* organiza su contenido */
-  flex-direction:column;      /* en columna */
-  align-items:center;         /* centrado */
-  padding-top:9%;             /* contenido en la parte de arriba (la que asoma) */
-  transition:transform 1.1s cubic-bezier(.3,.7,.2,1); /* deslizamiento al salir */
-}
-.carta-dentro::before{
-  content:"";                 /* filete dorado */
-  position:absolute; inset:7px; /* un poco hacia adentro del borde */
-  border:1px solid rgba(195,160,94,.55); /* línea dorada fina */
-  pointer-events:none;        /* no bloquea toques */
-}
-.carta-dentro .mini-nombres{ font-family:var(--f-display); font-style:italic; font-size:calc(var(--w) * .075); color:var(--oliva-osc); } /* nombres en la carta */
-.carta-dentro .mini-fecha{ margin-top:4px; font-size:calc(var(--w) * .026); letter-spacing:3px; color:var(--oro-osc); } /* fecha en la carta */
-.sobre.carta-fuera .carta-dentro{ transform:translateY(-60%); } /* la carta sube y sale del sobre */
+.sobre.alejar .sobre-fondo,
+.sobre.alejar .bolsillo-sombra,
+.sobre.alejar .solapa-sombra{ transform:translateY(var(--bajar,0px)); opacity:0; } /* el sobre baja y desaparece */
 
-/* el bolsillo (frente con la abertura en V por donde sale la carta) */
+/* pared trasera (con la sombra del sobre sobre la mesa) */
+.sobre-fondo{
+  position:absolute; inset:0; z-index:0; /* ocupa todo el sobre */
+  border-radius:2px;          /* esquinas apenas suaves */
+  box-shadow:
+    1px 2px 1px var(--sombra-contacto),  /* contacto con la mesa */
+    5px 12px 18px -4px var(--sombra),    /* sombra media */
+    10px 30px 46px -12px var(--sombra);  /* sombra larga */
+}
+.sobre-fondo::before{
+  content:"";                 /* forro interior */
+  position:absolute;          /* sobre la pared trasera */
+  left:5%; right:5%; top:4%; bottom:30%; /* forro con margen oliva */
+  background:url('liner.webp') center / cover; /* acuarela floral */
+  box-shadow:inset 0 6px 12px rgba(0,0,0,.28); /* sombra interior */
+}
+
+/* ranura: ventana por donde se ve la carta; corta todo lo que quede por debajo del sobre */
+.ranura{
+  position:absolute;          /* dentro del sobre */
+  left:6%; right:6%;          /* ancho de la carta */
+  top:-320vh;                 /* hacia arriba no corta (la carta puede salir) */
+  bottom:4%;                  /* hacia abajo corta en el fondo del sobre */
+  z-index:2;                  /* entre el fondo y el bolsillo */
+  overflow:hidden;            /* oculta la parte de la carta aún guardada */
+  pointer-events:none;        /* no bloquea toques */
+  transition:bottom 2s cubic-bezier(.55,0,.75,.45); /* el corte baja junto con el sobre */
+}
+.sobre.alejar .ranura{ bottom:calc(4% - var(--bajar,0px)); } /* al bajar el sobre, libera la carta */
+.carta-movil{
+  position:absolute;          /* contenedor que desliza la carta */
+  left:0;                     /* alineada a la izquierda de la ranura */
+  top:calc(320vh + var(--w) * 0.7 * 0.07); /* la carta empieza a 7% del borde superior del sobre (anclada arriba) */
+  transform-origin:0 0;       /* escala desde la esquina superior */
+  transition:transform 2.4s cubic-bezier(.45,.05,.3,1); /* la carta sale despacio */
+}
+.carta-clon{ margin:0 !important; } /* copia exacta de la carta real, solo para el sobre */
+
+/* bolsillo (frente con abertura en V) */
 .bolsillo-sombra{
   position:absolute; inset:0; /* cubre el sobre */
   z-index:3;                  /* por encima de la carta */
@@ -186,137 +199,139 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 }
 .bolsillo{
   position:absolute; inset:0; /* cubre el sobre */
-  clip-path:polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); /* forma con abertura en V (oculta bajo la solapa cerrada) */
+  clip-path:polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); /* abertura en V */
   border-radius:2px;          /* esquinas suaves */
 }
-.bolsillo svg, .solapa svg{ position:absolute; inset:0; width:100%; height:100%; } /* líneas de pliegue y relieve */
+.bolsillo svg, .solapa svg{ position:absolute; inset:0; width:100%; height:100%; } /* pliegues y relieve */
 
-/* la solapa (gira en 3D hacia atrás) */
+/* solapa (gira en 3D hacia atrás, llevando el sello consigo) */
 .solapa{
   position:absolute;          /* arriba del sobre */
   left:0; right:0; top:0;     /* ancho completo */
   height:57%;                 /* llega un poco más abajo de la mitad */
   z-index:5;                  /* encima de todo mientras está cerrada */
-  transform-origin:50% 0;     /* gira desde el borde superior (la bisagra) */
-  transform-style:preserve-3d; /* mantiene las dos caras en 3D */
-  transition:transform 1s cubic-bezier(.45,.05,.25,1); /* giro suave */
+  transform-origin:50% 0;     /* gira desde la bisagra superior */
+  transform-style:preserve-3d; /* mantiene caras y sello en 3D */
+  transition:transform 1.8s cubic-bezier(.42,0,.25,1); /* giro lento y natural */
 }
-.sobre.solapa-abierta .solapa{ transform:rotateX(180deg); } /* solapa abierta hacia arriba */
+.solapa{ transform:translateY(0px) rotateX(0deg); } /* estado cerrado con la misma estructura de transformación */
+.sobre.solapa-abierta .solapa{ transform:translateY(0px) rotateX(180deg); } /* solapa abierta hacia arriba */
 .sobre.solapa-atras .solapa{ z-index:1; } /* a mitad del giro pasa detrás de la carta */
+.sobre.alejar .solapa{ transform:translateY(var(--bajar,0px)) rotateX(180deg); transition:transform 2s cubic-bezier(.55,0,.75,.45); } /* se va con el sobre (sin opacidad: conserva el 3D) */
+.solapa-cara{ transition:opacity .6s ease 1.9s; } /* cada cara se desvanece al final */
+.sobre.alejar .solapa-cara{ opacity:0; } /* caras invisibles al terminar de bajar */
 .solapa-cara{
   position:absolute; inset:0; /* ocupa toda la solapa */
   backface-visibility:hidden; /* solo se ve la cara que mira al frente */
-  -webkit-backface-visibility:hidden; /* lo mismo para Safari */
+  -webkit-backface-visibility:hidden; /* igual en Safari */
 }
-.solapa-exterior{ clip-path:polygon(0 0, 100% 0, 50% 100%); } /* triángulo con la punta hacia abajo */
+.solapa-exterior{ clip-path:polygon(0 0, 100% 0, 50% 100%); } /* triángulo hacia abajo */
 .solapa-interior{
-  clip-path:polygon(50% 0, 100% 100%, 0 100%); /* triángulo con la punta hacia arriba (queda bien al girar) */
-  transform:rotateX(180deg);  /* esta cara mira hacia atrás mientras está cerrada */
+  clip-path:polygon(50% 0, 100% 100%, 0 100%); /* triángulo hacia arriba (queda bien al girar) */
+  transform:rotateX(180deg);  /* mira hacia atrás mientras está cerrada */
 }
 .solapa-interior::before{
   content:"";                 /* forro de la solapa */
   position:absolute; inset:0; /* ocupa la cara */
   clip-path:polygon(50% 9%, 94.5% 100%, 5.5% 100%); /* triángulo interior con margen oliva */
-  background:url('liner.webp') center 20% / 130% auto; /* forro floral en acuarela */
+  background:url('liner.webp') center 20% / 130% auto; /* acuarela floral */
 }
-/* sombra que la solapa cerrada proyecta sobre el bolsillo */
 .solapa-sombra{
-  position:absolute; left:0; right:0; top:0; height:57%; /* misma zona que la solapa */
-  z-index:4;                  /* entre el bolsillo y la solapa */
+  position:absolute; left:0; right:0; top:0; height:57%; /* zona de la solapa */
+  z-index:4;                  /* entre bolsillo y solapa */
   filter:blur(3px);           /* sombra difusa */
-  transform:translateY(3px);  /* desplazada hacia abajo (luz de arriba) */
-  transition:opacity .4s ease; /* desaparece al abrir */
   pointer-events:none;        /* no bloquea toques */
 }
-.solapa-sombra i{ position:absolute; inset:0; clip-path:polygon(0 0, 100% 0, 50% 100%); background:rgba(20,18,10,.45); } /* forma de la sombra */
-.sobre.solapa-abierta .solapa-sombra{ opacity:0; } /* sin sombra con la solapa abierta */
+.solapa-sombra i{ position:absolute; inset:0; clip-path:polygon(0 0, 100% 0, 50% 100%); background:rgba(20,18,10,.45); transform:translate(2px,3px); transition:opacity .9s ease; } /* forma de la sombra (abajo-derecha) */
+.sobre.solapa-abierta .solapa-sombra i{ opacity:0; } /* sin sombra con la solapa abierta */
 
-/* sello de lacre */
+/* sello de lacre: pegado a la cara exterior de la solapa */
 .sello{
   position:absolute;          /* sobre la punta de la solapa */
-  left:50%; top:57%;          /* centrado en la punta */
-  width:calc(var(--w) * .27); /* tamaño proporcional al sobre (un poco más grande para leer el A&J) */
+  left:50%; top:100%;         /* centrado en la punta */
+  width:calc(var(--w) * .27); /* tamaño proporcional al sobre */
   aspect-ratio:1;             /* redondo */
-  z-index:6;                  /* encima de la solapa */
-  transform:translate(-50%,-56%) rotate(4deg); /* centrado y un poco girado, como puesto a mano */
-  filter:drop-shadow(1px 3px 2px rgba(20,16,8,.5)) drop-shadow(3px 8px 10px rgba(20,16,8,.3)); /* relieve sobre el papel */
-  transition:transform .65s cubic-bezier(.3,.7,.3,1), opacity .5s ease .15s; /* animación al levantarse */
+  transform:translate(-50%,-56%) translateZ(1px) rotate(4deg); /* centrado, apenas por delante del papel */
+  backface-visibility:hidden; /* desaparece cuando deja de mirar al invitado */
+  -webkit-backface-visibility:hidden; /* igual en Safari */
+  transform-style:preserve-3d; /* participa del 3D de la solapa */
+  transition:transform .8s cubic-bezier(.3,.6,.3,1); /* desprendimiento suave */
 }
-.sello img{ width:100%; height:100%; } /* imagen del sello */
+.sello img{
+  width:100%; height:100%;    /* imagen del sello */
+  backface-visibility:hidden; /* tampoco se ve de espaldas */
+  -webkit-backface-visibility:hidden; /* igual en Safari */
+  filter:drop-shadow(1px 2px 1px rgba(20,16,8,.5)) drop-shadow(3px 6px 6px rgba(20,16,8,.28)); /* volumen sobre el papel */
+  transition:filter .8s ease; /* la sombra se alarga al desprenderse */
+}
+.sello .brillo{ backface-visibility:hidden; -webkit-backface-visibility:hidden; } /* el brillo también se oculta de espaldas */
 .sello .brillo{
   position:absolute; inset:8%; border-radius:50%; /* círculo sobre la cera */
-  background:radial-gradient(circle at calc(35% + var(--px,0) * 2%) calc(30% + var(--py,0) * 2%), rgba(255,246,215,.45), transparent 45%); /* brillo metálico que se mueve */
-  mix-blend-mode:soft-light;  /* se mezcla con la cera sin taparla */
+  background:radial-gradient(circle at calc(35% + var(--px,0) * 2%) calc(30% + var(--py,0) * 2%), rgba(255,246,215,.4), transparent 45%); /* brillo metálico móvil */
+  mix-blend-mode:soft-light;  /* se mezcla con la cera */
   pointer-events:none;        /* no bloquea toques */
 }
-.sobre.sello-fuera .sello{ transform:translate(-50%,-90%) rotate(-8deg) scale(1.12); opacity:0; } /* el sello se levanta y desaparece */
+/* desprendimiento: el sello se separa un poco del papel (sube en Z) y su sombra se alarga */
+.sobre.sello-suelto .sello{
+  transform:translate(-50%,-56%) translateZ(9px) rotate(1deg); /* se levanta conservando su volumen */
+}
+.sobre.sello-suelto .sello img{ filter:drop-shadow(2px 4px 2px rgba(20,16,8,.4)) drop-shadow(7px 13px 10px rgba(20,16,8,.3)); } /* sombra más lejana */
 
 .pista{
   position:relative; z-index:3; /* sobre las flores */
-  font-size:11px;             /* texto pequeño */
-  letter-spacing:3px;         /* espaciado */
-  text-transform:uppercase;   /* mayúsculas */
+  font-size:11px; letter-spacing:3px; text-transform:uppercase; /* tipografía */
   color:var(--tinta-suave);   /* color secundario */
   text-align:center;          /* centrado */
-  animation:latido 2.6s ease-in-out infinite; /* parpadeo suave para invitar a tocar */
-  text-shadow:0 0 10px rgba(247,240,226,.95); /* halo claro sobre flores */
+  text-shadow:0 0 10px rgba(247,240,226,.95); /* halo claro */
+  animation:latido 2.6s ease-in-out infinite; /* parpadeo suave */
 }
-@keyframes latido{ 0%,100%{ opacity:.5; } 50%{ opacity:1; } } /* animación del parpadeo */
+@keyframes latido{ 0%,100%{ opacity:.5; } 50%{ opacity:1; } } /* parpadeo */
 
 /* ======================= ESCENA 2 · LA CARTA ======================= */
 .escena-carta{
-  position:relative;          /* referencia para flores */
-  display:flex;               /* organiza en columna */
-  flex-direction:column;      /* uno debajo del otro */
-  align-items:center;         /* centrado */
+  position:relative;          /* referencia */
+  display:flex; flex-direction:column; align-items:center; /* columna centrada */
   padding:64px 16px 40px;     /* aire (margen lateral 16px) */
   overflow:hidden;            /* recorta flores de los bordes */
 }
-.revelar{ animation:revelar 1.1s cubic-bezier(.2,.8,.2,1) both; } /* entrada al mostrarse */
-@keyframes revelar{ from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:none; } } /* sube y aparece */
+.extra{ opacity:0; transition:opacity 1.2s ease; } /* adornos que aparecen después de la carta */
+.escena-carta.lista .extra{ opacity:1; } /* visibles al terminar el traspaso */
+.escena-carta .decor{ animation:none; } /* en esta escena la entrada la maneja .extra */
 .carta{
   position:relative;          /* referencia de capas */
   z-index:2;                  /* sobre las flores */
-  width:min(100%, 410px);     /* ancho máximo de la carta */
-  padding:52px 64px 40px 30px; /* deja espacio a la derecha para la cenefa */
+  width:min(100%, 410px);     /* ancho de la carta */
+  padding:48px 64px 40px 30px; /* deja espacio a la derecha para la cenefa */
   text-align:center;          /* textos centrados */
   transform:rotate(.6deg);    /* leve inclinación natural */
-  filter:drop-shadow(0 2px 2px rgba(30,28,16,.22)) drop-shadow(0 18px 30px var(--sombra)); /* sombra del papel grueso */
+  filter:drop-shadow(1px 2px 1.5px var(--sombra-contacto)) drop-shadow(6px 16px 22px var(--sombra)); /* papel grueso, luz común */
 }
 .carta-papel{
   position:absolute; inset:0; /* fondo de la carta */
-  background:url('papel_marfil.webp') center / cover, var(--marfil); /* papel algodón marfil */
+  background:url('papel_marfil.webp') center / cover, var(--marfil); /* papel algodón */
   filter:url(#borde-rasgado); /* borde irregular de papel hecho a mano */
 }
 .carta-filete{
-  position:absolute; inset:14px; /* marco hacia adentro */
-  border:1px solid transparent; /* borde que se pinta con degradado */
-  border-image:linear-gradient(135deg, var(--oro-claro), var(--oro) 40%, var(--oro-osc) 70%, var(--oro-claro)) 1; /* efecto de foil dorado */
+  position:absolute; inset:14px; /* marco interior */
+  border:1px solid transparent; /* borde pintado con degradado */
+  border-image:linear-gradient(135deg, var(--oro-claro), var(--oro) 40%, var(--oro-osc) 70%, var(--oro-claro)) 1; /* foil dorado */
   pointer-events:none;        /* no bloquea toques */
 }
 .carta-cenefa{
-  position:absolute;          /* franja floral */
-  right:4px; top:10px; bottom:10px; /* pegada al borde derecho */
-  width:62px;                 /* ancho de la franja */
+  position:absolute; right:4px; top:10px; bottom:10px; width:62px; /* franja floral a la derecha */
   background:url('cenefa.webp') left center / auto 100% no-repeat; /* guirnalda en acuarela */
   pointer-events:none;        /* no bloquea toques */
 }
-.carta-esquina{ position:absolute; left:6px; bottom:6px; width:74px; transform:rotate(-8deg); pointer-events:none; } /* ramillete de acuarela abajo a la izquierda */
-.carta-sello{
-  position:absolute; left:50%; top:0; /* sobre el borde superior */
-  width:72px;                 /* tamaño del sello */
-  transform:translate(-50%,-48%) rotate(-5deg); /* montado sobre el borde */
-  filter:drop-shadow(1px 3px 3px rgba(20,16,8,.45)); /* relieve */
-}
-.carta > *:not(.carta-papel):not(.carta-filete):not(.carta-cenefa):not(.carta-esquina):not(.carta-sello){ position:relative; } /* el contenido queda sobre el papel */
+.carta-esquina{ position:absolute; left:6px; bottom:6px; width:74px; transform:rotate(-8deg); pointer-events:none; } /* ramillete de esquina */
+.carta > .contenido{ position:relative; } /* el texto queda sobre el papel */
 .para{ font-size:10.5px; letter-spacing:4px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:6px; } /* etiqueta "Para" */
-.invitado{ font-family:var(--f-display); font-style:italic; font-size:clamp(20px, 5vw, 24px); color:var(--oliva-osc); margin-bottom:20px; text-wrap:balance; } /* nombre del invitado */
+.invitado{ font-family:var(--f-display); font-style:italic; font-size:clamp(20px, 5vw, 24px); color:var(--oliva-osc); margin-bottom:20px; text-wrap:balance; } /* invitado */
 .foto-marco{
-  background:#fbf7ee;         /* marco de papel blanco cálido, como foto impresa */
+  background:#fbf7ee;         /* marco blanco cálido de foto impresa */
   padding:6px;                /* borde blanco */
-  box-shadow:0 1px 2px rgba(0,0,0,.18), 0 8px 16px -6px rgba(40,34,18,.35); /* foto apoyada sobre la carta */
+  box-shadow:1px 2px 2px rgba(0,0,0,.16), 4px 9px 14px -6px rgba(40,34,18,.38); /* foto apoyada (misma luz) */
   transform:rotate(-1.4deg);  /* un poco girada */
-  margin:0 auto 22px;         /* centrada con separación */
+  margin:0 auto 22px;         /* centrada */
   max-width:100%;             /* nunca más ancha que la carta */
 }
 .foto-marco img{ width:100%; aspect-ratio:3/4; object-fit:cover; } /* foto de la pareja */
@@ -328,108 +343,99 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .boton-seguir{
   position:relative; z-index:2; /* sobre las flores */
   margin-top:34px;            /* separación con la carta */
-  display:flex; flex-direction:column; align-items:center; gap:8px; /* texto con línea debajo */
-  background:none; border:none; cursor:pointer; /* botón sin estilo de caja */
+  display:flex; flex-direction:column; align-items:center; gap:8px; /* texto con línea */
+  background:none; border:none; cursor:pointer; /* sin caja */
   font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--tinta-suave); /* tipografía */
-  animation:flotar 2.4s ease-in-out infinite; /* movimiento suave */
 }
+.boton-seguir span{ animation:flotar 2.4s ease-in-out infinite; } /* movimiento suave del texto */
 .boton-seguir::after{ content:""; width:1px; height:26px; background:linear-gradient(var(--tinta-suave), transparent); } /* línea indicadora */
-@keyframes flotar{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(6px); } } /* animación de flotar */
+@keyframes flotar{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(5px); } } /* flotar */
 
 /* ======================= ESCENA 3 · LAS HOJAS ======================= */
-/* Sin "transform" en esta sección a propósito: un ancestro con transform rompe
-   el position:fixed de la hoja expandida. */
+/* Ningún ancestro de las tarjetas tiene transform ni z-index: así la tarjeta abierta
+   (position:fixed) queda realmente por encima de todo, sin velos encima. */
 .escena-hojas{
   position:relative;          /* referencia */
   display:flex; flex-direction:column; /* en columna */
   padding-top:40px;           /* aire arriba */
   overflow:hidden;            /* recorta flores */
 }
-.hojas-encabezado{ position:relative; z-index:2; text-align:center; padding:0 16px 10px; } /* títulos de la sección */
-.hojas-encabezado .mini-sello{ width:52px; margin:0 auto 12px; filter:drop-shadow(1px 2px 2px rgba(20,16,8,.4)); } /* sello pequeño */
+.hojas-encabezado{ position:relative; text-align:center; padding:0 16px 10px; } /* títulos */
+.hojas-encabezado .mini-sello{ width:52px; margin:0 auto 12px; filter:var(--sombra-objeto); } /* sello pequeño */
 .hojas-encabezado h2{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(26px, 6vw, 32px); color:var(--oliva-osc); margin-bottom:10px; text-wrap:balance; } /* título */
 .hojas-pista{ font-size:10px; letter-spacing:1.6px; text-transform:uppercase; color:var(--tinta-tenue); } /* instrucción */
 
-/* carrusel con scroll nativo (funciona igual con dedo, trackpad y rueda) */
 .hojas-visor{
-  position:relative; z-index:2; /* sobre las flores */
-  display:flex; align-items:center; /* tarjetas centradas en vertical */
+  display:flex; align-items:center; /* tarjetas centradas */
   overflow-x:auto; overflow-y:hidden; /* desplazamiento horizontal */
   scroll-snap-type:x mandatory; /* se detiene en cada tarjeta */
   -webkit-overflow-scrolling:touch; /* scroll suave en iPhone */
-  touch-action:pan-x pan-y;   /* deja deslizar horizontal y hacer scroll vertical de la página */
-  scrollbar-width:none;       /* oculta la barra de scroll */
+  touch-action:pan-x pan-y;   /* deslizar horizontal y hacer scroll vertical */
+  scrollbar-width:none;       /* oculta la barra */
   cursor:grab;                /* mano para arrastrar en computador */
-  padding:26px 0 8px;         /* aire para las sombras e inclinación */
+  padding:26px 0 8px;         /* aire para sombras */
 }
 .hojas-visor::-webkit-scrollbar{ display:none; } /* oculta la barra en Chrome/Safari */
-.hojas-visor.arrastrando{ cursor:grabbing; scroll-snap-type:none; } /* mientras se arrastra con mouse */
-.hojas-pista-track{ display:flex; align-items:center; width:100%; padding:0 9%; } /* fila de tarjetas */
-.hoja{ flex:0 0 82%; scroll-snap-align:center; display:flex; justify-content:center; padding:6px 10px 18px; } /* cada posición del carrusel */
-@media (min-width:700px){ .hoja{ flex-basis:340px; } .hojas-pista-track{ padding:0 calc(50% - 170px); } } /* en computador: tarjetas de ancho fijo */
+.hojas-visor.arrastrando{ cursor:grabbing; scroll-snap-type:none; } /* arrastre con mouse */
+.hojas-fila{ display:flex; align-items:center; width:100%; padding:0 9%; } /* fila de tarjetas */
+.hoja{ flex:0 0 82%; scroll-snap-align:center; display:flex; justify-content:center; padding:6px 10px 18px; } /* posición en el carrusel */
+@media (min-width:700px){ .hoja{ flex-basis:340px; } .hojas-fila{ padding:0 calc(50% - 170px); } } /* computador: ancho fijo */
 
 .tarjeta{
   position:relative;          /* referencia de capas */
   width:100%; max-width:310px; /* tamaño */
   height:min(60vh, 470px);    /* alto */
   cursor:pointer;             /* se puede tocar */
-  border:7px solid #fbf6ea;   /* borde blanco cálido como foto impresa */
-  border-radius:3px;          /* esquinas apenas suaves */
+  border:7px solid #fbf6ea;   /* borde blanco cálido de foto impresa */
+  border-radius:3px;          /* esquinas suaves */
   overflow:hidden;            /* recorta la foto */
   background:var(--marfil);   /* respaldo */
-  box-shadow:0 2px 2px rgba(30,28,16,.2), 0 16px 30px -8px var(--sombra); /* tarjeta apoyada en la mesa */
-  opacity:.72;                /* las laterales se ven atenuadas */
+  box-shadow:1px 2px 2px var(--sombra-contacto), 6px 16px 28px -8px var(--sombra); /* misma luz */
+  opacity:.72;                /* laterales atenuadas */
   transform:scale(.9) rotate(var(--giro,0deg)); /* laterales más pequeñas e inclinadas */
-  transition:transform .45s ease, opacity .45s ease, box-shadow .45s ease; /* transición suave */
+  transition:transform .5s ease, opacity .5s ease, box-shadow .5s ease; /* transición suave */
   -webkit-tap-highlight-color:transparent; /* sin destello al tocar */
 }
-.hoja:nth-child(odd) .tarjeta{ --giro:-3deg; } /* impares giradas a la izquierda */
-.hoja:nth-child(even) .tarjeta{ --giro:3deg; } /* pares giradas a la derecha */
-.tarjeta.activa{ opacity:1; transform:scale(1) rotate(0deg); box-shadow:0 3px 3px rgba(30,28,16,.22), 0 26px 46px -10px var(--sombra); } /* la tarjeta centrada, al frente */
-.tarjeta.expandida{
-  position:fixed;             /* ocupa la pantalla */
-  top:max(5vh, env(safe-area-inset-top, 0px)); bottom:5vh; left:5vw; right:5vw; /* márgenes alrededor */
-  max-width:520px; margin:0 auto; /* en computador no se estira demasiado */
-  width:auto; height:auto;    /* tamaño dado por los márgenes */
-  opacity:1; transform:none;  /* sin inclinación */
-  z-index:200;                /* encima de todo */
-  cursor:default;             /* ya no es un botón */
-}
-.tarjeta-foto{ position:absolute; inset:0; background-size:cover; background-position:center bottom; transition:transform 6s ease; } /* foto floral de fondo */
-.tarjeta.expandida .tarjeta-foto{ transform:scale(1.04); } /* leve acercamiento al abrir */
+.hoja:nth-child(odd) .tarjeta{ --giro:-3deg; } /* impares a la izquierda */
+.hoja:nth-child(even) .tarjeta{ --giro:3deg; } /* pares a la derecha */
+.tarjeta.activa{ opacity:1; transform:scale(1) rotate(0deg); box-shadow:1px 3px 3px var(--sombra-contacto), 8px 24px 40px -10px var(--sombra); } /* SOLO la más cercana al centro */
+/* tarjeta abierta: posición fija; su tamaño y lugar los anima el script desde la posición original */
+.tarjeta.expandida{ position:fixed; z-index:200; max-width:none; opacity:1; transform:none; cursor:default; } /* fija, por encima de todo */
+.tarjeta.animando{ transition:top .6s cubic-bezier(.3,.7,.2,1), left .6s cubic-bezier(.3,.7,.2,1), width .6s cubic-bezier(.3,.7,.2,1), height .6s cubic-bezier(.3,.7,.2,1), box-shadow .6s ease; } /* crece/regresa con suavidad */
+.tarjeta.expandida{ box-shadow:2px 4px 4px var(--sombra-contacto), 12px 34px 60px -12px rgba(38,34,20,.45); } /* sombra de objeto levantado */
+.tarjeta-foto{ position:absolute; inset:0; background-size:cover; background-position:center bottom; transition:transform 6s ease; } /* foto floral */
+.tarjeta.expandida .tarjeta-foto{ transform:scale(1.04); } /* leve acercamiento */
 
-/* panel de papel vegetal (translúcido) con el texto */
 .vela{
   position:absolute;          /* sobre la foto */
-  left:50%; top:13%;          /* centrado en la zona clara de la foto */
-  transform:translateX(-50%); /* centrado exacto */
+  left:50%; top:13%;          /* en la zona clara de la foto */
+  transform:translateX(-50%); /* centrado */
   width:min(80%, 360px);      /* ancho */
   background:linear-gradient(var(--marfil-vela), var(--marfil-vela)), url('papel_marfil.webp') center / cover; /* papel vegetal */
   backdrop-filter:blur(3px);  /* desenfoca la foto detrás */
-  -webkit-backdrop-filter:blur(3px); /* lo mismo en Safari */
-  box-shadow:0 6px 18px -6px rgba(30,28,16,.35); /* papel apoyado sobre la foto */
+  -webkit-backdrop-filter:blur(3px); /* igual en Safari */
+  box-shadow:2px 6px 16px -6px rgba(30,28,16,.35); /* papel apoyado (misma luz) */
   text-align:center;          /* centrado */
   padding:20px 18px 18px;     /* aire interior */
   transition:opacity .3s ease; /* transición */
 }
 .vela::before{ content:""; position:absolute; inset:6px; border:1px solid rgba(195,160,94,.55); pointer-events:none; } /* filete dorado */
-.vela-flor{ width:54px; margin:-46px auto 6px; filter:drop-shadow(0 2px 3px rgba(30,28,16,.3)); } /* ramillete de acuarela que sobresale arriba */
+.vela-flor{ width:54px; margin:-46px auto 6px; filter:drop-shadow(2px 3px 3px rgba(30,28,16,.3)); } /* ramillete que sobresale */
 .vela-titulo{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(23px, 5.6vw, 27px); color:var(--oliva-osc); line-height:1.15; } /* título */
 .vela-sub{ margin-top:6px; font-size:9.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta-suave); } /* subtítulo */
-.vela-toca{ margin-top:12px; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* indicación de tocar */
+.vela-toca{ margin-top:12px; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* indicación */
 .tarjeta.expandida .vela-resumen{ opacity:0; pointer-events:none; } /* al abrir se oculta el resumen */
-
 .vela-detalle{
-  top:9%;                     /* un poco más arriba que el resumen */
+  top:9%;                     /* más arriba que el resumen */
   max-height:78%;             /* deja ver flores abajo */
-  overflow-y:auto;            /* si el texto es largo, se desplaza dentro */
+  overflow-y:auto;            /* texto largo se desplaza dentro */
   padding:26px 22px 24px;     /* más aire */
   opacity:0;                  /* oculto mientras está cerrada */
   pointer-events:none;        /* no recibe toques */
-  transition:opacity .35s ease .15s; /* aparece tras expandir */
+  transition:opacity .4s ease; /* transición */
 }
-.tarjeta.expandida .vela-detalle{ opacity:1; pointer-events:auto; } /* visible al expandir */
-.vela-detalle .vela-flor{ margin-top:-4px; } /* dentro del panel en el detalle */
+.tarjeta.abierta .vela-detalle{ opacity:1; pointer-events:auto; } /* aparece cuando la tarjeta ya creció */
+.vela-detalle .vela-flor{ margin-top:-4px; } /* dentro del panel */
 .vela-ante{ font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); margin:4px 0 8px; } /* antetítulo */
 .vela-texto{ font-size:13px; line-height:1.85; color:var(--tinta-suave); margin:12px 0 16px; } /* texto */
 .vela-texto b{ font-weight:400; color:var(--tinta); } /* resaltado suave */
@@ -437,39 +443,37 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   display:inline-block;       /* botón */
   font-size:10.5px; letter-spacing:2.4px; text-transform:uppercase; /* tipografía */
   color:var(--marfil);        /* texto marfil */
-  background:var(--oliva) url('papel_oliva.webp') center / 300px auto; /* papel oliva real */
+  background:var(--oliva) url('papel_oliva.webp') center / 300px auto; /* papel oliva */
   padding:12px 22px;          /* tamaño */
   text-decoration:none;       /* sin subrayado */
-  box-shadow:inset 0 0 0 1px rgba(230,207,156,.45), 0 4px 10px -4px rgba(30,28,16,.5); /* filete dorado + sombra */
+  box-shadow:inset 0 0 0 1px rgba(230,207,156,.45), 2px 4px 10px -4px rgba(30,28,16,.5); /* filete dorado + sombra */
 }
 .boton-oliva[aria-disabled="true"]{ opacity:.55; cursor:default; } /* RSVP aún sin link */
 .cerrar{
   position:absolute; top:12px; right:12px; /* esquina superior derecha */
   width:36px; height:36px; border-radius:50%; /* círculo */
-  background:var(--marfil-vela); border:1px solid rgba(195,160,94,.6); /* papel con filete dorado */
+  background:var(--marfil-vela); border:1px solid rgba(195,160,94,.6); /* papel con filete */
   color:var(--oliva-osc); font-size:15px; /* la X */
-  display:flex; align-items:center; justify-content:center; /* X centrada */
+  display:flex; align-items:center; justify-content:center; /* centrada */
   cursor:pointer; z-index:4;  /* encima del contenido */
   opacity:0; pointer-events:none; /* oculto mientras está cerrada */
-  transition:opacity .25s ease .15s; /* aparece al expandir */
+  transition:opacity .3s ease; /* aparece al abrir */
 }
-.tarjeta.expandida .cerrar{ opacity:1; pointer-events:auto; } /* visible al expandir */
+.tarjeta.abierta .cerrar{ opacity:1; pointer-events:auto; } /* visible con la tarjeta abierta */
+.captura-toques{ position:fixed; inset:0; z-index:199; display:none; } /* capa invisible: tocar fuera cierra (sin oscurecer) */
+.captura-toques.activa{ display:block; } /* activa con una tarjeta abierta */
 
-.velo-fondo{ position:fixed; inset:0; z-index:199; background:rgba(40,36,22,.5); opacity:0; pointer-events:none; transition:opacity .3s ease; } /* oscurece el fondo al expandir */
-.velo-fondo.visible{ opacity:1; pointer-events:auto; } /* activo */
-
-.puntos{ position:relative; z-index:2; display:flex; justify-content:center; gap:9px; padding:10px 0 28px; } /* indicador de posición */
-.punto{ width:6px; height:6px; border-radius:50%; background:var(--tinta-tenue); opacity:.5; transition:all .3s ease; } /* cada punto */
-.punto.activo{ background:var(--oro-osc); opacity:1; transform:scale(1.4); } /* punto de la tarjeta actual */
-
-.pie{ position:relative; z-index:2; padding:6px 16px 48px; text-align:center; font-size:10.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta-suave); } /* pie de página */
+.puntos{ display:flex; justify-content:center; gap:9px; padding:10px 0 28px; } /* indicador de posición */
+.punto{ width:6px; height:6px; border-radius:50%; background:var(--tinta-tenue); opacity:.5; transition:all .3s ease; } /* punto */
+.punto.activo{ background:var(--oro-osc); opacity:1; transform:scale(1.4); } /* punto actual */
+.pie{ padding:6px 16px 48px; text-align:center; font-size:10.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta-suave); } /* pie */
 .pie b{ font-weight:400; color:var(--oro-osc); } /* hashtag */
 
-/* pétalos que caen al abrir el sobre */
-.capa-petalos{ position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden; } /* capa de pétalos */
-.capa-petalos img{ position:absolute; top:-60px; filter:drop-shadow(2px 4px 3px rgba(30,28,16,.25)); } /* cada pétalo */
+/* pétalos: el contenedor cae (con sombra fija), la imagen interior gira y aletea */
+.capa-petalos{ position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden; } /* capa */
+.petalo{ position:absolute; top:-70px; filter:drop-shadow(3px 6px 4px rgba(30,28,16,.22)); } /* contenedor con sombra */
 
-@media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si el usuario lo pide */
+@media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si se pide */
 </style>
 </head>
 <body>
@@ -484,13 +488,13 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 <!-- ======================= ESCENA 1 · EL SOBRE ======================= -->
 <section class="escena-sobre" id="escenaSobre">
-  <!-- flores fotográficas y ramitas sobre la mesa (con paralaje) -->
-  <img class="decor" src="ramo_a.webp" alt="" style="width:min(60vw,380px); top:max(-10%,-70px); left:max(-16%,-110px); --r:180deg; --d:-3; --delay:.1s"> <!-- ramo arriba a la izquierda -->
-  <img class="decor" src="ramo_b.webp" alt="" style="width:min(56vw,360px); bottom:max(-11%,-80px); right:max(-14%,-100px); --r:-8deg; --d:-4; --delay:.3s"> <!-- ramo abajo a la derecha -->
-  <img class="decor" src="euca_1.webp" alt="" style="width:min(28vw,170px); bottom:2%; left:max(-7%,-40px); --r:-28deg; --d:-2; --delay:.5s"> <!-- ramita abajo a la izquierda -->
-  <img class="decor" src="euca_3.webp" alt="" style="width:min(26vw,160px); top:9%; right:max(-8%,-40px); --r:150deg; --d:-2; --delay:.6s"> <!-- ramita arriba a la derecha -->
-  <img class="decor" src="petalo_2.webp" alt="" style="width:34px; bottom:18%; left:20%; --r:30deg; --d:-1; --delay:.9s"> <!-- pétalo suelto -->
-  <img class="decor" src="petalo_5.webp" alt="" style="width:30px; top:24%; left:12%; --r:-40deg; --d:-1; --delay:1s"> <!-- pétalo suelto -->
+  <!-- flores y ramitas (contenedor = posición y sombra; imagen = giro) -->
+  <span class="decor" style="width:min(60vw,380px); top:max(-10%,-70px); left:max(-16%,-110px); --d:-3; --delay:.1s"><img src="ramo_a.webp" alt="" style="--r:180deg"></span> <!-- ramo arriba a la izquierda -->
+  <span class="decor" style="width:min(56vw,360px); bottom:max(-11%,-80px); right:max(-14%,-100px); --d:-4; --delay:.3s"><img src="ramo_b.webp" alt="" style="--r:-8deg"></span> <!-- ramo abajo a la derecha -->
+  <span class="decor" style="width:min(28vw,170px); bottom:2%; left:max(-7%,-40px); --d:-2; --delay:.5s"><img src="euca_1.webp" alt="" style="--r:-28deg"></span> <!-- ramita abajo a la izquierda -->
+  <span class="decor" style="width:min(26vw,160px); top:9%; right:max(-8%,-40px); --d:-2; --delay:.6s"><img src="euca_3.webp" alt="" style="--r:150deg"></span> <!-- ramita arriba a la derecha -->
+  <span class="decor" style="width:34px; bottom:18%; left:20%; --d:-1; --delay:.9s"><img src="petalo_2.webp" alt="" style="--r:30deg"></span> <!-- pétalo suelto -->
+  <span class="decor" style="width:30px; top:24%; left:12%; --d:-1; --delay:1s"><img src="petalo_5.webp" alt="" style="--r:-40deg"></span> <!-- pétalo suelto -->
 
   <div class="encabezado"> <!-- textos de arriba -->
     <div class="antetitulo">Guardar la fecha ya quedó atrás</div> <!-- frase de entrada -->
@@ -498,34 +502,28 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
     <div class="fecha-mini">30 · 01 · 2027</div> <!-- fecha -->
   </div>
 
-  <div class="sobre-zona"> <!-- zona con perspectiva 3D -->
-    <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación"> <!-- el sobre (se puede tocar o abrir con Enter) -->
+  <div class="sobre-zona"> <!-- zona del sobre -->
+    <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación"> <!-- el sobre -->
       <div class="sobre-fondo papel-oliva"></div> <!-- interior con forro floral -->
-      <div class="carta-dentro"> <!-- carta guardada -->
-        <div class="mini-nombres">Ana &amp; Juan</div> <!-- nombres en la carta -->
-        <div class="mini-fecha">30 · 01 · 2027</div> <!-- fecha en la carta -->
-      </div>
+      <div class="ranura"><div class="carta-movil" id="cartaMovil"></div></div> <!-- aquí se coloca la copia de la carta -->
       <div class="bolsillo-sombra"> <!-- sombra del borde en V -->
         <div class="bolsillo papel-oliva"> <!-- frente del sobre -->
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"> <!-- pliegues del papel -->
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"> <!-- pliegues -->
             <polyline points="0,100 50,52 100,100" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1" vector-effect="non-scaling-stroke"/> <!-- sombra del pliegue -->
-            <polyline points="0,99.2 50,53 100,99.2" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" vector-effect="non-scaling-stroke"/> <!-- cresta de luz del pliegue -->
+            <polyline points="0,99.2 50,53 100,99.2" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" vector-effect="non-scaling-stroke"/> <!-- cresta de luz -->
           </svg>
         </div>
       </div>
       <div class="solapa-sombra"><i></i></div> <!-- sombra de la solapa -->
       <div class="solapa"> <!-- solapa que gira -->
         <div class="solapa-cara solapa-exterior papel-oliva"> <!-- cara de afuera -->
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"> <!-- línea en relieve (blind emboss) -->
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"> <!-- relieve -->
             <polyline points="7,5 50,86 93,5" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1" vector-effect="non-scaling-stroke"/> <!-- sombra del relieve -->
             <polyline points="7.4,6.2 50,87.6 92.6,6.2" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1" vector-effect="non-scaling-stroke"/> <!-- brillo del relieve -->
           </svg>
         </div>
         <div class="solapa-cara solapa-interior papel-oliva"></div> <!-- cara de adentro con forro -->
-      </div>
-      <div class="sello"> <!-- sello de lacre -->
-        <img src="sello.webp" alt=""> <!-- cera dorada -->
-        <span class="brillo"></span> <!-- brillo metálico móvil -->
+        <div class="sello"><img src="sello.webp" alt=""><span class="brillo"></span></div> <!-- sello unido a la solapa -->
       </div>
     </div>
   </div>
@@ -535,26 +533,26 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 <!-- ======================= ESCENA 2 · LA CARTA ======================= -->
 <section class="escena-carta" id="escenaCarta" hidden>
-  <img class="decor" src="euca_2.webp" alt="" style="width:min(32vw,180px); top:2%; left:-6%; --r:200deg; --d:-2"> <!-- ramita arriba -->
-  <img class="decor" src="ramo_b.webp" alt="" style="width:min(48vw,300px); bottom:-4%; left:-20%; --r:100deg; --d:-3"> <!-- ramo al costado -->
+  <span class="decor extra" style="width:min(32vw,180px); top:2%; left:max(-6%,-30px); --d:-2"><img src="euca_2.webp" alt="" style="--r:200deg"></span> <!-- ramita -->
+  <span class="decor extra" style="width:min(48vw,300px); bottom:-4%; left:max(-20%,-90px); --d:-3"><img src="ramo_b.webp" alt="" style="--r:100deg"></span> <!-- ramo -->
 
-  <article class="carta"> <!-- la carta -->
+  <article class="carta" id="carta"> <!-- la carta (la misma que sale del sobre) -->
     <div class="carta-papel"></div> <!-- papel con borde irregular -->
     <div class="carta-filete"></div> <!-- marco dorado -->
     <div class="carta-cenefa"></div> <!-- guirnalda lateral -->
     <img class="carta-esquina" src="esq_1.webp" alt=""> <!-- ramillete de esquina -->
-    <div class="carta-sello"><img src="sello.webp" alt=""></div> <!-- sello sobre el borde -->
-
-    <div class="para">Para</div> <!-- etiqueta -->
-    <div class="invitado" id="invitado">Nuestros queridos invitados</div> <!-- nombre (se personaliza con ?invitado=) -->
-    <div class="foto-marco"><img src="foto_pareja.webp" alt="Ana y Juan"></div> <!-- foto de la pareja -->
-    <p class="mensaje">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia.</p> <!-- mensaje -->
-    <div class="nombres">Ana<span class="y">&amp;</span>Juan</div> <!-- nombres -->
-    <div class="fecha">30 · 01 · 2027</div> <!-- fecha -->
-    <div class="lugar">Hacienda La Victoria</div> <!-- lugar -->
+    <div class="contenido"> <!-- texto de la carta -->
+      <div class="para">Para</div> <!-- etiqueta -->
+      <div class="invitado" data-invitado>Nuestros queridos invitados</div> <!-- nombre (se personaliza con ?invitado=) -->
+      <div class="foto-marco"><img src="foto_pareja.webp" alt="Ana y Juan"></div> <!-- foto -->
+      <p class="mensaje">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia.</p> <!-- mensaje -->
+      <div class="nombres">Ana<span class="y">&amp;</span>Juan</div> <!-- nombres -->
+      <div class="fecha">30 · 01 · 2027</div> <!-- fecha -->
+      <div class="lugar">Hacienda La Victoria</div> <!-- lugar -->
+    </div>
   </article>
 
-  <button class="boton-seguir" id="botonSeguir">Ver detalles</button> <!-- baja a las hojas -->
+  <button class="boton-seguir extra" id="botonSeguir"><span>Ver detalles</span></button> <!-- baja a las hojas -->
 </section>
 
 <!-- ======================= ESCENA 3 · LAS HOJAS ======================= -->
@@ -565,33 +563,33 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
     <h2>Detalles de la boda</h2> <!-- título -->
     <div class="hojas-pista">Desliza para explorar · toca para ver el detalle</div> <!-- instrucción -->
   </div>
-  <div class="hojas-visor" id="visor"><div class="hojas-pista-track" id="pistaHojas"></div></div> <!-- carrusel (se llena desde el script) -->
-  <div class="puntos" id="puntos"></div> <!-- indicador de posición -->
+  <div class="hojas-visor" id="visor"><div class="hojas-fila" id="filaHojas"></div></div> <!-- carrusel (se llena desde el script) -->
+  <div class="puntos" id="puntos"></div> <!-- indicador -->
   <div class="pie">30 · 01 · 2027 · Hacienda La Victoria · <b>#AnaYJuan2027</b></div> <!-- pie -->
 </section>
 
-<div class="velo-fondo" id="veloFondo"></div> <!-- fondo oscuro al expandir una hoja -->
-<div class="capa-petalos" id="capaPetalos" aria-hidden="true"></div> <!-- pétalos que caen -->
+<div class="captura-toques" id="capturaToques"></div> <!-- capa invisible para cerrar tocando fuera -->
+<div class="capa-petalos" id="capaPetalos" aria-hidden="true"></div> <!-- pétalos -->
 
 <script>
 // ================== CONTENIDO DE LAS HOJAS ==================
 // Para agregar hojas nuevas basta con añadir un objeto a esta lista.
 // Fondos disponibles: hoja_01_peonias ... hoja_08_detalle (.webp)
-const RSVP_LINK = null; // link real del formulario de confirmación (ej: 'https://forms.gle/xxxx'); null = botón desactivado
-const HOJAS = [ // lista de hojas en el orden en que se muestran
+const RSVP_LINK = null; // link real del formulario de confirmación; null = botón desactivado
+const HOJAS = [ // hojas en el orden en que se muestran
   { // hoja 1
     fondo: 'hoja_07_arco.webp',          // foto floral de fondo
-    flor: 'esq_1.webp',                  // ramillete de acuarela del panel
+    flor: 'esq_1.webp',                  // ramillete de acuarela
     titulo: 'Ubicación',                 // título en la tarjeta cerrada
-    sub: 'Dónde celebramos',             // subtítulo en la tarjeta cerrada
-    ante: 'Ubicación',                   // antetítulo en el detalle
-    tituloDetalle: 'Hacienda<br>La Victoria', // título en el detalle
-    texto: 'Te esperamos para celebrar rodeados de quienes más queremos.', // texto del detalle
+    sub: 'Dónde celebramos',             // subtítulo
+    ante: 'Ubicación',                   // antetítulo del detalle
+    tituloDetalle: 'Hacienda<br>La Victoria', // título del detalle
+    texto: 'Te esperamos para celebrar rodeados de quienes más queremos.', // texto
     boton: { texto: 'Ver mapa', link: 'https://www.google.com/maps/search/?api=1&query=Hacienda+La+Victoria' } // botón
   },
   { // hoja 2
-    fondo: 'hoja_01_peonias.webp',       // foto floral de fondo
-    flor: 'esq_2.webp',                  // ramillete de acuarela
+    fondo: 'hoja_01_peonias.webp',       // foto floral
+    flor: 'esq_2.webp',                  // ramillete
     titulo: 'Horario',                   // título
     sub: 'Cuándo y cómo vestir',         // subtítulo
     ante: 'Detalles',                    // antetítulo
@@ -600,35 +598,62 @@ const HOJAS = [ // lista de hojas en el orden en que se muestran
     boton: null                          // sin botón
   },
   { // hoja 3
-    fondo: 'hoja_02_delphinium.webp',    // foto floral de fondo
-    flor: 'esq_3.webp',                  // ramillete de acuarela
+    fondo: 'hoja_02_delphinium.webp',    // foto floral
+    flor: 'esq_3.webp',                  // ramillete
     titulo: 'RSVP',                      // título
     sub: 'Confirmar asistencia',         // subtítulo
     ante: 'Confirmación',                // antetítulo
     tituloDetalle: 'RSVP &amp;<br>Regalos', // título del detalle
     texto: 'Tu confirmación nos ayuda a organizar cada detalle.', // texto
-    boton: { texto: 'Confirmar asistencia', link: RSVP_LINK } // botón (desactivado si no hay link)
+    boton: { texto: 'Confirmar asistencia', link: RSVP_LINK } // botón
   }
 ];
 
+// ================== UTILIDADES ==================
+const $ = id => document.getElementById(id);                // atajo para buscar por id
+const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches; // ¿pidió menos movimiento?
+const T = reducido ? 0.03 : 1;                              // factor de tiempo (casi cero con movimiento reducido)
+const esperar = ms => new Promise(r => setTimeout(r, ms * T)); // pausa con el factor de tiempo
+const raiz = document.documentElement;                      // elemento <html>
+
 // ================== PERSONALIZAR EL INVITADO (?invitado=Nombre) ==================
-const params = new URLSearchParams(location.search);       // lee los parámetros del link
-const nombreInvitado = params.get('invitado');             // toma el nombre del invitado
-if (nombreInvitado) {                                       // si viene en el link...
-  document.getElementById('invitado').textContent = nombreInvitado; // ...lo escribe en la carta
+const nombreInvitado = new URLSearchParams(location.search).get('invitado'); // lee el nombre del link
+if (nombreInvitado) {                                       // si viene...
+  document.querySelector('[data-invitado]').textContent = nombreInvitado; // ...lo escribe en la carta
 }
 
+// ================== COPIA DE LA CARTA DENTRO DEL SOBRE ==================
+// La carta que sale del sobre es una copia EXACTA de la carta real, a escala.
+// Al final se cambia por la real en la misma posición, sin que se note.
+const carta = $('carta');                                   // carta real
+const cartaMovil = $('cartaMovil');                         // contenedor deslizante en el sobre
+const clon = carta.cloneNode(true);                         // copia idéntica
+clon.removeAttribute('id');                                 // sin id duplicado
+clon.classList.add('carta-clon');                           // marca de copia
+clon.setAttribute('aria-hidden', 'true');                   // los lectores de pantalla la ignoran
+cartaMovil.appendChild(clon);                               // la mete en el sobre
+function anchoCarta() { return Math.min(innerWidth - 32, 410); } // mismo ancho que tendrá la carta real
+function acomodarClon() {                                   // escala la copia al ancho de la ranura
+  const w = anchoCarta();                                   // ancho de la carta real
+  clon.style.width = w + 'px';                              // la copia tiene exactamente ese ancho
+  const ranuraW = cartaMovil.parentElement.clientWidth;     // ancho disponible en el sobre
+  cartaMovil.dataset.escala = ranuraW / w;                  // guarda la escala
+  cartaMovil.style.transform = `scale(${ranuraW / w})`;     // reduce la copia al tamaño del sobre
+}
+acomodarClon();                                             // primera vez
+addEventListener('resize', () => { if (!abierto) acomodarClon(); }); // si cambia la pantalla antes de abrir
+
 // ================== CONSTRUIR LAS HOJAS ==================
-const pista = document.getElementById('pistaHojas');        // fila del carrusel
-const puntosWrap = document.getElementById('puntos');       // contenedor de puntos
-HOJAS.forEach((h, i) => {                                   // por cada hoja de la lista
-  const hoja = document.createElement('div');               // crea la posición del carrusel
-  hoja.className = 'hoja';                                  // le da su clase
-  let botonHTML = '';                                       // HTML del botón (si hay)
+const fila = $('filaHojas');                                // fila del carrusel
+const puntosWrap = $('puntos');                             // contenedor de puntos
+HOJAS.forEach((h, i) => {                                   // por cada hoja
+  const hoja = document.createElement('div');               // posición del carrusel
+  hoja.className = 'hoja';                                  // clase
+  let botonHTML = '';                                       // botón (si hay)
   if (h.boton) {                                            // si la hoja tiene botón
-    botonHTML = h.boton.link                                // si tiene link real...
+    botonHTML = h.boton.link                                // con link real...
       ? `<a class="boton-oliva" href="${h.boton.link}" target="_blank" rel="noopener">${h.boton.texto}</a>` // ...abre en otra pestaña
-      : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">${h.boton.texto}</a>`; // ...si no, queda desactivado
+      : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">${h.boton.texto}</a>`; // ...si no, desactivado
   }
   hoja.innerHTML = `
     <div class="tarjeta" tabindex="0" role="button" aria-label="${h.titulo}">
@@ -647,170 +672,243 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja de 
         ${botonHTML}
       </div>
       <button class="cerrar" aria-label="Cerrar">✕</button>
-    </div>`;                                                // estructura: foto + panel resumen + panel detalle + cerrar
-  pista.appendChild(hoja);                                  // agrega la hoja al carrusel
-  const punto = document.createElement('div');              // crea su punto indicador
-  punto.className = 'punto' + (i === 0 ? ' activo' : '');   // el primero empieza activo
+    </div>`;                                                // foto + resumen + detalle + cerrar
+  fila.appendChild(hoja);                                   // agrega la hoja
+  const punto = document.createElement('div');              // punto indicador
+  punto.className = 'punto' + (i === 0 ? ' activo' : '');   // el primero activo
   puntosWrap.appendChild(punto);                            // agrega el punto
 });
 
 // ================== ABRIR EL SOBRE ==================
-const sobre = document.getElementById('sobre');             // el sobre
-const escenaSobre = document.getElementById('escenaSobre'); // escena 1
-const escenaCarta = document.getElementById('escenaCarta'); // escena 2
-const escenaHojas = document.getElementById('escenaHojas'); // escena 3
-const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches; // ¿el usuario pidió menos movimiento?
-const T = reducido ? 0.05 : 1;                              // factor de tiempo (casi cero si hay movimiento reducido)
+const sobre = $('sobre');                                   // el sobre
+const escenaSobre = $('escenaSobre');                       // escena 1
+const escenaCarta = $('escenaCarta');                       // escena 2
+const escenaHojas = $('escenaHojas');                       // escena 3
 let abierto = false;                                        // evita abrir dos veces
-document.documentElement.classList.add('bloqueado');        // sin scroll hasta abrir el sobre
+raiz.classList.add('bloqueado');                            // sin scroll hasta terminar la apertura
 
-function abrirSobre() {                                     // secuencia de apertura
-  if (abierto) return;                                      // si ya se abrió, no hace nada
-  abierto = true;                                           // marca como abierto
-  sobre.classList.add('sello-fuera');                       // 1) el sello se levanta
-  setTimeout(() => sobre.classList.add('solapa-abierta'), 380 * T);  // 2) la solapa gira
-  setTimeout(() => sobre.classList.add('solapa-atras'), 880 * T);    // 3) a mitad del giro pasa detrás de la carta
-  setTimeout(() => {                                        // 4) la carta sale
-    sobre.classList.add('carta-fuera');                     // sube la carta
-    lluviaPetalos();                                        // caen pétalos
-  }, 1350 * T);
-  setTimeout(() => escenaSobre.classList.add('saliendo'), 2450 * T); // 5) se desvanece la escena del sobre
-  setTimeout(() => {                                        // 6) muestra la carta y los detalles
-    escenaSobre.hidden = true;                              // oculta el sobre
-    escenaCarta.hidden = false;                             // muestra la carta
-    escenaHojas.hidden = false;                             // muestra las hojas
-    escenaCarta.classList.add('revelar');                   // animación de entrada
-    document.documentElement.classList.remove('bloqueado'); // habilita el scroll
-    window.scrollTo(0, 0);                                  // arriba de la página
-    iniciarCarrusel();                                      // activa el carrusel ya visible
-  }, 3100 * T);
+async function abrirSobre() {                               // secuencia completa de apertura
+  if (abierto) return;                                      // ya se abrió
+  abierto = true;                                           // marca abierto
+  acomodarClon();                                           // asegura la escala con la pantalla actual
+
+  sobre.classList.add('sello-suelto');                      // 1) el sello se desprende un poco del papel
+  await esperar(750);                                       //    pausa breve
+  sobre.classList.add('solapa-abierta');                    // 2) la solapa gira llevando el sello (se oculta solo al voltearse)
+  await esperar(900);                                       //    a mitad del giro...
+  sobre.classList.add('solapa-atras');                      //    ...la solapa pasa detrás de la carta
+  await esperar(1000);                                      //    termina el giro
+
+  // 3) la carta sale: sube mientras el sobre baja y se aleja
+  const r0 = clon.getBoundingClientRect();                  // posición actual de la carta en pantalla
+  const sobreR = sobre.getBoundingClientRect();             // posición del sobre
+  const alto = r0.height;                                   // alto de la carta a escala
+  const metaTop = Math.max(24, (innerHeight - alto) / 2);   // donde queremos ver la carta (centrada)
+  const subir = Math.max(0, r0.top - metaTop);              // cuánto debe subir la carta
+  const bajar = Math.max(160, (metaTop + alto) - sobreR.top + 40); // cuánto debe bajar el sobre para soltarla
+  const escala = cartaMovil.dataset.escala;                 // escala de la copia
+  cartaMovil.style.transform = `translateY(${-subir}px) scale(${escala})`; // la carta sube despacio
+  lluviaPetalos();                                          // empiezan a caer pétalos, suaves
+  await esperar(700);                                       // la carta ya asoma
+  sobre.style.setProperty('--bajar', bajar + 'px');         // distancia que baja el sobre
+  sobre.classList.add('alejar');                            // el sobre baja, libera la carta y se desvanece
+  escenaSobre.classList.add('alejando');                    // flores y textos de la mesa se desvanecen
+  await esperar(2550);                                      // el sobre termina de bajar y desvanecerse
+
+  // 4) traspaso: la carta copia se cambia por la real y se acomoda para leer
+  escenaSobre.classList.add('flotando');                    // la escena del sobre deja de ocupar espacio
+  escenaCarta.hidden = false;                               // aparece la escena de la carta (aún sin adornos)
+  window.scrollTo(0, 0);                                    // arriba de la página
+  const c = clon.getBoundingClientRect();                   // dónde está la copia
+  const r = carta.getBoundingClientRect();                  // dónde quedará la real
+  const dx = (c.left + c.width / 2) - (r.left + r.width / 2); // diferencia horizontal de centros
+  const dy = (c.top + c.height / 2) - (r.top + r.height / 2); // diferencia vertical de centros
+  const k = c.width / r.width;                              // diferencia de tamaño
+  carta.style.transition = 'none';                          // sin animación para el salto inicial
+  carta.style.transform = `translate(${dx}px, ${dy}px) scale(${k}) rotate(-1deg)`; // la real se pone EXACTAMENTE sobre la copia
+  clon.style.visibility = 'hidden';                         // la copia desaparece (ya está la real encima)
+  carta.getBoundingClientRect();                            // fuerza al navegador a aplicar la posición
+  carta.style.transition = `transform ${1.6 * T}s cubic-bezier(.25,.7,.2,1)`; // movimiento suave
+  carta.style.transform = '';                               // la carta va a su lugar de lectura
+  await esperar(1000);                                      // casi acomodada...
+  escenaCarta.classList.add('lista');                       // ...aparecen las flores y el botón
+  await esperar(700);                                       // termina de acomodarse
+  escenaSobre.hidden = true;                                // retira la escena del sobre
+  carta.style.transition = '';                              // limpia estilos temporales
+  escenaHojas.hidden = false;                               // muestra las hojas
+  raiz.classList.remove('bloqueado');                       // habilita el scroll
+  iniciarCarrusel();                                        // activa el carrusel
 }
 sobre.addEventListener('click', abrirSobre);                // abrir al tocar
 sobre.addEventListener('keydown', e => {                    // abrir con teclado
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirSobre(); } // Enter o espacio
 });
 
-// ================== PÉTALOS QUE CAEN ==================
-function lluviaPetalos() {                                  // crea pétalos animados
-  if (reducido) return;                                     // sin pétalos si hay movimiento reducido
-  const capa = document.getElementById('capaPetalos');      // capa contenedora
-  const cantidad = innerWidth < 600 ? 14 : 22;              // menos pétalos en celular
+// ================== PÉTALOS (lentos y suaves) ==================
+function lluviaPetalos() {                                  // crea los pétalos
+  if (reducido) return;                                     // sin pétalos con movimiento reducido
+  const capa = $('capaPetalos');                            // capa contenedora
+  const cantidad = innerWidth < 600 ? 12 : 18;              // menos en celular
   for (let i = 0; i < cantidad; i++) {                      // por cada pétalo
-    const p = document.createElement('img');               // crea la imagen
-    p.src = `petalo_${1 + (i % 8)}.webp`;                   // alterna los 8 pétalos
-    p.alt = '';                                             // decorativo
-    const tam = 18 + Math.random() * 22;                    // tamaño aleatorio
-    p.style.width = tam + 'px';                             // aplica el tamaño
-    p.style.left = (Math.random() * 100) + 'vw';            // posición horizontal aleatoria
-    capa.appendChild(p);                                    // lo agrega a la capa
-    const dur = 4200 + Math.random() * 3200;                // duración aleatoria de la caída
-    const deriva = (Math.random() - .5) * 160;              // desvío lateral
-    const giro = (Math.random() - .5) * 720;                // giro total
-    p.animate([                                             // animación de caída
-      { transform: 'translate(0,0) rotate(0deg)', opacity: 0 },                                   // arriba, invisible
-      { opacity: 1, offset: .08 },                                                                 // aparece
-      { transform: `translate(${deriva * .5}px, 55vh) rotate(${giro * .5}deg)`, offset: .55 },    // mitad del recorrido
-      { transform: `translate(${deriva}px, 115vh) rotate(${giro}deg)`, opacity: .9 }              // sale por abajo
-    ], { duration: dur, delay: Math.random() * 900, easing: 'cubic-bezier(.3,.1,.5,1)', fill: 'both' }) // tiempos
-      .onfinish = () => p.remove();                         // borra el pétalo al terminar
+    const cont = document.createElement('div');             // contenedor: cae y lleva la sombra (no gira)
+    cont.className = 'petalo';                              // clase con sombra
+    const img = document.createElement('img');              // imagen: gira y aletea
+    img.src = `petalo_${1 + (i % 8)}.webp`;                 // alterna los 8 pétalos
+    img.alt = '';                                           // decorativo
+    const tam = 18 + Math.random() * 20;                    // tamaño aleatorio
+    img.style.width = tam + 'px';                           // aplica tamaño
+    cont.style.left = (Math.random() * 100) + 'vw';         // posición horizontal
+    cont.appendChild(img);                                  // arma el pétalo
+    capa.appendChild(cont);                                 // lo agrega
+    const dur = 8000 + Math.random() * 5000;                // caída lenta (8 a 13 s)
+    const retraso = Math.random() * 3500;                   // salen escalonados
+    const deriva = (Math.random() - .5) * 180;              // desvío lateral
+    cont.animate([                                          // caída con vaivén (solo desplazamiento)
+      { transform: 'translate(0,0)', opacity: 0 },                               // arriba, invisible
+      { opacity: 1, offset: .06 },                                               // aparece
+      { transform: `translate(${deriva * .6}px, 30vh)`, offset: .3 },            // primer vaivén
+      { transform: `translate(${-deriva * .3}px, 62vh)`, offset: .62 },          // segundo vaivén
+      { transform: `translate(${deriva}px, 118vh)`, opacity: .9 }                // sale por abajo
+    ], { duration: dur, delay: retraso, easing: 'linear', fill: 'both' }).onfinish = () => cont.remove(); // al terminar se borra
+    const giro = (Math.random() - .5) * 540;                // giro total
+    img.animate([                                           // giro y aleteo (la sombra no gira)
+      { transform: 'rotate(0deg) rotateX(0deg)' },                               // inicio
+      { transform: `rotate(${giro * .5}deg) rotateX(55deg)`, offset: .5 },       // se inclina como una hoja al caer
+      { transform: `rotate(${giro}deg) rotateX(0deg)` }                          // fin
+    ], { duration: dur, delay: retraso, easing: 'ease-in-out', fill: 'both' }); // mismos tiempos que la caída
   }
 }
 
 // ================== PARALAJE (mouse o inclinación del celular) ==================
 let pxObj = 0, pyObj = 0;                                   // desplazamiento deseado
-window.addEventListener('pointermove', e => {               // al mover el mouse
-  if (e.pointerType !== 'mouse') return;                    // solo con mouse (en celular se usa el giroscopio)
-  pxObj = (e.clientX / innerWidth - .5) * 6;                // posición horizontal relativa (-3 a 3)
-  pyObj = (e.clientY / innerHeight - .5) * 6;               // posición vertical relativa (-3 a 3)
+addEventListener('pointermove', e => {                      // al mover el mouse
+  if (e.pointerType !== 'mouse') return;                    // solo mouse
+  pxObj = (e.clientX / innerWidth - .5) * 6;                // horizontal (-3 a 3)
+  pyObj = (e.clientY / innerHeight - .5) * 6;               // vertical (-3 a 3)
   aplicarParalaje();                                        // actualiza
 });
-window.addEventListener('deviceorientation', e => {         // al inclinar el celular (Android; iPhone lo bloquea sin permiso)
-  if (e.gamma == null) return;                              // si no hay datos, sale
+addEventListener('deviceorientation', e => {                // al inclinar el celular (Android)
+  if (e.gamma == null) return;                              // sin datos
   pxObj = Math.max(-3, Math.min(3, e.gamma / 10));          // inclinación lateral
-  pyObj = Math.max(-3, Math.min(3, (e.beta - 45) / 12));    // inclinación frontal (tomando 45° como posición natural)
+  pyObj = Math.max(-3, Math.min(3, (e.beta - 45) / 12));    // inclinación frontal
   aplicarParalaje();                                        // actualiza
 });
-let rafParalaje = 0;                                        // control de cuadros de animación
-function aplicarParalaje() {                                // aplica el paralaje una vez por cuadro
+let rafParalaje = 0;                                        // control de cuadros
+function aplicarParalaje() {                                // aplica una vez por cuadro
   if (rafParalaje) return;                                  // ya hay uno pendiente
-  rafParalaje = requestAnimationFrame(() => {               // en el siguiente cuadro...
-    document.documentElement.style.setProperty('--px', pxObj.toFixed(2)); // ...actualiza la variable horizontal
-    document.documentElement.style.setProperty('--py', pyObj.toFixed(2)); // ...y la vertical
-    rafParalaje = 0;                                        // libera el control
+  rafParalaje = requestAnimationFrame(() => {               // siguiente cuadro
+    raiz.style.setProperty('--px', pxObj.toFixed(2));       // variable horizontal
+    raiz.style.setProperty('--py', pyObj.toFixed(2));       // variable vertical
+    rafParalaje = 0;                                        // libera
   });
 }
 
 // ================== CARRUSEL DE HOJAS ==================
 let carruselListo = false;                                  // evita iniciar dos veces
-let expandida = null;                                       // tarjeta abierta actualmente
-function iniciarCarrusel() {                                // se llama cuando las hojas ya son visibles
+let abiertaT = null;                                        // tarjeta abierta
+function iniciarCarrusel() {                                // se llama al mostrar las hojas
   if (carruselListo) return;                                // ya iniciado
-  carruselListo = true;                                     // marca iniciado
-  const visor = document.getElementById('visor');           // contenedor con scroll
-  const tarjetas = [...document.querySelectorAll('.tarjeta')]; // todas las tarjetas
-  const puntos = [...document.querySelectorAll('.punto')];  // todos los puntos
-  const velo = document.getElementById('veloFondo');        // fondo oscuro
+  carruselListo = true;                                     // marca
+  const visor = $('visor');                                 // contenedor con scroll
+  const tarjetas = [...document.querySelectorAll('.tarjeta')]; // tarjetas
+  const puntos = [...document.querySelectorAll('.punto')];  // puntos
+  const captura = $('capturaToques');                       // capa para tocar fuera
 
-  const obs = new IntersectionObserver(entradas => {        // detecta la tarjeta centrada
-    entradas.forEach(en => {                                // por cada cambio
-      const idx = tarjetas.indexOf(en.target);              // índice de la tarjeta
-      const activa = en.intersectionRatio > 0.6;            // visible en más del 60%
-      en.target.classList.toggle('activa', activa);         // la marca como activa o no
-      if (activa) puntos.forEach((p, j) => p.classList.toggle('activo', j === idx)); // actualiza puntos
+  // --- una sola tarjeta protagonista: la más cercana al centro ---
+  let rafActiva = 0;                                        // control de cuadros
+  function marcarActiva() {                                 // busca la tarjeta más centrada
+    rafActiva = 0;                                          // libera
+    const v = visor.getBoundingClientRect();                // caja del carrusel
+    const centro = v.left + v.width / 2;                    // centro horizontal
+    let mejor = 0, dist = Infinity;                         // la más cercana hasta ahora
+    tarjetas.forEach((t, i) => {                            // por cada tarjeta
+      const h = t.parentElement.getBoundingClientRect();    // caja de su posición (sin efecto de escala)
+      const d = Math.abs(h.left + h.width / 2 - centro);    // distancia al centro
+      if (d < dist) { dist = d; mejor = i; }                // guarda la mejor
     });
-  }, { root: visor, threshold: [0.6] });                    // medido dentro del carrusel
-  tarjetas.forEach(t => obs.observe(t));                    // observa cada tarjeta
+    tarjetas.forEach((t, i) => t.classList.toggle('activa', i === mejor)); // solo una activa
+    puntos.forEach((p, i) => p.classList.toggle('activo', i === mejor));   // su punto
+  }
+  visor.addEventListener('scroll', () => { if (!rafActiva) rafActiva = requestAnimationFrame(marcarActiva); }); // al desplazar
+  addEventListener('resize', marcarActiva);                 // al cambiar el tamaño
+  marcarActiva();                                           // estado inicial
 
-  let presionado = false, xInicio = 0, scrollInicio = 0, movido = false; // estado del arrastre con mouse
-  visor.addEventListener('mousedown', e => {                // empieza arrastre con mouse
-    if (expandida) return;                                  // no arrastrar con una hoja abierta
-    presionado = true; movido = false;                      // inicia estado
-    visor.classList.add('arrastrando');                     // cursor de agarrar
-    xInicio = e.clientX; scrollInicio = visor.scrollLeft;   // guarda posición inicial
+  // --- arrastrar con mouse en computador ---
+  let presionado = false, xInicio = 0, scrollInicio = 0, movido = false; // estado del arrastre
+  visor.addEventListener('mousedown', e => {                // inicia arrastre
+    if (abiertaT) return;                                   // no con una tarjeta abierta
+    presionado = true; movido = false;                      // estado
+    visor.classList.add('arrastrando');                     // cursor
+    xInicio = e.clientX; scrollInicio = visor.scrollLeft;   // posición inicial
   });
-  window.addEventListener('mousemove', e => {               // mientras arrastra
+  addEventListener('mousemove', e => {                      // mientras arrastra
     if (!presionado) return;                                // solo si está presionado
-    const dx = e.clientX - xInicio;                         // distancia recorrida
-    if (Math.abs(dx) > 4) movido = true;                    // fue arrastre, no clic
+    const dx = e.clientX - xInicio;                         // distancia
+    if (Math.abs(dx) > 4) movido = true;                    // fue arrastre
     visor.scrollLeft = scrollInicio - dx;                   // mueve el carrusel
   });
-  window.addEventListener('mouseup', () => {                // suelta el mouse
-    presionado = false;                                     // termina arrastre
-    visor.classList.remove('arrastrando');                  // vuelve el snap
-  });
+  addEventListener('mouseup', () => { presionado = false; visor.classList.remove('arrastrando'); }); // suelta
 
+  // --- abrir: la tarjeta crece desde su tamaño y lugar originales ---
+  function destino() {                                      // tamaño final de la tarjeta abierta
+    const w = Math.min(innerWidth * 0.9, 520);              // ancho
+    const h = innerHeight * 0.9;                            // alto
+    return { top: innerHeight * 0.05, left: (innerWidth - w) / 2, width: w, height: h }; // centrada
+  }
+  function poner(t, r) {                                    // aplica posición y tamaño
+    t.style.top = r.top + 'px'; t.style.left = r.left + 'px'; // posición
+    t.style.width = r.width + 'px'; t.style.height = r.height + 'px'; // tamaño
+  }
   function expandir(t) {                                    // abre una tarjeta
-    if (expandida) return;                                  // solo una a la vez
-    t.classList.add('expandida');                           // la agranda
-    velo.classList.add('visible');                          // oscurece el fondo
-    expandida = t;                                          // la recuerda
-    t.querySelector('.cerrar').focus({ preventScroll: true }); // foco en cerrar (accesibilidad)
+    if (abiertaT) return;                                   // solo una
+    abiertaT = t;                                           // la recuerda
+    const r = t.getBoundingClientRect();                    // dónde está ahora
+    t._origen = { top: r.top, left: r.left, width: r.width, height: r.height }; // guarda su lugar
+    t.parentElement.style.minHeight = t.parentElement.offsetHeight + 'px'; // conserva el espacio en el carrusel
+    t.classList.add('expandida');                           // pasa a posición fija...
+    poner(t, t._origen);                                    // ...exactamente donde estaba
+    t.getBoundingClientRect();                              // aplica antes de animar
+    t.classList.add('animando');                            // activa la transición
+    poner(t, destino());                                    // crece hasta su tamaño final
+    raiz.classList.add('bloqueado');                        // sin scroll de fondo
+    captura.classList.add('activa');                        // tocar fuera cierra
+    setTimeout(() => {                                      // cuando terminó de crecer...
+      t.classList.add('abierta');                           // ...aparece el detalle
+      t.querySelector('.cerrar').focus({ preventScroll: true }); // foco en cerrar
+    }, 450 * T);
   }
   function cerrar() {                                       // cierra la tarjeta abierta
-    if (!expandida) return;                                 // nada que cerrar
-    expandida.classList.remove('expandida');                // vuelve a su tamaño
-    velo.classList.remove('visible');                       // quita el fondo oscuro
-    expandida = null;                                       // olvida la tarjeta
+    const t = abiertaT;                                     // tarjeta
+    if (!t) return;                                         // nada abierto
+    t.classList.remove('abierta');                          // oculta el detalle
+    poner(t, t._origen);                                    // regresa a su lugar original
+    captura.classList.remove('activa');                     // quita la capa
+    setTimeout(() => {                                      // al terminar el regreso...
+      t.classList.remove('expandida', 'animando');          // ...vuelve al carrusel
+      t.style.top = t.style.left = t.style.width = t.style.height = ''; // limpia estilos
+      t.parentElement.style.minHeight = '';                 // libera el espacio
+      raiz.classList.remove('bloqueado');                   // vuelve el scroll
+      abiertaT = null;                                      // ninguna abierta
+    }, 620 * T);
   }
+  addEventListener('resize', () => { if (abiertaT && abiertaT.classList.contains('abierta')) poner(abiertaT, destino()); }); // se ajusta si gira el celular
   tarjetas.forEach(t => {                                   // por cada tarjeta
-    t.addEventListener('click', e => {                      // al tocarla
-      if (movido) { movido = false; return; }               // si fue arrastre, ignora
-      if (expandida) return;                                // si hay una abierta, ignora
-      if (t.classList.contains('activa')) expandir(t);      // la centrada se abre
-      else t.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); // las laterales se centran
+    t.addEventListener('click', () => {                     // al tocarla
+      if (movido) { movido = false; return; }               // fue arrastre
+      if (abiertaT) return;                                 // ya hay una abierta
+      if (t.classList.contains('activa')) expandir(t);      // la protagonista se abre
+      else t.parentElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); // las otras se centran
     });
-    t.addEventListener('keydown', e => {                    // con teclado
-      if (e.key === 'Enter' && !expandida) expandir(t);     // Enter abre
-    });
+    t.addEventListener('keydown', e => { if (e.key === 'Enter' && !abiertaT) expandir(t); }); // Enter abre
     t.querySelector('.cerrar').addEventListener('click', e => { e.stopPropagation(); cerrar(); }); // botón cerrar
   });
-  velo.addEventListener('click', cerrar);                   // tocar fuera cierra
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); }); // Escape cierra
+  captura.addEventListener('click', cerrar);                // tocar fuera cierra
+  addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); }); // Escape cierra
 }
 
 // ================== BOTÓN "VER DETALLES" ==================
-document.getElementById('botonSeguir').addEventListener('click', () => { // al tocar
-  escenaHojas.scrollIntoView({ behavior: 'smooth', block: 'start' });    // baja a las hojas
+$('botonSeguir').addEventListener('click', () => {          // al tocar
+  escenaHojas.scrollIntoView({ behavior: 'smooth', block: 'start' }); // baja a las hojas
 });
 </script>
 </body>
