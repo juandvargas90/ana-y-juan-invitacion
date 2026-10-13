@@ -513,10 +513,10 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 /* ---------- itinerario ---------- */
 .itinerario{ list-style:none; position:relative; margin:16px auto 4px; max-width:290px; text-align:left; } /* lista */
-.itinerario::before{ content:""; position:absolute; left:21px; top:10px; bottom:10px; width:1px; background:linear-gradient(var(--oro), rgba(195,160,94,.25)); } /* hilo dorado vertical */
+.itinerario::before{ content:""; position:absolute; left:27px; top:10px; bottom:10px; width:1px; background:linear-gradient(var(--oro), rgba(195,160,94,.25)); } /* hilo dorado vertical */
 .itinerario li{
   position:relative;          /* referencia */
-  display:grid; grid-template-columns:44px 64px 1fr; align-items:center; /* ícono · hora · momento */
+  display:grid; grid-template-columns:56px 62px 1fr; align-items:center; /* ícono · hora · momento */
   padding:7px 0;              /* aire entre momentos */
   opacity:0; transform:translateY(8px); /* empieza oculto */
   transition:opacity .5s ease, transform .5s ease; /* aparece */
@@ -525,7 +525,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .tarjeta.abierta .itinerario li{ opacity:1; transform:none; } /* visibles al abrir */
 .itin-icono{ width:42px; height:42px; border-radius:50%; background:var(--marfil); border:1px solid rgba(195,160,94,.6); display:flex; align-items:center; justify-content:center; color:var(--oro-osc); position:relative; z-index:1; } /* círculo del ícono, sobre el hilo */
 .itin-icono svg{ width:22px; height:22px; } /* ícono de línea */
-.itin-icono img{ width:38px; height:38px; object-fit:contain; } /* ícono en acuarela (cuando llegue) */
+.itin-icono.con-img{ width:54px; height:54px; border-color:rgba(195,160,94,.4); } /* círculo más grande para la acuarela */
+.itin-icono img{ width:46px; height:46px; object-fit:contain; filter:drop-shadow(1px 2px 1.5px rgba(30,28,16,.18)); } /* ícono en acuarela con sombra suave */
 .itin-hora{ font-family:var(--f-display); font-size:21px; font-weight:500; color:var(--oliva-osc); text-align:right; padding-right:12px; font-variant-numeric:tabular-nums; line-height:1; } /* hora */
 .itin-hora small{ display:block; font-family:var(--f-texto); font-size:8px; letter-spacing:1.6px; text-transform:uppercase; color:var(--oro-osc); margin-top:3px; } /* p. m. */
 .itin-momento{ font-family:var(--f-display); font-style:italic; font-size:17px; color:var(--tinta); line-height:1.2; border-left:1px solid rgba(195,160,94,.4); padding-left:12px; } /* actividad */
@@ -688,13 +689,13 @@ const CUENTA = {                                            // CUENTA FICTICIA: 
   titular: 'Ana Milena Mejía Niño'                          // titular
 };
 const ITINERARIO = [                                        // momentos del día (img: ícono en acuarela cuando exista)
-  { hora: '3:00', momento: 'Llegada y bienvenida', icono: 'bienvenida', img: null }, // llegada
-  { hora: '4:00', momento: 'Ceremonia religiosa',  icono: 'argollas',   img: null }, // ceremonia
-  { hora: '5:00', momento: 'Sesión de fotos',      icono: 'camara',     img: null }, // fotos
-  { hora: '6:00', momento: 'Brindis',              icono: 'copas',      img: null }, // brindis
-  { hora: '7:00', momento: 'Cena',                 icono: 'cena',       img: null }, // cena
-  { hora: '8:00', momento: 'Vals y rumba',         icono: 'musica',     img: null }, // fiesta
-  { hora: '11:00', momento: 'Despedida',           icono: 'luna',       img: null }  // despedida
+  { hora: '3:00', momento: 'Llegada y bienvenida', icono: 'bienvenida', img: 'itin_1.webp' }, // llegada
+  { hora: '4:00', momento: 'Ceremonia religiosa',  icono: 'argollas',   img: 'itin_2.webp' }, // ceremonia
+  { hora: '5:00', momento: 'Sesión de fotos',      icono: 'camara',     img: 'itin_3.webp' }, // fotos
+  { hora: '6:00', momento: 'Brindis',              icono: 'copas',      img: 'itin_4.webp' }, // brindis
+  { hora: '7:00', momento: 'Cena',                 icono: 'cena',       img: 'itin_5.webp' }, // cena
+  { hora: '8:00', momento: 'Vals y rumba',         icono: 'musica',     img: 'itin_6.webp' }, // fiesta
+  { hora: '11:00', momento: 'Despedida',           icono: 'luna',       img: 'itin_7.webp' }  // despedida
 ];
 // íconos provisionales en línea dorada (24x24); se reemplazan por las acuarelas cuando lleguen
 const ICONOS = {
@@ -756,7 +757,7 @@ const HOJAS = [                                             // hojas en el orden
     ante: 'Sábado 30 de enero', tituloDetalle: 'Itinerario', // encabezado
     cuerpo: () => `<ol class="itinerario">${ITINERARIO.map((m, i) => `
       <li style="--i:${i}">
-        <span class="itin-icono">${m.img ? `<img src="${m.img}" alt="">` : svgIcono(m.icono)}</span>
+        <span class="itin-icono${m.img ? ' con-img' : ''}">${m.img ? `<img src="${m.img}" alt="">` : svgIcono(m.icono)}</span>
         <span class="itin-hora">${m.hora}<small>p. m.</small></span>
         <span class="itin-momento">${m.momento}</span>
       </li>`).join('')}</ol>`                               // línea de tiempo
