@@ -24,6 +24,7 @@
 <link rel="preload" as="image" href="lino.webp"> <!-- mesa de lino -->
 <link rel="preload" as="image" href="papel_oliva.webp"> <!-- papel del sobre -->
 <link rel="preload" as="image" href="sello.webp"> <!-- sello de cera -->
+<link rel="preload" as="image" href="foto_carta_0.webp"> <!-- foto principal de la carta (sale del sobre) -->
 
 <style>
 /* Concepto: "flat lay" de papelería fina sobre una mesa de lino. Todo se trata como
@@ -331,7 +332,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   padding:6px;                /* borde blanco */
   box-shadow:1px 2px 2px rgba(0,0,0,.16), 4px 9px 14px -6px rgba(40,34,18,.38); /* foto apoyada (misma luz) */
   transform:rotate(-1.4deg);  /* un poco girada */
-  margin:0 auto 22px;         /* centrada */
+  margin:0 auto 12px;         /* centrada */
   max-width:100%;             /* nunca más ancha que la carta */
 }
 .foto-marco img{ width:100%; aspect-ratio:3/4; object-fit:cover; } /* foto de la pareja */
@@ -594,7 +595,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 /* ---------- confirmación ---------- */
 .plazo{ display:inline-block; font-size:10px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); border-top:1px solid rgba(195,160,94,.5); border-bottom:1px solid rgba(195,160,94,.5); padding:6px 4px; margin:-4px 0 14px; } /* días para confirmar */
-.pedidos{ text-align:center; margin-bottom:16px; } /* sin niños / sin mascotas */
+.pedidos{ text-align:center; margin-bottom:16px; } /* pedido de celebración sin niños */
 .pedidos p{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.5; color:var(--tinta-suave); margin-bottom:10px; } /* cada pedido */
 .pedidos b{ font-weight:600; font-style:normal; color:var(--oliva-osc); } /* resaltado */
 
@@ -632,9 +633,34 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .lino-caja > .lino-img{ display:block; width:100%; height:100%; } /* la tela con la ramita */
 .tarjeta-sello{ position:absolute; left:77.8%; top:52.7%; width:46%; height:auto; transform:translate(-50%,-50%) rotate(-6deg); filter:drop-shadow(1px 2px 1.5px rgba(20,16,8,.45)) drop-shadow(3px 6px 6px rgba(20,16,8,.25)); } /* nuestro sello sobre la ramita */
 .tarjeta.expandida .arco, .tarjeta.expandida .lino-caja{ opacity:0; } /* al abrir, el arco y el lino dan paso al detalle */
+.tarjeta.expandida .arco{ pointer-events:none; visibility:hidden; transition:opacity .35s ease, visibility 0s linear .35s; } /* invisible y SIN capturar toques ni la rueda del mouse */
+.vela-detalle{ z-index:3; } /* el panel de detalle siempre por encima de todo lo demás de la tarjeta */
 .vela-flor{ width:auto; height:56px; } /* ramita del panel (proporción vertical) */
 .lugar-nombre{ font-family:var(--f-display); font-size:24px; font-weight:500; color:var(--oliva-osc); margin-top:12px; } /* nombre del lugar */
 .lugar-sub{ font-size:9.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); margin-top:2px; } /* municipio */
+
+/* ---------- carrusel de fotos de la carta ---------- */
+.fotos{ position:relative; width:100%; aspect-ratio:3/4; overflow:hidden; background:#e9e2d3; } /* ventana del carrusel */
+.foto-marco .foto{
+  position:absolute; inset:0;   /* todas las fotos apiladas */
+  width:100%; height:100%; object-fit:cover; object-position:center 35%; /* llenan el marco (caras hacia arriba) */
+  opacity:0; transform:scale(1.02); /* ocultas por defecto */
+  transition:opacity 1.8s ease, transform 7.5s cubic-bezier(.25,.1,.25,1); /* fundido + acercamiento lento */
+}
+.foto-marco .foto.activa{ opacity:1; z-index:1; transform:scale(var(--ks,1.09)) translate(var(--kx,0%), var(--ky,0%)); } /* la visible, con movimiento suave tipo documental */
+.foto-marco .foto.sale{ opacity:1; z-index:0; transform:scale(var(--ks,1.09)) translate(var(--kx,0%), var(--ky,0%)); } /* la anterior queda quieta debajo mientras entra la nueva */
+.foto-marco .foto.quieta{ transform:scale(1.02); } /* la principal empieza quieta (como sale del sobre) */
+.fotos-puntos{ display:flex; justify-content:center; gap:2px; margin:0 auto 16px; min-height:22px; } /* puntos bajo la foto */
+.foto-punto{ width:22px; height:22px; background:none; border:none; padding:0; cursor:pointer; display:flex; align-items:center; justify-content:center; } /* área tocable */
+.foto-punto span{ width:5px; height:5px; border-radius:3px; background:var(--oro); opacity:.45; transition:width .5s ease, opacity .5s ease; } /* punto */
+.foto-punto.activo span{ width:16px; opacity:1; } /* el actual se alarga */
+@media (prefers-reduced-motion:reduce){ .foto-marco .foto.activa, .foto-marco .foto.sale{ transform:none; } } /* sin acercamiento si se pide menos movimiento */
+.regalo-texto{ margin-bottom:6px; } /* texto de regalos */
+.adorno-corazon{ display:flex; align-items:center; justify-content:center; gap:10px; color:var(--oro-osc); font-size:15px; margin:2px 0 4px; } /* adorno final */
+.adorno-corazon i{ width:44px; height:1px; background:linear-gradient(90deg, transparent, var(--oro)); } /* hilo izquierdo */
+.adorno-corazon i:last-child{ background:linear-gradient(90deg, var(--oro), transparent); } /* hilo derecho */
+.mini-sobre{ width:132px; height:88px; margin:16px auto 10px; } /* sobrecito un poco más grande */
+.mini-sobre img{ width:36px; } /* su sello */
 
 @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si se pide */
 </style>
@@ -707,7 +733,18 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
     <div class="contenido"> <!-- texto de la carta -->
       <div class="para">Para</div> <!-- etiqueta -->
       <div class="invitado" data-invitado>Nuestros queridos invitados</div> <!-- nombre (se personaliza con ?invitado=) -->
-      <div class="foto-marco"><img src="foto_pareja.webp" alt="Ana y Juan"></div> <!-- foto -->
+      <div class="foto-marco"> <!-- marco de foto impresa -->
+        <div class="fotos">
+          <img class="foto activa quieta" src="foto_carta_0.webp" alt="Ana y Juan">
+          <img class="foto" src="foto_carta_1.webp" alt="" loading="lazy" decoding="async">
+          <img class="foto" src="foto_carta_2.webp" alt="" loading="lazy" decoding="async">
+          <img class="foto" src="foto_carta_3.webp" alt="" loading="lazy" decoding="async">
+          <img class="foto" src="foto_carta_4.webp" alt="" loading="lazy" decoding="async">
+          <img class="foto" src="foto_carta_5.webp" alt="" loading="lazy" decoding="async">
+          <img class="foto" src="foto_carta_6.webp" alt="" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <div class="fotos-puntos" aria-label="Fotos"></div> <!-- indicador del carrusel (lo llena el script) -->
       <p class="mensaje">Con todo nuestro cariño, queremos que nos acompañes en el inicio de esta nueva historia: una historia que nace del amor y el ejemplo de nuestras familias, y que hoy celebramos con la bendición de nuestros padres.</p> <!-- mensaje que lleva a la bendición -->
       <div class="bendicion"> <!-- bendición de los padres -->
         <div class="padres"> <!-- las dos parejas -->
@@ -758,17 +795,10 @@ const PLAYLIST_LINK = null;                                 // link del formular
 const RSVP_LINK = null;                                     // link del formulario de confirmación (null = aún no definido)
 const PLACE_ID = 'ChIJO-JeFph_QI4RgqkaGzHyoTI';            // identificador de "Hacienda La Victoria - Subachoque" en Google
 const MAPS_LINK = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Hacienda La Victoria - Subachoque') + '&query_place_id=' + PLACE_ID; // abre la ficha con nombre, fotos y reseñas
-const WAZE_LINK = 'https://www.waze.com/live-map/directions?to=place.' + PLACE_ID; // Waze con el lugar como destino (mismo identificador)
-const CUENTA = {                                            // CUENTA FICTICIA: reemplazar por la real antes de enviar
-  banco: 'Bancolombia',                                     // banco
-  tipo: 'Cuenta de ahorros',                                // tipo de cuenta
-  numero: '000-000000-00',                                  // número (ficticio)
-  titular: 'Ana Milena Mejía Niño'                          // titular
-};
 const ITINERARIO = [                                        // momentos del día (img: ícono en acuarela cuando exista)
   { hora: '3:00', momento: 'Llegada y bienvenida', icono: 'bienvenida', img: 'itin_1.webp' }, // llegada
   { hora: '4:00', momento: 'Ceremonia religiosa',  icono: 'argollas',   img: 'itin_2.webp' }, // ceremonia
-  { hora: '5:00', momento: 'Sesión de fotos',      icono: 'camara',     img: 'itin_3.webp' }, // fotos
+  { hora: '5:00', momento: 'Coctel y sesión de fotos', icono: 'camara', img: 'itin_3.webp' }, // coctel y fotos
   { hora: '6:00', momento: 'Brindis',              icono: 'copas',      img: 'itin_4.webp' }, // brindis
   { hora: '7:00', momento: 'Cena',                 icono: 'cena',       img: 'itin_5.webp' }, // cena
   { hora: '8:00', momento: 'Vals y rumba',         icono: 'musica',     img: 'itin_6.webp' }, // fiesta
@@ -831,8 +861,7 @@ const HOJAS = [                                             // hojas en el orden
     ante: 'Guarda la fecha', tituloDetalle: 'Nuestro gran día', // encabezado del detalle
     cuerpo: () => `${htmlCalendario()}
       <p class="vela-texto centro"><b>3:00 p. m.</b> · Llegada de invitados</p>
-      <div class="conteo-grande" data-conteo="completo"></div>
-      <a class="boton-oliva" href="${linkCalendario}" target="_blank" rel="noopener">Agregar a mi calendario</a>`
+      <div class="conteo-grande" data-conteo="completo"></div>`
   },
   { // 2 · el lugar donde diremos sí
     fondo: 'etiqueta_2.webp', flor: 'euca_2.webp',          // ilustración y ramita
@@ -842,10 +871,7 @@ const HOJAS = [                                             // hojas en el orden
       <div class="lugar-sub">Subachoque · Cundinamarca</div>
       <p class="vela-texto">La ceremonia y la fiesta serán en el mismo lugar. Te esperamos para celebrar rodeados de quienes más queremos.</p>
       <div class="nota-icono"><span class="parqueo">P</span>Contamos con amplio parqueadero</div>
-      <div class="botones">
-        <a class="boton-oliva" href="${MAPS_LINK}" target="_blank" rel="noopener">Google Maps</a>
-        <a class="boton-oliva" href="${WAZE_LINK}" target="_blank" rel="noopener">Waze</a>
-      </div>`
+      <a class="boton-oliva" href="${MAPS_LINK}" target="_blank" rel="noopener">Ubicación</a>`
   },
   { // 3 · así viviremos nuestro día
     fondo: 'etiqueta_3.webp', flor: 'euca_3.webp',          // ilustración y ramita
@@ -883,14 +909,8 @@ const HOJAS = [                                             // hojas en el orden
     titulo: 'Un detalle de amor', sub: 'Lluvia de sobres', icono: 'sobre', toca: 'Toca para ver', // arco
     ante: 'Lluvia de sobres', tituloDetalle: 'Un detalle de amor', // encabezado
     cuerpo: () => `<div class="mini-sobre" aria-hidden="true"><span class="mini-solapa"></span><img src="sello.webp" alt=""></div>
-      <p class="vela-texto">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, el día de la boda tendremos una <b>lluvia de sobres</b>.</p>
-      <div class="cuenta">
-        <div class="cuenta-nota">Si prefieres hacerlo por transferencia:</div>
-        <div class="cuenta-dato">${CUENTA.banco} · ${CUENTA.tipo}</div>
-        <div class="cuenta-numero" id="numeroCuenta">${CUENTA.numero}</div>
-        <div class="cuenta-dato">${CUENTA.titular}</div>
-        <button class="boton-copiar" data-copiar="${CUENTA.numero}">Copiar número</button>
-      </div>`
+      <p class="vela-texto regalo-texto">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, el día de la boda tendremos una <b>lluvia de sobres</b>.</p>
+      <div class="adorno-corazon" aria-hidden="true"><i></i><span>♡</span><i></i></div>`
   },
   { // 6 · que suene nuestra historia (playlist)
     fondo: 'etiqueta_6.webp', flor: 'euca_3.webp',          // ilustración y ramita
@@ -910,7 +930,6 @@ const HOJAS = [                                             // hojas en el orden
       <div class="plazo" data-conteo="rsvp"></div>
       <div class="pedidos">
         <p>Hemos preparado una celebración pensada para adultos; con todo nuestro cariño, les pedimos que esta vez nos acompañen <b>sin niños</b>.</p>
-        <p>Por las condiciones del lugar, no será posible ingresar con <b>mascotas</b>… ni siquiera Jado podrá acompañarnos 🐾</p>
       </div>
       ${RSVP_LINK
         ? `<a class="boton-oliva" href="${RSVP_LINK}" target="_blank" rel="noopener">Confirmar asistencia</a>`
@@ -945,6 +964,68 @@ function acomodarClon() {                                   // escala la copia a
 }
 acomodarClon();                                             // primera vez
 addEventListener('resize', () => { if (!abierto) acomodarClon(); }); // si cambia la pantalla antes de abrir
+
+// ================== CARRUSEL DE FOTOS DE LA CARTA ==================
+// Se fusiona suavemente cada 5,5 s con un acercamiento lento distinto en cada foto.
+// Solo corre en la carta real (la copia del sobre se queda con la foto principal).
+const MOVIMIENTOS = [                                       // direcciones del acercamiento (escala y desplazamiento)
+  { ks: 1.10, kx: '-2%', ky: '-1.5%' }, { ks: 1.08, kx: '2%', ky: '-2%' }, // arriba-izquierda / arriba-derecha
+  { ks: 1.09, kx: '-1.5%', ky: '1.5%' }, { ks: 1.11, kx: '1.5%', ky: '1%' } // abajo-izquierda / abajo-derecha
+];
+let iniciarFotos = () => {};                                // se define abajo
+(function () {
+  const caja = carta.querySelector('.fotos');               // ventana del carrusel en la carta real
+  const fotos = [...caja.querySelectorAll('.foto')];        // las 7 fotos
+  const puntosF = carta.querySelector('.fotos-puntos');     // contenedor de puntos
+  const botones = fotos.map((f, n) => {                     // un punto por foto
+    const b = document.createElement('button');            // botón del punto
+    b.className = 'foto-punto' + (n === 0 ? ' activo' : ''); // el primero activo
+    b.setAttribute('aria-label', 'Foto ' + (n + 1));        // nombre accesible
+    b.innerHTML = '<span></span>';                          // el punto visible
+    b.addEventListener('click', () => { ir(n); programar(); }); // tocar un punto lleva a esa foto
+    puntosF.appendChild(b);                                 // lo agrega
+    return b;                                               // lo guarda
+  });
+  let actual = 0, temporizador = 0, visible = false, iniciado = false, mov = 0; // estado
+  function ir(n) {                                          // muestra la foto n
+    n = (n + fotos.length) % fotos.length;                  // da la vuelta al llegar al final
+    if (n === actual) return;                               // ya es la actual
+    const sig = fotos[n], ant = fotos[actual];              // siguiente y anterior
+    const mostrar = () => {                                 // cuando la siguiente ya cargó...
+      fotos.forEach(f => f.classList.remove('sale'));       // limpia salidas viejas
+      const m = MOVIMIENTOS[mov++ % MOVIMIENTOS.length];    // elige el movimiento
+      sig.style.setProperty('--ks', m.ks); sig.style.setProperty('--kx', m.kx); sig.style.setProperty('--ky', m.ky); // lo aplica
+      ant.classList.remove('activa', 'quieta'); ant.classList.add('sale'); // la anterior queda debajo
+      sig.classList.add('activa');                          // la nueva aparece encima con fundido
+      setTimeout(() => ant.classList.remove('sale'), 1900); // al terminar el fundido, la anterior se retira
+      botones.forEach((b, i) => b.classList.toggle('activo', i === n)); // actualiza puntos
+      actual = n;                                           // recuerda la actual
+    };
+    if (sig.complete && sig.naturalWidth) mostrar();        // si ya está cargada, la muestra
+    else { sig.loading = 'eager'; sig.addEventListener('load', mostrar, { once: true }); } // si no, espera a que cargue
+  }
+  function programar() {                                    // agenda el siguiente cambio
+    clearTimeout(temporizador);                             // cancela el anterior
+    if (!iniciado || !visible || document.hidden) return;   // solo si está en pantalla
+    temporizador = setTimeout(() => { ir(actual + 1); programar(); }, 5500); // cada 5,5 s
+  }
+  new IntersectionObserver(e => { visible = e[0].isIntersecting; programar(); }, { threshold: .3 }).observe(caja); // pausa fuera de pantalla
+  document.addEventListener('visibilitychange', programar); // pausa si cambian de app/pestaña
+  let x0 = null;                                            // inicio del deslizamiento con el dedo
+  caja.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true }); // empieza
+  caja.addEventListener('touchend', e => {                  // termina
+    if (x0 === null) return;                                // sin inicio
+    const dx = e.changedTouches[0].clientX - x0; x0 = null; // distancia
+    if (Math.abs(dx) > 40) { ir(actual + (dx < 0 ? 1 : -1)); programar(); } // izquierda = siguiente, derecha = anterior
+  }, { passive: true });
+  iniciarFotos = () => {                                    // arranca cuando la carta ya está a la vista
+    if (iniciado) return;                                   // una sola vez
+    iniciado = true;                                        // marca
+    fotos.slice(1).forEach(f => { f.loading = 'eager'; });  // empieza a cargar las demás fotos
+    requestAnimationFrame(() => fotos[0].classList.remove('quieta')); // la principal empieza su acercamiento suave
+    programar();                                            // agenda el primer cambio
+  };
+})();
 
 // ================== CONSTRUIR LAS HOJAS ==================
 const fila = $('filaHojas');                                // fila del carrusel
@@ -1095,6 +1176,7 @@ async function abrirSobre() {                               // secuencia complet
   escenaHojas.hidden = false;                               // muestra las hojas
   raiz.classList.remove('bloqueado');                       // habilita el scroll
   iniciarCarrusel();                                        // activa el carrusel
+  iniciarFotos();                                           // arranca el carrusel de fotos de la carta
 }
 sobre.addEventListener('click', abrirSobre);                // abrir al tocar
 sobre.addEventListener('keydown', e => {                    // abrir con teclado
