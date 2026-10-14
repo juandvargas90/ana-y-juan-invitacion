@@ -38,7 +38,7 @@
   --tinta-tenue:rgba(51,64,42,0.62); /* texto de pistas (más legible) */
   --oro-texto:#6f5427;        /* dorado oscuro para textos pequeños: legible sobre lino y marfil */
   --marfil:#f7f0e2;           /* papel marfil */
-  --marfil-vela:rgba(248,242,230,0.9); /* papel vegetal translúcido sobre fotos */
+  --marfil-vela:rgba(248,242,230,0.94); /* papel vegetal translúcido sobre fotos (sin desenfoque: un poco más opaco) */
   --oro:#c3a05e;              /* dorado champagne */
   --oro-claro:#e6cf9c;        /* brillo del dorado */
   --oro-osc:#8a6a35;          /* dorado profundo para textos pequeños */
@@ -100,7 +100,6 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .escena-sobre.alejando .decor{ animation:desaparecer 1.4s ease forwards; } /* las flores se desvanecen */
 .escena-sobre.alejando .encabezado,
 .escena-sobre.alejando .pista{ opacity:0; transition:opacity 1.2s ease; } /* los textos se desvanecen */
-.escena-sobre.alejando .pista{ animation:none; } /* la pista deja de parpadear para poder desvanecerse */
 .encabezado{ position:relative; z-index:3; text-align:center; } /* textos sobre las flores */
 .antetitulo{
   font-size:10.5px;           /* texto pequeño */
@@ -277,20 +276,26 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .sobre.sello-suelto .sello{
   transform:translate(-50%,-56%) translateZ(9px) rotate(1deg); /* se levanta conservando su volumen */
 }
+.sello::after{
+  content:""; position:absolute; inset:-4%; border-radius:50%; /* aro alrededor del sello */
+  border:1.5px solid rgba(232,206,150,.95);                     /* filete dorado claro */
+  box-shadow:0 0 14px rgba(232,206,150,.7), inset 0 0 8px rgba(232,206,150,.35); /* brillo suave */
+  backface-visibility:hidden; -webkit-backface-visibility:hidden; /* se oculta al voltearse la solapa */
+  pointer-events:none;                                          /* no bloquea el toque */
+  animation:aro 2.6s ease-out infinite;                          /* respira: crece y se desvanece */
+}
+@keyframes aro{ 0%{ transform:scale(.94); opacity:0; } 18%{ opacity:.95; } 100%{ transform:scale(1.42); opacity:0; } } /* onda dorada */
+.sobre.sello-suelto .sello::after{ animation:none; opacity:0; } /* al tocarlo, el aro desaparece */
 .sobre.sello-suelto .sello img{ filter:drop-shadow(2px 4px 2px rgba(20,16,8,.4)) drop-shadow(7px 13px 10px rgba(20,16,8,.3)); } /* sombra más lejana */
 
 .pista{
   position:relative; z-index:3; /* sobre las flores */
-  font-size:11px; letter-spacing:2.6px; text-transform:uppercase; /* tipografía */
-  color:var(--tinta);         /* color principal: se lee claro */
+  font-size:10px; letter-spacing:3px; text-transform:uppercase; /* pequeño y discreto */
+  color:var(--oro-texto);     /* dorado oscuro legible */
   text-align:center;          /* centrado */
-  padding:9px 18px;           /* forma de botón suave */
-  border:1px solid rgba(176,142,80,.6); border-radius:999px; /* píldora con filete dorado */
-  background:rgba(247,242,230,.8); /* papel claro detrás del texto */
-  backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); /* separa el texto de las flores */
-  animation:latido 2.6s ease-in-out infinite; /* respira suavemente para invitar a tocar */
+  margin-top:-14px;           /* cerca del sobre */
+  text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.95); /* halo claro sobre el lino */
 }
-@keyframes latido{ 0%,100%{ opacity:.78; transform:scale(1); } 50%{ opacity:1; transform:scale(1.03); } } /* respiración suave */
 
 /* ======================= ESCENA 2 · LA CARTA ======================= */
 .escena-carta{
@@ -347,13 +352,13 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 .boton-seguir{
   position:relative; z-index:2; /* sobre las flores */
-  margin-top:22px;            /* separación con la carta (más cerca) */
+  margin-top:14px;            /* separación con la carta (cerca) */
   display:flex; flex-direction:column; align-items:center; gap:6px; /* texto con línea */
   background:none; border:none; cursor:pointer; /* sin caja exterior */
   font-size:11px; letter-spacing:2.6px; text-transform:uppercase; color:var(--tinta); /* tipografía legible */
 }
 .boton-seguir span{ padding:9px 20px; border:1px solid rgba(176,142,80,.6); border-radius:999px; background:rgba(247,242,230,.82); animation:flotar 2.4s ease-in-out infinite; } /* píldora con filete dorado que flota suave */
-.boton-seguir::after{ content:""; width:1px; height:16px; background:linear-gradient(var(--tinta-suave), transparent); } /* línea indicadora */
+.boton-seguir::after{ content:""; width:1px; height:10px; background:linear-gradient(var(--tinta-suave), transparent); } /* línea indicadora corta */
 @keyframes flotar{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(5px); } } /* flotar */
 
 /* ======================= ESCENA 3 · LAS HOJAS ======================= */
@@ -362,16 +367,18 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .escena-hojas{
   position:relative;          /* referencia */
   display:flex; flex-direction:column; /* en columna */
-  padding-top:14px;           /* aire arriba (cerca de la carta) */
+  padding-top:6px;            /* casi pegado a la carta */
   overflow:hidden;            /* recorta flores */
 }
-.hojas-encabezado{ position:relative; text-align:center; padding:0 16px 10px; } /* títulos */
+.hojas-encabezado{ position:relative; isolation:isolate; text-align:center; padding:10px 16px 4px; } /* títulos */
+.hojas-encabezado::before, .pie::before{ content:""; position:absolute; inset:-6px 6%; z-index:-1; background:radial-gradient(closest-side, rgba(248,243,232,.9), rgba(248,243,232,.6) 60%, transparent); pointer-events:none; } /* velo claro que separa el texto del lino */
+.hojas-encabezado .antetitulo{ font-size:11px; margin-bottom:0; } /* antetítulo un poco más grande */
 .hojas-encabezado .mini-sello{ width:52px; margin:0 auto 12px; filter:var(--sombra-objeto); } /* sello pequeño */
-.hojas-encabezado .antetitulo{ color:var(--oro-texto); } /* antetítulo legible sobre el lino */
+.hojas-encabezado .antetitulo{ color:#5e4620; } /* antetítulo con dorado más profundo */
 .hojas-encabezado .antetitulo, .conteo-hojas, .hojas-pista, .pie{ text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.95); } /* halo claro: se despegan del lino */
 .pie{ opacity:1; } /* pie sin transparencia */
 .hojas-pista{ color:var(--tinta); } /* instrucción con el tono principal */
-.hojas-encabezado h2{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(26px, 6vw, 32px); color:var(--oliva-osc); margin-bottom:10px; text-wrap:balance; } /* título */
+.hojas-encabezado h2{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(26px, 6vw, 32px); color:var(--oliva-osc); margin:4px 0 2px; line-height:1.1; text-wrap:balance; } /* título */
 .hojas-pista{ font-size:10.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--tinta-suave); } /* instrucción (más legible) */
 
 .hojas-visor{
@@ -382,7 +389,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   touch-action:pan-x pan-y;   /* deslizar horizontal y hacer scroll vertical */
   scrollbar-width:none;       /* oculta la barra */
   cursor:grab;                /* mano para arrastrar en computador */
-  padding:26px 0 8px;         /* aire para sombras */
+  padding:14px 0 6px;         /* aire justo para sombras */
 }
 .hojas-visor::-webkit-scrollbar{ display:none; } /* oculta la barra en Chrome/Safari */
 .hojas-visor.arrastrando{ cursor:grabbing; scroll-snap-type:none; } /* arrastre con mouse */
@@ -400,9 +407,9 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   overflow:hidden;            /* recorta la foto */
   background:var(--marfil);   /* respaldo */
   box-shadow:1px 2px 2px var(--sombra-contacto), 6px 16px 28px -8px var(--sombra); /* misma luz */
-  opacity:calc(.7 + .3 * var(--p, 0)); /* nitidez según cercanía al centro (la calcula el script cuadro a cuadro) */
-  transform:scale(calc(.9 + .1 * var(--p, 0))) rotate(calc(var(--giro, 0deg) * (1 - var(--p, 0)))); /* crece y se endereza al acercarse al centro */
-  will-change:transform, opacity; /* animación más suave */
+  opacity:.7;                 /* lateral atenuada (estado por defecto) */
+  transform:scale(.9) rotate(var(--giro, 0deg)); /* lateral más pequeña e inclinada (estado por defecto) */
+  will-change:transform, opacity; /* capa propia en la tarjeta gráfica: movimiento suave */
   transition:box-shadow .35s ease; /* el tamaño sigue al dedo sin retraso; solo la sombra se suaviza */
   -webkit-tap-highlight-color:transparent; /* sin destello al tocar */
 }
@@ -411,7 +418,10 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .tarjeta.activa{ box-shadow:1px 3px 3px var(--sombra-contacto), 8px 24px 40px -10px var(--sombra); } /* SOLO la más cercana al centro */
 /* tarjeta abierta: posición fija; su tamaño y lugar los anima el script desde la posición original */
 .tarjeta.expandida{ position:fixed; z-index:200; max-width:none; opacity:1; transform:none; cursor:default; } /* fija, por encima de todo */
-.tarjeta.animando{ transition:top .6s cubic-bezier(.3,.7,.2,1), left .6s cubic-bezier(.3,.7,.2,1), width .6s cubic-bezier(.3,.7,.2,1), height .6s cubic-bezier(.3,.7,.2,1), box-shadow .6s ease; } /* crece/regresa con suavidad */
+.tarjeta.animando{ transition:top .5s cubic-bezier(.3,.7,.2,1), left .5s cubic-bezier(.3,.7,.2,1), width .5s cubic-bezier(.3,.7,.2,1), height .5s cubic-bezier(.3,.7,.2,1), box-shadow .5s ease; }
+.tarjeta.cerrando{ transition-duration:.42s; transition-timing-function:cubic-bezier(.4,0,.2,1); } /* al cerrar, un poco más rápido */
+.tarjeta.cerrando .vela-detalle{ transition:opacity .15s ease; } /* el detalle se apaga casi de inmediato */
+.tarjeta.cerrando .arco, .tarjeta.cerrando .lino-caja{ transition:opacity .2s ease; } /* el arco y el lino vuelven enseguida */ /* crece/regresa con suavidad */
 .tarjeta.expandida{ box-shadow:2px 4px 4px var(--sombra-contacto), 12px 34px 60px -12px rgba(38,34,20,.45); } /* sombra de objeto levantado */
 .tarjeta-foto{ position:absolute; inset:0; background-size:cover; background-position:center bottom; transition:transform 6s ease; } /* foto floral */
 .tarjeta.expandida .tarjeta-foto{ transform:scale(1.04); } /* leve acercamiento */
@@ -422,8 +432,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   transform:translateX(-50%); /* centrado */
   width:min(80%, 360px);      /* ancho */
   background:linear-gradient(var(--marfil-vela), var(--marfil-vela)), url('papel_marfil.webp') center / cover; /* papel vegetal */
-  backdrop-filter:blur(3px);  /* desenfoca la foto detrás */
-  -webkit-backdrop-filter:blur(3px); /* igual en Safari */
+
   box-shadow:2px 6px 16px -6px rgba(30,28,16,.35); /* papel apoyado (misma luz) */
   text-align:center;          /* centrado */
   padding:20px 18px 18px;     /* aire interior */
@@ -492,8 +501,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .punto-btn{ background:none; border:none; padding:0; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; } /* área tocable de cada punto */
 .punto{ width:6px; height:6px; border-radius:50%; background:var(--tinta-tenue); opacity:.5; transition:all .3s ease; } /* punto */
 .punto.activo{ background:var(--oro-osc); opacity:1; transform:scale(1.4); } /* punto actual */
-.pie{ padding:6px 16px 48px; text-align:center; font-size:10.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta); opacity:.85; } /* pie */
-.pie b{ font-weight:400; color:var(--oro-texto); } /* hashtag (dorado legible) */
+.pie{ position:relative; isolation:isolate; margin:0 auto 40px; padding:10px 16px; max-width:520px; text-align:center; font-size:11px; letter-spacing:2.4px; line-height:1.7; text-transform:uppercase; color:var(--oliva-osc); } /* pie (más contraste) */
+.pie b{ font-weight:400; color:#5e4620; } /* hashtag (dorado profundo) */
 
 /* pétalos: el contenedor cae (con sombra fija), la imagen interior gira y aletea */
 .capa-petalos{ position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden; } /* capa */
@@ -608,6 +617,21 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .pedidos p{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.5; color:var(--tinta-suave); margin-bottom:10px; } /* cada pedido */
 .pedidos b{ font-weight:600; font-style:normal; color:var(--oliva-osc); } /* resaltado */
 
+/* Animación ligada al desplazamiento: el navegador la calcula en la tarjeta gráfica, sin pasar por el código,
+   así sigue al dedo sin cortes. La "ventana" se reduce al ancho de una tarjeta: centrada = 50%,
+   la vecina = 0% o 100%. Si el navegador no la soporta, el script hace lo mismo cuadro a cuadro. */
+@supports (animation-timeline: view()) {
+  .hojas-visor .tarjeta{
+    animation:enfoque linear both;  /* tamaño y nitidez según la posición */
+    animation-timeline:view(inline calc(50% - min(41vw, 170px))); /* ventana del ancho de una tarjeta, centrada */
+  }
+}
+@keyframes enfoque{
+  0%, 100%{ transform:scale(.9) rotate(var(--giro, 0deg)); opacity:.7; } /* a un lado: pequeña, inclinada y atenuada */
+  50%{ transform:scale(1) rotate(0deg); opacity:1; }                     /* centrada: tamaño completo, derecha y nítida */
+}
+.tarjeta.expandida{ animation:none; } /* abierta: sin la animación del carrusel */
+
 /* ---------- tarjeta cerrada: arco translúcido, franja de lino y sello (iguales en todas) ---------- */
 .tarjeta{ container-type:inline-size; } /* las medidas del arco se adaptan al ancho de la tarjeta */
 .arco{
@@ -615,9 +639,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   left:6%; top:6.5%;          /* a la izquierda del lino */
   width:72%; height:64%;      /* tamaño del arco (deja ver la escena abajo) */
   border-radius:999px 999px 0 0; /* forma de arco de medio punto */
-  background:linear-gradient(rgba(236,239,224,.9), rgba(236,239,224,.82) 55%, rgba(236,239,224,.45)); /* verde salvia muy claro, más transparente abajo */
-  backdrop-filter:blur(2px);  /* suaviza la ilustración detrás */
-  -webkit-backdrop-filter:blur(2px); /* igual en Safari */
+  background:linear-gradient(rgba(236,239,224,.92), rgba(236,239,224,.86) 55%, rgba(236,239,224,.5)); /* verde salvia muy claro, más transparente abajo */
+
   -webkit-mask-image:linear-gradient(#000 86%, transparent 100%); /* el arco se funde con la escena abajo */
   mask-image:linear-gradient(#000 86%, transparent 100%); /* igual en otros navegadores */
   display:flex; flex-direction:column; align-items:center; /* contenido centrado en columna */
@@ -777,7 +800,6 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 <!-- ======================= ESCENA 3 · LAS HOJAS ======================= -->
 <section class="escena-hojas" id="escenaHojas" hidden>
   <div class="hojas-encabezado"> <!-- títulos -->
-    <div class="mini-sello"><img src="sello.webp" alt=""></div> <!-- sello pequeño -->
     <div class="antetitulo">Todo lo que necesitas saber</div> <!-- antetítulo -->
     <h2>Detalles de la boda</h2> <!-- título -->
     <div class="conteo-hojas" data-conteo="corto"></div> <!-- conteo regresivo -->
@@ -1288,23 +1310,32 @@ function iniciarCarrusel() {                                // se llama al mostr
   ajustarBordes();                                          // primera vez
 
   // --- una sola tarjeta protagonista: la más cercana al centro ---
-  let actual = 0;                                           // índice de la tarjeta centrada
+  const animaNavegador = CSS.supports('animation-timeline: view()'); // ¿el navegador anima el carrusel por su cuenta?
+  let centros = [], anchoHoja = 1;                          // centros precalculados de cada tarjeta
+  function medirCentros() {                                 // calcula una sola vez (y al girar el celular)
+    centros = hojas.map(h => h.offsetLeft + h.offsetWidth / 2); // centro de cada tarjeta dentro del carrusel
+    anchoHoja = hojas[0].offsetWidth;                       // ancho de una tarjeta
+  }
+  medirCentros();                                           // primera vez
+  let actual = 0, actualPrevio = -1;                        // índice de la tarjeta centrada
   let rafActiva = 0;                                        // control de cuadros
   function marcarActiva() {                                 // busca la tarjeta más centrada
     rafActiva = 0;                                          // libera
     if (abiertaT) return;                                   // con una abierta no se recalcula
-    const v = visor.getBoundingClientRect();                // caja del carrusel
-    const centro = v.left + v.width / 2;                    // centro horizontal
+    const centro = visor.scrollLeft + visor.clientWidth / 2; // centro del carrusel (sin medir la página)
     let mejor = 0, dist = Infinity;                         // la más cercana hasta ahora
-    hojas.forEach((h, i) => {                               // por cada posición
-      const r = h.getBoundingClientRect();                  // su caja
-      const d = Math.abs(r.left + r.width / 2 - centro);    // distancia al centro
-      const cerca = Math.max(0, 1 - d / r.width);           // 1 = centrada, 0 = a una tarjeta o más de distancia
-      tarjetas[i].style.setProperty('--p', cerca.toFixed(3)); // tamaño y nitidez en tiempo real
+    centros.forEach((c, i) => {                             // centro precalculado de cada tarjeta
+      const d = Math.abs(c - centro);                       // distancia al centro
+      if (!animaNavegador) {                                // solo si el navegador no anima por sí mismo
+        const cerca = Math.max(0, 1 - d / anchoHoja);       // 1 = centrada, 0 = a una tarjeta de distancia
+        tarjetas[i].style.transform = `scale(${.9 + .1 * cerca}) rotate(${(i % 2 ? 3 : -3) * (1 - cerca)}deg)`; // tamaño e inclinación
+        tarjetas[i].style.opacity = .7 + .3 * cerca;        // nitidez
+      }
       if (d < dist) { dist = d; mejor = i; }                // guarda la mejor
     });
     actual = mejor;                                         // recuerda la centrada
-    tarjetas.forEach((t, i) => t.classList.toggle('activa', i === mejor)); // solo una activa
+    if (mejor !== actualPrevio) tarjetas.forEach((t, i) => t.classList.toggle('activa', i === mejor)); // solo una activa (solo cambia si hace falta)
+    actualPrevio = mejor;                                   // recuerda
     puntos.forEach((p, i) => p.classList.toggle('activo', i === mejor));   // su punto
     $('flechaAnt').disabled = mejor === 0;                  // sin flecha atrás en la primera
     $('flechaSig').disabled = mejor === hojas.length - 1;   // sin flecha adelante en la última
@@ -1316,7 +1347,7 @@ function iniciarCarrusel() {                                // se llama al mostr
     visor.scrollTo({ left: destinoX, behavior: reducido ? 'auto' : 'smooth' }); // desliza
   }
   visor.addEventListener('scroll', () => { if (!rafActiva) rafActiva = requestAnimationFrame(marcarActiva); }); // al desplazar
-  addEventListener('resize', () => { ajustarBordes(); marcarActiva(); }); // al cambiar el tamaño o girar el celular
+  addEventListener('resize', () => { ajustarBordes(); medirCentros(); marcarActiva(); }); // al cambiar el tamaño o girar el celular
   marcarActiva();                                           // estado inicial
   $('flechaAnt').addEventListener('click', () => irA(actual - 1)); // flecha atrás
   $('flechaSig').addEventListener('click', () => irA(actual + 1)); // flecha adelante
@@ -1384,18 +1415,19 @@ function iniciarCarrusel() {                                // se llama al mostr
     const t = abiertaT;                                     // tarjeta
     if (!t || ocupado) return;                              // nada abierto o en movimiento
     ocupado = true;                                         // en movimiento
+    t.classList.add('cerrando');                            // ritmo de cierre
     t.classList.remove('abierta', 'tapada');                // oculta el detalle y el arco/lino vuelven de inmediato (se funden mientras encoge)
     poner(t, t._lugar.getBoundingClientRect());             // regresa a su lugar exacto
     captura.classList.remove('activa');                     // quita la capa
     setTimeout(() => {                                      // al terminar el regreso...
-      t.classList.remove('expandida', 'animando');          // ...vuelve a ser parte del carrusel
+      t.classList.remove('expandida', 'animando', 'cerrando'); // ...vuelve a ser parte del carrusel
       t.style.top = t.style.left = t.style.width = t.style.height = ''; // limpia estilos
       t._lugar.replaceWith(t);                              // vuelve a su sitio en el carrusel
       t.querySelector('.vela-scroll').scrollTop = 0;        // el panel queda listo desde arriba
       desbloquearScroll();                                  // la página sigue donde estaba
       abiertaT = null; ocupado = false;                     // libre
       t.focus({ preventScroll: true });                     // foco de vuelta en la tarjeta
-    }, 640 * T);
+    }, 440 * T);
   }
   addEventListener('resize', () => { if (abiertaT && !ocupado) poner(abiertaT, destino()); }); // se ajusta si gira el celular
   tarjetas.forEach((t, i) => {                              // por cada tarjeta
