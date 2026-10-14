@@ -384,7 +384,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .tarjeta{
   position:relative;          /* referencia de capas */
   width:100%; max-width:310px; /* tamaño */
-  height:clamp(300px, 60vh, 470px); /* alto (mínimo legible en pantallas bajas) */
+  height:clamp(320px, 66vh, 500px); /* alto (mínimo legible en pantallas bajas) */
   cursor:pointer;             /* se puede tocar */
   border:7px solid #fbf6ea;   /* borde blanco cálido de foto impresa */
   border-radius:3px;          /* esquinas suaves */
@@ -474,8 +474,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   transform:translateY(-50%); transition:opacity .3s ease; /* centrada verticalmente */
 }
 .flecha:disabled{ opacity:0; pointer-events:none; } /* se oculta en los extremos */
-.flecha-ant{ left:max(16px, calc(50% - 300px)); } /* izquierda */
-.flecha-sig{ right:max(16px, calc(50% - 300px)); } /* derecha */
+.flecha-ant{ left:max(8px, calc(50% - min(41vw, 170px) - 54px)); } /* junto al borde izquierdo de la tarjeta central */
+.flecha-sig{ right:max(8px, calc(50% - min(41vw, 170px) - 54px)); } /* junto al borde derecho de la tarjeta central */
 @media (hover:hover) and (pointer:fine){ .flecha{ display:flex; } } /* solo en equipos con mouse */
 .puntos{ display:flex; justify-content:center; gap:4px; padding:4px 0 22px; } /* indicador de posición */
 .punto{ display:block; } /* el punto es un círculo visible */
@@ -598,6 +598,44 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .pedidos p{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.5; color:var(--tinta-suave); margin-bottom:10px; } /* cada pedido */
 .pedidos b{ font-weight:600; font-style:normal; color:var(--oliva-osc); } /* resaltado */
 
+/* ---------- tarjeta cerrada: arco translúcido, franja de lino y sello (iguales en todas) ---------- */
+.tarjeta{ container-type:inline-size; } /* las medidas del arco se adaptan al ancho de la tarjeta */
+.arco{
+  position:absolute;          /* sobre la ilustración */
+  left:6%; top:6.5%;          /* a la izquierda del lino */
+  width:72%; height:64%;      /* tamaño del arco (deja ver la escena abajo) */
+  border-radius:999px 999px 0 0; /* forma de arco de medio punto */
+  background:linear-gradient(rgba(236,239,224,.9), rgba(236,239,224,.82) 55%, rgba(236,239,224,.45)); /* verde salvia muy claro, más transparente abajo */
+  backdrop-filter:blur(2px);  /* suaviza la ilustración detrás */
+  -webkit-backdrop-filter:blur(2px); /* igual en Safari */
+  -webkit-mask-image:linear-gradient(#000 86%, transparent 100%); /* el arco se funde con la escena abajo */
+  mask-image:linear-gradient(#000 86%, transparent 100%); /* igual en otros navegadores */
+  display:flex; flex-direction:column; align-items:center; /* contenido centrado en columna */
+  padding:11cqw 6cqw 0;       /* aire arriba y a los lados */
+  text-align:center;          /* texto centrado */
+  color:var(--oliva-osc);     /* color del texto */
+  transition:opacity .35s ease; /* se desvanece al abrir */
+  z-index:1;                  /* sobre la ilustración */
+}
+.arco::before{ content:""; position:absolute; inset:5px 5px 0; border:1px solid rgba(176,142,80,.7); border-bottom:none; border-radius:inherit; pointer-events:none; } /* filete dorado del arco */
+.arco-firma{ font-family:var(--f-display); font-weight:500; font-size:clamp(10px, 4cqw, 13px); letter-spacing:.24em; text-transform:uppercase; color:#9a7a45; } /* "ANA & JUAN" */
+.arco-hilo{ width:24%; height:1px; margin:2.2cqw 0 2.6cqw; background:linear-gradient(90deg, transparent, #b08e50, transparent); } /* línea dorada fina */
+.arco-titulo{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(19px, 8.6cqw, 30px); line-height:1.02; color:#4a5638; text-wrap:balance; } /* título grande */
+.arco-sub{ margin-top:2.6cqw; font-family:var(--f-display); font-weight:500; font-size:clamp(8.5px, 3.3cqw, 11.5px); letter-spacing:.16em; text-transform:uppercase; color:#5d5a48; line-height:1.5; text-wrap:balance; } /* subtítulo */
+.arco-icono{ display:flex; align-items:center; gap:2.6cqw; margin-top:2.6cqw; color:#a5864b; width:100%; justify-content:center; } /* ícono con hilos */
+.arco-icono i{ flex:0 1 18%; height:1px; background:#b08e50; opacity:.7; } /* hilos dorados a los lados del ícono */
+.arco-icono svg{ width:clamp(16px, 7.6cqw, 24px); height:auto; } /* ícono dorado */
+.arco-toca{ margin-top:2cqw; font-family:var(--f-display); font-weight:500; font-size:clamp(8.5px, 3.1cqw, 10.5px); letter-spacing:.2em; text-transform:uppercase; color:#9a7a45; } /* "Toca para ver" */
+.arco-flecha{ margin-top:1.8cqw; width:clamp(20px, 8cqw, 28px); aspect-ratio:1; border-radius:50%; border:1px solid #a5864b; color:#a5864b; display:flex; align-items:center; justify-content:center; } /* botón circular con flecha */
+.arco-flecha svg{ width:45%; height:auto; } /* flecha */
+.lino-caja{ position:absolute; top:0; right:0; height:100%; aspect-ratio:372 / 1350; z-index:2; pointer-events:none; transition:opacity .35s ease; } /* franja de lino a la derecha */
+.lino-caja > .lino-img{ display:block; width:100%; height:100%; } /* la tela con la ramita */
+.tarjeta-sello{ position:absolute; left:77.8%; top:52.7%; width:46%; height:auto; transform:translate(-50%,-50%) rotate(-6deg); filter:drop-shadow(1px 2px 1.5px rgba(20,16,8,.45)) drop-shadow(3px 6px 6px rgba(20,16,8,.25)); } /* nuestro sello sobre la ramita */
+.tarjeta.expandida .arco, .tarjeta.expandida .lino-caja{ opacity:0; } /* al abrir, el arco y el lino dan paso al detalle */
+.vela-flor{ width:auto; height:56px; } /* ramita del panel (proporción vertical) */
+.lugar-nombre{ font-family:var(--f-display); font-size:24px; font-weight:500; color:var(--oliva-osc); margin-top:12px; } /* nombre del lugar */
+.lugar-sub{ font-size:9.5px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); margin-top:2px; } /* municipio */
+
 @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si se pide */
 </style>
 </head>
@@ -716,6 +754,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 const FECHA_BODA = Date.UTC(2027, 0, 30, 20, 0, 0);         // 30 ene 2027, 3:00 p. m. hora Colombia (UTC-5 = 20:00 UTC)
 const FIN_BODA = Date.UTC(2027, 0, 31, 4, 0, 0);            // 11:00 p. m. hora Colombia (fin de la fiesta)
 const LIMITE_RSVP = Date.UTC(2026, 11, 5, 4, 59, 59);       // viernes 4 dic 2026, 11:59 p. m. hora Colombia
+const PLAYLIST_LINK = null;                                 // link del formulario de canciones (null = aún no definido)
 const RSVP_LINK = null;                                     // link del formulario de confirmación (null = aún no definido)
 const PLACE_ID = 'ChIJO-JeFph_QI4RgqkaGzHyoTI';            // identificador de "Hacienda La Victoria - Subachoque" en Google
 const MAPS_LINK = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Hacienda La Victoria - Subachoque') + '&query_place_id=' + PLACE_ID; // abre la ficha con nombre, fotos y reseñas
@@ -743,7 +782,13 @@ const ICONOS = {
   copas: '<path d="M5.5 3.5h4.2l-.4 5.2a1.7 1.7 0 0 1-3.4 0zM7.6 10.4v8M5.6 18.4h4M14.3 3.5h4.2l-.4 5.2a1.7 1.7 0 0 1-3.4 0zM16.4 10.4v8M14.4 18.4h4"/><path d="M12 2.2v2.2M10.9 3.3h2.2"/>', // copas
   cena: '<circle cx="12.5" cy="13" r="6"/><circle cx="12.5" cy="13" r="3.4"/><path d="M3.5 4v5.5M2.5 4v3.4a1 1 0 0 0 2 0V4M3.5 9.5V21M21.5 4c-1.4 1-1.9 3-1.9 6h1.9v11"/>', // plato y cubiertos
   musica: '<path d="M9 18V6.5l10-2.2V16M9 10l10-2.2"/><circle cx="6.6" cy="18" r="2.4"/><circle cx="16.6" cy="16" r="2.4"/>', // notas
-  luna: '<path d="M19.5 14.6A8 8 0 1 1 9.4 4.5a6.4 6.4 0 0 0 10.1 10.1z"/><path d="M17 2.8l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z"/>' // luna y estrella
+  luna: '<path d="M19.5 14.6A8 8 0 1 1 9.4 4.5a6.4 6.4 0 0 0 10.1 10.1z"/><path d="M17 2.8l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z"/>', // luna y estrella
+  calendario: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M12 17.6l-2.4-2.3a1.4 1.4 0 0 1 2.4-1.2 1.4 1.4 0 0 1 2.4 1.2z" fill="currentColor"/>', // calendario con corazón
+  pin: '<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>', // ubicación
+  reloj: '<circle cx="12" cy="12.5" r="8.5"/><path d="M12 7.5v5l3.2 2"/>', // reloj
+  gancho: '<path d="M12 7.2a2.2 2.2 0 1 1 2.2-2.2c0 1.3-2.2 1.7-2.2 3.2M12 8.2l-9 7.3c-.7.6-.3 1.7.6 1.7h16.8c.9 0 1.3-1.1.6-1.7z"/><path d="M10.2 13.3l1.8 1 1.8-1v2l-1.8-1-1.8 1z" fill="currentColor"/>', // gancho con moño
+  sobre: '<rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3.5 6.8l8.5 6.4 8.5-6.4"/><path d="M12 17.2l-1.6-1.5a1 1 0 0 1 1.6-.8 1 1 0 0 1 1.6.8z" fill="currentColor"/>', // sobre con corazón
+  nota: '<path d="M9.5 17.5V5.5l9-1.8v11.8"/><circle cx="7" cy="17.5" r="2.5" fill="currentColor"/><circle cx="16" cy="15.5" r="2.5" fill="currentColor"/>' // nota musical
 };
 const svgIcono = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`; // arma el ícono
 
@@ -780,19 +825,32 @@ const linkCalendario = 'https://calendar.google.com/calendar/render?action=TEMPL
   '&details=' + encodeURIComponent('¡Te esperamos! Más detalles en la invitación: https://juandvargas90.github.io/ana-y-juan-invitacion/'); // detalle
 
 const HOJAS = [                                             // hojas en el orden del carrusel
-  { // 1 · la fecha
-    fondo: 'hoja_01_peonias.webp', flor: 'esq_1.webp',      // foto y ramillete
-    titulo: 'La fecha', sub: 'Sábado 30 de enero',          // tarjeta cerrada
-    ante: 'Guarda la fecha', tituloDetalle: 'Sábado 30 de enero', // encabezado del detalle
+  { // 1 · nuestro gran día
+    fondo: 'etiqueta_1.webp', flor: 'euca_1.webp',          // ilustración y ramita del panel
+    titulo: 'Nuestro gran día', sub: 'Sábado 30 de enero de 2027', icono: 'calendario', toca: 'Toca para ver', // tarjeta cerrada (arco)
+    ante: 'Guarda la fecha', tituloDetalle: 'Nuestro gran día', // encabezado del detalle
     cuerpo: () => `${htmlCalendario()}
       <p class="vela-texto centro"><b>3:00 p. m.</b> · Llegada de invitados</p>
       <div class="conteo-grande" data-conteo="completo"></div>
       <a class="boton-oliva" href="${linkCalendario}" target="_blank" rel="noopener">Agregar a mi calendario</a>`
   },
-  { // 2 · itinerario
-    fondo: 'hoja_07_arco.webp', flor: 'esq_2.webp',         // foto y ramillete
-    titulo: 'Itinerario', sub: 'Así será nuestro día',      // tarjeta cerrada
-    ante: 'Sábado 30 de enero', tituloDetalle: 'Itinerario', // encabezado
+  { // 2 · el lugar donde diremos sí
+    fondo: 'etiqueta_2.webp', flor: 'euca_2.webp',          // ilustración y ramita
+    titulo: 'El lugar donde diremos sí', sub: 'Hacienda La Victoria · Subachoque', icono: 'pin', toca: 'Toca para ver', // arco
+    ante: 'Ceremonia y celebración', tituloDetalle: 'El lugar donde diremos sí', // encabezado
+    cuerpo: () => `<div class="lugar-nombre">Hacienda La Victoria</div>
+      <div class="lugar-sub">Subachoque · Cundinamarca</div>
+      <p class="vela-texto">La ceremonia y la fiesta serán en el mismo lugar. Te esperamos para celebrar rodeados de quienes más queremos.</p>
+      <div class="nota-icono"><span class="parqueo">P</span>Contamos con amplio parqueadero</div>
+      <div class="botones">
+        <a class="boton-oliva" href="${MAPS_LINK}" target="_blank" rel="noopener">Google Maps</a>
+        <a class="boton-oliva" href="${WAZE_LINK}" target="_blank" rel="noopener">Waze</a>
+      </div>`
+  },
+  { // 3 · así viviremos nuestro día
+    fondo: 'etiqueta_3.webp', flor: 'euca_3.webp',          // ilustración y ramita
+    titulo: 'Así viviremos nuestro día', sub: 'Itinerario de nuestra boda', icono: 'reloj', toca: 'Toca para ver', // arco
+    ante: 'Sábado 30 de enero', tituloDetalle: 'Así viviremos nuestro día', // encabezado
     cuerpo: () => `<ol class="itinerario">${ITINERARIO.map((m, i) => `
       <li style="--i:${i}">
         <span class="itin-icono${m.img ? ' con-img' : ''}">${m.img ? `<img src="${m.img}" alt="">` : svgIcono(m.icono)}</span>
@@ -800,21 +858,10 @@ const HOJAS = [                                             // hojas en el orden
         <span class="itin-momento">${m.momento}</span>
       </li>`).join('')}</ol>`                               // línea de tiempo
   },
-  { // 3 · ubicación
-    fondo: 'hoja_06_follaje.webp', flor: 'esq_3.webp',      // foto y ramillete
-    titulo: 'Ubicación', sub: 'Hacienda La Victoria',       // tarjeta cerrada
-    ante: 'Ceremonia y celebración', tituloDetalle: 'Hacienda<br>La Victoria', // encabezado
-    cuerpo: () => `<p class="vela-texto">La ceremonia y la fiesta serán en el mismo lugar. Te esperamos para celebrar rodeados de quienes más queremos.</p>
-      <div class="nota-icono"><span class="parqueo">P</span>Contamos con amplio parqueadero</div>
-      <div class="botones">
-        <a class="boton-oliva" href="${MAPS_LINK}" target="_blank" rel="noopener">Google Maps</a>
-        <a class="boton-oliva" href="${WAZE_LINK}" target="_blank" rel="noopener">Waze</a>
-      </div>`
-  },
-  { // 4 · vestimenta
-    fondo: 'hoja_03_dalias.webp', flor: 'esq_4.webp',       // foto y ramillete
-    titulo: 'Vestimenta', sub: 'Formal · vestido largo',    // tarjeta cerrada
-    ante: 'Código de vestimenta', tituloDetalle: 'Formal', // encabezado
+  { // 4 · código de vestimenta
+    fondo: 'etiqueta_4.webp', flor: 'euca_1.webp',          // ilustración y ramita
+    titulo: 'Código de vestimenta', sub: 'Formal · vestido largo', icono: 'gancho', toca: 'Toca para ver', // arco
+    ante: 'Formal · vestido largo', tituloDetalle: 'Código de vestimenta', // encabezado
     cuerpo: () => `<div class="vestir">
         <div><div class="vestir-quien">Caballeros</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p>
           <div class="muestras"><i style="--c:#1f1f1c" title="Negro"></i><i style="--c:#3b3e42" title="Gris oxford"></i><i style="--c:#3d4a2f" title="Verde oliva"></i><i style="--c:#4a3628" title="Café"></i></div></div>
@@ -831,10 +878,10 @@ const HOJAS = [                                             // hojas en el orden
       </div>
       <div class="nota-icono"><span class="frio">${svgIcono('luna')}</span>La noche en la hacienda es fría: te recomendamos llevar abrigo, chal o saco.</div>`
   },
-  { // 5 · regalos
-    fondo: 'hoja_04_margaritas.webp', flor: 'esq_1.webp',   // foto y ramillete
-    titulo: 'Regalos', sub: 'Lluvia de sobres',             // tarjeta cerrada
-    ante: 'Regalos', tituloDetalle: 'Lluvia de sobres',     // encabezado
+  { // 5 · un detalle de amor
+    fondo: 'etiqueta_5.webp', flor: 'euca_2.webp',          // ilustración y ramita
+    titulo: 'Un detalle de amor', sub: 'Lluvia de sobres', icono: 'sobre', toca: 'Toca para ver', // arco
+    ante: 'Lluvia de sobres', tituloDetalle: 'Un detalle de amor', // encabezado
     cuerpo: () => `<div class="mini-sobre" aria-hidden="true"><span class="mini-solapa"></span><img src="sello.webp" alt=""></div>
       <p class="vela-texto">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, el día de la boda tendremos una <b>lluvia de sobres</b>.</p>
       <div class="cuenta">
@@ -845,10 +892,20 @@ const HOJAS = [                                             // hojas en el orden
         <button class="boton-copiar" data-copiar="${CUENTA.numero}">Copiar número</button>
       </div>`
   },
-  { // 6 · confirmación
-    fondo: 'hoja_02_delphinium.webp', flor: 'esq_3.webp',   // foto y ramillete
-    titulo: 'Confirmación', sub: 'Antes del 4 de diciembre', // tarjeta cerrada
-    ante: 'Confirma tu asistencia', tituloDetalle: 'Te esperamos', // encabezado
+  { // 6 · que suene nuestra historia (playlist)
+    fondo: 'etiqueta_6.webp', flor: 'euca_3.webp',          // ilustración y ramita
+    titulo: '¡Que suene nuestra historia!', sub: 'Ayúdanos a crear la playlist', icono: 'nota', toca: 'Toca para ver', // arco
+    ante: 'Ayúdanos a crear la playlist', tituloDetalle: '¡Que suene nuestra historia!', // encabezado
+    cuerpo: () => `<p class="vela-texto">¿Qué canción no puede faltar en nuestra fiesta? Recomiéndanos la que te hace bailar, la que te recuerda a nosotros o la que nunca falla.</p>
+      <div class="nota-icono"><span class="frio">${svgIcono('musica')}</span>Con tus canciones armaremos la música de la noche.</div>
+      ${PLAYLIST_LINK
+        ? `<a class="boton-oliva" href="${PLAYLIST_LINK}" target="_blank" rel="noopener">Recomendar una canción</a>`
+        : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">Recomendar una canción</a><div class="vela-texto pequeno">El enlace para recomendar canciones estará disponible muy pronto.</div>`}`
+  },
+  { // 7 · nos acompañas (confirmación)
+    fondo: 'etiqueta_7.webp', flor: 'euca_1.webp',          // ilustración y ramita
+    titulo: '¿Nos acompañas?', sub: 'Confirma tu asistencia a nuestro gran día', icono: 'calendario', toca: 'Toca para confirmar', // arco
+    ante: 'Confirma tu asistencia', tituloDetalle: '¿Nos acompañas?', // encabezado
     cuerpo: () => `<p class="vela-texto">${textoCupos()} Por favor confírmanos antes del <b>viernes 4 de diciembre</b>.</p>
       <div class="plazo" data-conteo="rsvp"></div>
       <div class="pedidos">
@@ -898,12 +955,16 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
   hoja.innerHTML = `
     <div class="tarjeta" tabindex="0" role="button" aria-label="${h.titulo}">
       <div class="tarjeta-foto" style="background-image:url('${h.fondo}')"></div>
-      <div class="vela vela-resumen">
-        <img class="vela-flor" src="${h.flor}" alt="">
-        <div class="vela-titulo">${h.titulo}</div>
-        <div class="vela-sub">${h.sub}</div>
-        <div class="vela-toca">Toca para ver</div>
+      <div class="arco">
+        <div class="arco-firma">Ana &amp; Juan</div>
+        <span class="arco-hilo"></span>
+        <div class="arco-titulo">${h.titulo}</div>
+        <div class="arco-sub">${h.sub}</div>
+        <div class="arco-icono"><i></i>${svgIcono(h.icono)}<i></i></div>
+        <div class="arco-toca">${h.toca}</div>
+        <span class="arco-flecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg></span>
       </div>
+      <div class="lino-caja"><img class="lino-img" src="lino_lateral.webp" alt=""><img class="tarjeta-sello" src="sello.webp" alt=""></div>
       <div class="vela vela-detalle">
         <div class="vela-scroll">
           <img class="vela-flor" src="${h.flor}" alt="">
