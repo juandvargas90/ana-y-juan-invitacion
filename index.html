@@ -345,7 +345,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   max-width:100%;             /* nunca más ancha que la carta */
 }
 .foto-marco img{ width:100%; aspect-ratio:3/4; object-fit:cover; } /* foto de la pareja */
-.mensaje{ font-family:var(--f-display); font-style:italic; font-size:clamp(17.3px, 4vw, 20px); line-height:1.6; color:var(--tinta-suave); margin:0 auto 18px; max-width:30ch; text-wrap:balance; } /* mensaje */
+.mensaje{ font-family:var(--f-display); font-style:italic; font-size:clamp(19.5px, 5vw, 22.5px); line-height:1.55; color:var(--tinta); margin:0 auto 18px; max-width:30ch; text-wrap:balance; } /* mensaje */
 .carta .nombres{ font-size:clamp(33.3px, 8vw, 41.6px); } /* nombres dentro de la carta */
 .carta .fecha{ margin-top:10px; font-size:14.9px; letter-spacing:5px; color:var(--oro-osc); font-variant-numeric:tabular-nums; } /* fecha */
 .carta .lugar{ margin-top:6px; font-size:12.8px; letter-spacing:3px; text-transform:uppercase; color:var(--tinta-suave); } /* lugar */
@@ -697,34 +697,31 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si se pide */
 
-/* ===== Pistas más claras (prueba con personas mayores) ===== */
-.hojas-pista{ text-transform:none; letter-spacing:.3px; font-size:14px; line-height:1.45; color:var(--tinta); } /* instrucción en minúsculas: se lee mejor */
-.hojas-pista b{ color:var(--oliva-osc); font-family:var(--f-display); font-size:17px; } /* las flechas dibujadas en el texto */
+/* ===== Pistas discretas (segunda prueba) ===== */
 .contador{ text-align:center; margin:-14px 0 18px; font-size:13px; letter-spacing:1.5px; color:var(--oliva-osc); font-weight:600; text-shadow:0 0 8px rgba(247,240,226,.95); } /* "Tarjeta 3 de 7" */
-/* flechas: círculos verde oliva llenos, grandes y flotando con sombra */
-.flecha{ z-index:61; width:50px; height:50px; background:var(--oliva-osc); color:#fbf6ea; border:2px solid #d9c08a; font-size:30px; padding-bottom:3px; box-shadow:0 3px 6px rgba(20,16,8,.3), 0 10px 22px -6px rgba(20,16,8,.45); } /* bien visibles */
-@media (hover:hover) and (pointer:fine){ .flecha{ width:54px; height:54px; } .flecha:hover{ background:#5a6a44; } } /* con mouse, un poco más grandes */
-.flecha-sig.llama{ animation:empuje 1.6s ease-in-out infinite; } /* la de "siguiente" invita a tocarla hasta que se use */
-@keyframes empuje{ 0%,100%{ transform:translateY(-50%) translateX(0); box-shadow:0 3px 6px rgba(20,16,8,.3), 0 0 0 0 rgba(217,192,138,.7); }
-  50%{ transform:translateY(-50%) translateX(5px); box-shadow:0 3px 6px rgba(20,16,8,.3), 0 0 0 9px rgba(217,192,138,0); } } /* empujoncito a la derecha con onda dorada */
+/* flechas: papel marfil translúcido con filete dorado (ya no compiten con la tarjeta) */
+.flecha{ z-index:61; width:42px; height:42px; background:rgba(251,246,234,.8); color:var(--oro-texto); border:1px solid rgba(176,142,80,.75); font-size:26px; padding-bottom:3px; box-shadow:0 2px 5px rgba(20,16,8,.18); } /* discretas pero visibles */
+@media (hover:hover) and (pointer:fine){ .flecha{ width:46px; height:46px; } .flecha:hover{ background:#fbf6ea; color:var(--oliva-osc); } } /* con mouse: un poco más grandes y se aclaran al pasar */
+.flecha-sig{ animation:asomo-sig 3.2s ease-in-out infinite; } /* cada tanto se asoma hacia la derecha */
+.flecha-ant{ animation:asomo-ant 3.2s ease-in-out infinite; } /* y la de atrás hacia la izquierda */
+@keyframes asomo-sig{ 0%,62%,100%{ transform:translateY(-50%) translateX(0); } 74%{ transform:translateY(-50%) translateX(5px); } 86%{ transform:translateY(-50%) translateX(0); } } /* empujoncito y quietud */
+@keyframes asomo-ant{ 0%,62%,100%{ transform:translateY(-50%) translateX(0); } 74%{ transform:translateY(-50%) translateX(-5px); } 86%{ transform:translateY(-50%) translateX(0); } } /* igual, al otro lado */
+.flecha::after{ content:""; position:absolute; inset:-1px; border-radius:50%; border:1px solid rgba(176,142,80,.8); opacity:0; pointer-events:none; } /* aro dorado (como el del sello) */
+.flecha-sig.llama::after{ animation:aro-boton 2.4s ease-out infinite; } /* mientras no se haya pasado ninguna tarjeta, la de "siguiente" respira */
+@media (min-width:600px){ .flecha-ant{ left:calc(50% - 170px - 70px); } .flecha-sig{ right:calc(50% - 170px - 70px); } } /* en tableta y computador: fuera de la tarjeta */
 /* el carrusel "se asoma" una vez para mostrar que se mueve */
 .hojas-fila.asoma{ animation:asoma 1.5s ease-in-out 2; } /* dos vaivenes */
 @keyframes asoma{ 0%,100%{ transform:translateX(0); } 45%{ transform:translateX(-46px); } } /* se corre a la izquierda y vuelve */
-/* botón "Toca aquí" dentro del arco */
-.arco-toca{ position:relative; display:inline-flex; align-items:center; gap:4px; margin-top:3cqw; padding:1.8cqw 3.6cqw 1.8cqw 4.4cqw; border-radius:999px; background:var(--oliva-osc); color:#fbf6ea; letter-spacing:.14em; box-shadow:0 2px 6px rgba(20,16,8,.25); } /* píldora llena: parece un botón */
-.arco-toca > svg{ width:1.2em; height:1.2em; } /* flecha dentro del botón */
+/* botón "Toca aquí": filete dorado sobre el arco, sin relleno fuerte */
+.arco-toca{ position:relative; display:inline-flex; align-items:center; gap:3px; margin-top:3cqw; padding:1.4cqw 3cqw 1.4cqw 3.8cqw; border-radius:999px; background:rgba(251,246,234,.55); border:1px solid rgba(176,142,80,.8); color:var(--oro-texto); letter-spacing:.16em; } /* píldora clara */
+.arco-toca > svg{ width:1.15em; height:1.15em; } /* flecha dentro del botón */
+.arco-toca::after{ content:""; position:absolute; inset:-1px; border-radius:inherit; border:1px solid rgba(176,142,80,.85); opacity:0; pointer-events:none; } /* aro que respira */
+.tarjeta.activa .arco-toca::after{ animation:aro-boton 2.4s ease-out infinite; } /* solo en la tarjeta del centro */
+.tarjeta.activa .arco-toca > svg{ animation:empujon 2.4s ease-in-out infinite; } /* la flechita invita a avanzar */
+@keyframes aro-boton{ 0%{ opacity:.9; transform:scale(1); } 70%,100%{ opacity:0; transform:scale(1.18, 1.5); } } /* el aro crece y se desvanece */
+@keyframes empujon{ 0%,55%,100%{ transform:translateX(0); } 70%{ transform:translateX(3px); } 85%{ transform:translateX(0); } } /* la flechita se adelanta un poco */
 .arco-flecha{ display:none; } /* el círculo anterior ya no hace falta */
-/* mano que toca el botón (solo en la tarjeta del centro, hasta que la persona abra alguna) */
-.mano{ position:absolute; right:-9cqw; top:58%; width:17cqw; height:17cqw; min-width:42px; min-height:42px; pointer-events:none; opacity:0; transition:opacity .3s ease; } /* abajo a la derecha del botón */
-.mano svg{ width:100%; height:100%; fill:#fbf6ea; stroke:var(--oliva-osc); stroke-width:1.1px; paint-order:stroke; filter:drop-shadow(0 2px 2px rgba(20,16,8,.4)); transform:rotate(-20deg); } /* mano marfil con contorno */
-.mano-onda{ position:absolute; left:28%; top:6%; width:42%; aspect-ratio:1; border-radius:50%; border:2px solid #d9c08a; opacity:0; } /* onda donde toca el dedo */
-.tarjeta.activa .mano{ opacity:1; animation:toque 1.8s ease-in-out infinite; } /* aparece y "toca" en la tarjeta centrada */
-.tarjeta.activa .mano-onda{ animation:onda 1.8s ease-out infinite; } /* la onda acompaña cada toque */
-@keyframes toque{ 0%,100%{ transform:translate(6px,8px) scale(1); } 40%{ transform:translate(0,0) scale(1); } 52%{ transform:translate(0,0) scale(.86); } 64%{ transform:translate(0,0) scale(1); } } /* se acerca, presiona y se aleja */
-@keyframes onda{ 0%,48%{ opacity:0; transform:scale(.4); } 55%{ opacity:1; } 100%{ opacity:0; transform:scale(2.2); } } /* círculo que se expande al presionar */
-body.ya-abrio .mano{ display:none; }
-@media (min-width:600px){ .flecha-ant{ left:calc(50% - 170px - 74px); } .flecha-sig{ right:calc(50% - 170px - 74px); } } /* en tableta y computador: flechas fuera de la tarjeta, sin tapar el sello */ /* tras abrir la primera tarjeta, la mano ya no hace falta */
-@media (prefers-reduced-motion:reduce){ .flecha-sig.llama, .hojas-fila.asoma, .tarjeta.activa .mano, .tarjeta.activa .mano-onda{ animation:none; } } /* sin movimiento si el equipo lo pide */
+@media (prefers-reduced-motion:reduce){ .flecha-sig, .flecha-ant, .flecha-sig.llama::after, .hojas-fila.asoma, .tarjeta.activa .arco-toca::after, .tarjeta.activa .arco-toca > svg{ animation:none; } } /* sin movimiento si el equipo lo pide */
 </style>
 </head>
 <body>
@@ -823,7 +820,6 @@ body.ya-abrio .mano{ display:none; }
     </div>
   </article>
 
-  <button class="boton-seguir extra" id="botonSeguir"><span>Ver detalles</span></button> <!-- baja a las hojas -->
 </section>
 
 <!-- ======================= ESCENA 3 · LAS HOJAS ======================= -->
@@ -832,7 +828,6 @@ body.ya-abrio .mano{ display:none; }
     <div class="antetitulo">Todo lo que necesitas saber</div> <!-- antetítulo -->
     <h2>Detalles de la boda</h2> <!-- título -->
     <div class="conteo-hojas" data-conteo="corto"></div> <!-- conteo regresivo -->
-    <div class="hojas-pista" style="margin-top:8px">Son 7 tarjetas: pasa con las flechas <b>‹ ›</b><br>y toca cada una para ver su información</div> <!-- instrucción -->
   </div>
   <div class="carrusel"> <!-- carrusel con flechas -->
     <button class="flecha flecha-ant" id="flechaAnt" aria-label="Hoja anterior">‹</button> <!-- flecha atrás (solo con mouse) -->
@@ -952,7 +947,7 @@ const HOJAS = [                                             // hojas en el orden
     cuerpo: () => `<div class="vestir">
         <div><div class="vestir-quien">Caballeros</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p>
           <div class="muestras"><i style="--c:#1f1f1c" title="Negro"></i><i style="--c:#3b3e42" title="Gris oxford"></i><i style="--c:#3d4a2f" title="Verde oliva"></i><i style="--c:#4a3628" title="Café"></i></div></div>
-        <div><div class="vestir-quien">Damas</div><p>Vestido largo.</p></div>
+        <div><div class="vestir-quien">Damas</div><p>Vestido largo de gala, en el color de su preferencia, respetando los tonos reservados.</p></div>
       </div>
       <div class="reservados">
         <div class="reservados-titulo">Colores reservados para los novios y sus padres</div>
@@ -1104,7 +1099,6 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
         <div class="arco-sub">${h.sub}</div>
         <div class="arco-icono"><i></i>${svgIcono(h.icono)}<i></i></div>
         <div class="arco-toca"><span>${h.toca}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg>
-          <span class="mano" aria-hidden="true"><i class="mano-onda"></i><svg viewBox="0 0 24 24"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg></span>
         </div>
       </div>
       <div class="lino-caja"><img class="lino-img" src="lino_lateral.webp" alt=""><img class="tarjeta-sello" src="sello.webp" alt=""></div>
@@ -1496,10 +1490,6 @@ function revisarDesplazamiento(sc) {
   sc.classList.toggle('mas-abajo', sc.scrollTop + sc.clientHeight < sc.scrollHeight - 4); // hay contenido abajo
 }
 
-// ================== BOTÓN "VER DETALLES" ==================
-$('botonSeguir').addEventListener('click', () => {          // al tocar
-  escenaHojas.scrollIntoView({ behavior: 'smooth', block: 'start' }); // baja a las hojas
-});
 </script>
 </body>
 </html>
