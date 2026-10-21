@@ -746,6 +746,22 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .tarjeta.activa .arco-toca::before{ animation:eco-boton 2.4s ease-out .8s infinite; } /* segundo eco, desfasado */
 @keyframes eco-boton{ 0%{ opacity:1; transform:scale(1); } 75%,100%{ opacity:0; transform:scale(1.22, 1.75); } } /* crece y se desvanece */
 @media (prefers-reduced-motion:reduce){ .tarjeta.activa .arco-toca::before, .tarjeta.activa .arco-toca::after, .tarjeta.abierta .corazon{ animation:none; } } /* sin movimiento si se pide */
+
+/* ===== Código de vestimenta en recuadros (Ellos / Ellas) ===== */
+.vestir{ gap:10px; align-items:stretch; } /* las dos cajas con la misma altura */
+.recuadro{ position:relative; border:1px solid rgba(176,142,80,.55); border-radius:10px; background:rgba(255,255,255,.4); padding:12px 8px 12px; display:flex; flex-direction:column; align-items:center; } /* recuadro con filete dorado */
+.recuadro::before{ content:""; position:absolute; inset:3px; border:1px solid rgba(176,142,80,.22); border-radius:8px; pointer-events:none; } /* segundo filete interior, más tenue */
+.recuadro p{ font-size:13.4px; line-height:1.5; } /* descripción dentro del recuadro */
+.vestir-quien{ font-size:21px; margin-bottom:6px; } /* "Ellos" / "Ellas" un poco más grande */
+.reservados{ border-top:1px solid rgba(195,160,94,.5); padding-top:14px; margin-top:4px; } /* separador con la sección anterior */
+.reservados .vela-ante{ margin:0 0 2px; } /* "COLORES RESERVADOS" */
+.reservados-titulo2{ font-family:var(--f-display); font-style:italic; font-size:22px; color:var(--oliva-osc); line-height:1.2; } /* "Un detalle especial" */
+.reservados-intro{ font-size:13.8px; line-height:1.55; color:var(--tinta-suave); margin:6px 0 2px; } /* texto de introducción */
+.reservados .reservados-fila{ gap:10px; margin:2px 0 6px; } /* círculos de color */
+.reservados .reservados-fila i{ width:40px; height:40px; } /* círculos grandes como en la referencia */
+@media (max-width:360px){ .reservados .reservados-fila i{ width:32px; height:32px; } .recuadro p{ font-size:12.6px; } } /* pantallas de 320 px */
+.reservado-color{ font-family:var(--f-display); font-size:17.5px; color:var(--oliva-osc); line-height:1.2; margin-bottom:4px; } /* nombre del color */
+.reservados-cierre{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.45; color:var(--tinta-suave); margin:12px 0 0; } /* cierre amable */
 </style>
 </head>
 <body>
@@ -971,18 +987,23 @@ const HOJAS = [                                             // hojas en el orden
     titulo: 'Código de vestimenta', sub: 'Formal · vestido largo', icono: 'gancho', toca: 'Toca aquí', // arco
     ante: 'Formal · vestido largo', tituloDetalle: 'Código de vestimenta', // encabezado
     cuerpo: () => `<div class="vestir">
-        <div><div class="vestir-quien">Caballeros</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p>
+        <div class="recuadro"><div class="vestir-quien">Ellos</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p>
           <div class="muestras"><i style="--c:#1f1f1c" title="Negro"></i><i style="--c:#3b3e42" title="Gris oxford"></i><i style="--c:#3d4a2f" title="Verde oliva"></i><i style="--c:#4a3628" title="Café"></i></div></div>
-        <div><div class="vestir-quien">Damas</div><p>Vestido largo de gala, en el color de su preferencia, respetando los tonos reservados.</p></div>
+        <div class="recuadro"><div class="vestir-quien">Ellas</div><p>Vestido largo de gala, en el color de su preferencia, respetando los tonos reservados.</p></div>
       </div>
       <div class="reservados">
-        <div class="reservados-titulo">Colores reservados para los novios y sus padres</div>
-        <div class="reservados-fila">
-          <span><i style="--c:#2f4a78"></i>Azul<small>caballeros</small></span>
-          <span><i style="--c:#fbf9f3"></i>Blanco<small>damas</small></span>
-          <span><i style="--c:#6b1e2e"></i>Vinotinto<small>damas</small></span>
+        <div class="vela-ante">Colores reservados</div>
+        <div class="reservados-titulo2">Un detalle especial</div>
+        <p class="reservados-intro">Con cariño, les pedimos tener en cuenta los siguientes colores reservados para nuestra familia.</p>
+        <div class="vestir">
+          <div class="recuadro"><div class="vestir-quien">Ellos</div>
+            <div class="reservados-fila"><i style="--c:#2f4a78"></i></div>
+            <div class="reservado-color">Azul</div><p>Reservado para el novio y los padres.</p></div>
+          <div class="recuadro"><div class="vestir-quien">Ellas</div>
+            <div class="reservados-fila"><i style="--c:#fbf9f3"></i><i style="--c:#6b1e2e"></i></div>
+            <div class="reservado-color">Blanco y vinotinto</div><p>Reservados para la novia y las madres.</p></div>
         </div>
-        <p class="vela-texto pequeno">Con cariño, les pedimos reservar estos colores para nosotros y nuestros padres.</p>
+        <p class="reservados-cierre">Los demás colores son bienvenidos. ¡Queremos verlos lucir sus favoritos!</p>
       </div>
       <div class="nota-icono"><span class="frio">${svgIcono('luna')}</span>La noche en la hacienda es fría: te recomendamos llevar abrigo, chal o saco.</div>`
   },
