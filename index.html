@@ -762,6 +762,38 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 @media (max-width:360px){ .reservados .reservados-fila i{ width:32px; height:32px; } .recuadro p{ font-size:12.6px; } } /* pantallas de 320 px */
 .reservado-color{ font-family:var(--f-display); font-size:17.5px; color:var(--oliva-osc); line-height:1.2; margin-bottom:4px; } /* nombre del color */
 .reservados-cierre{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.45; color:var(--tinta-suave); margin:12px 0 0; } /* cierre amable */
+
+/* ===== Confirmación de asistencia ===== */
+.rsvp-lista{ display:flex; flex-direction:column; gap:10px; margin:4px 0 14px; text-align:left; } /* una fila por persona */
+.rsvp-fila{ border:1px solid rgba(176,142,80,.45); border-radius:10px; background:rgba(255,255,255,.45); padding:10px 10px 10px 12px; } /* recuadro por persona */
+.rsvp-nombre{ display:block; font-family:var(--f-display); font-size:19px; color:var(--oliva-osc); margin-bottom:8px; } /* nombre */
+.rsvp-opciones{ display:grid; grid-template-columns:1fr 1fr; gap:8px; } /* dos botones iguales */
+.rsvp-op{ min-height:44px; border-radius:999px; border:1px solid rgba(176,142,80,.75); background:#fbf7ee; color:var(--tinta-suave); font:inherit; font-size:14.5px; cursor:pointer; transition:background .2s ease, color .2s ease; } /* botón grande, fácil de tocar */
+.rsvp-op.si[aria-pressed="true"]{ background:var(--oliva-osc); border-color:var(--oliva-osc); color:#fbf6ea; } /* "Asiste" marcado */
+.rsvp-op.no[aria-pressed="true"]{ background:#6b1e2e; border-color:#6b1e2e; color:#fbf6ea; } /* "No asiste" marcado (vinotinto) */
+.boton-oliva{ border:none; font-family:inherit; cursor:pointer; } /* el botón también sirve como <button> */
+.boton-oliva:disabled{ opacity:.5; cursor:default; } /* inactivo hasta marcar a todos */
+.enlace-suave{ display:block; margin:12px auto 0; background:none; border:none; font:inherit; font-size:14px; color:var(--oro-texto); text-decoration:underline; text-underline-offset:3px; cursor:pointer; } /* "Cambiar mi respuesta" */
+.rsvp-gracias{ font-family:var(--f-display); font-style:italic; font-size:21px; color:var(--oliva-osc); margin:4px 0 10px; } /* ¡Gracias! */
+.rsvp-resumen{ list-style:none; margin:0 auto 8px; max-width:300px; text-align:left; } /* resumen de respuestas */
+.rsvp-resumen li{ display:flex; justify-content:space-between; gap:10px; padding:8px 4px; border-bottom:1px solid rgba(176,142,80,.3); font-size:15px; color:var(--tinta); } /* una persona */
+.rsvp-resumen li b{ font-weight:600; color:var(--oliva-osc); white-space:nowrap; } /* su respuesta */
+.rsvp-resumen li.no b{ color:#6b1e2e; } /* "No asiste" en vinotinto */
+.rsvp-total{ font-size:14.5px; color:var(--tinta-suave); margin-bottom:4px; } /* "Asisten 3 de 4" */
+.rsvp-nota{ font-family:var(--f-display); font-style:italic; font-size:17px; line-height:1.5; color:var(--tinta-suave); margin:0 0 14px; } /* instrucción sin código */
+.rsvp-aviso{ font-size:14px; color:#6b1e2e; margin:0 0 10px; } /* mensaje de error */
+.rsvp{ margin-bottom:16px; } /* separación con el pedido de "sin niños" */
+/* ===== Canciones ===== */
+.cancion-form{ display:flex; flex-direction:column; gap:10px; text-align:left; margin:4px 0 6px; } /* formulario en columna */
+.cancion-form label{ display:flex; flex-direction:column; gap:4px; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--oro-osc); } /* etiqueta */
+.cancion-form label small{ text-transform:none; letter-spacing:0; color:var(--tinta-tenue); } /* "(opcional)" */
+.cancion-form input{ font:inherit; font-size:16px; letter-spacing:0; text-transform:none; color:var(--tinta); background:rgba(255,255,255,.7); border:1px solid rgba(176,142,80,.6); border-radius:8px; padding:11px 12px; } /* campo (16px: el iPhone no hace zoom) */
+.cancion-form input:focus{ outline:2px solid rgba(176,142,80,.55); outline-offset:1px; } /* campo activo */
+.cancion-form .boton-oliva{ align-self:center; margin-top:4px; } /* botón centrado */
+.cancion-form .rsvp-gracias, .cancion-form .rsvp-aviso{ text-align:center; margin:0; } /* mensajes centrados */
+.cancion-propias{ margin-top:16px; border-top:1px solid rgba(176,142,80,.4); padding-top:12px; } /* lo que ya sugirió */
+.cancion-propias ul{ list-style:none; font-size:14.5px; line-height:1.6; color:var(--tinta-suave); } /* lista */
+.cancion-propias b{ font-weight:600; color:var(--tinta); } /* nombre de la canción */
 </style>
 </head>
 <body>
@@ -887,8 +919,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 const FECHA_BODA = Date.UTC(2027, 0, 30, 20, 0, 0);         // 30 ene 2027, 3:00 p. m. hora Colombia (UTC-5 = 20:00 UTC)
 const FIN_BODA = Date.UTC(2027, 0, 31, 4, 0, 0);            // 11:00 p. m. hora Colombia (fin de la fiesta)
 const LIMITE_RSVP = Date.UTC(2026, 11, 5, 4, 59, 59);       // viernes 4 dic 2026, 11:59 p. m. hora Colombia
-const PLAYLIST_LINK = null;                                 // link del formulario de canciones (null = aún no definido)
-const RSVP_LINK = null;                                     // link del formulario de confirmación (null = aún no definido)
+const SUPABASE_URL = 'https://wkalizgckbteomcjfuax.supabase.co'; // proyecto de Supabase (el mismo de la página de seguimiento)
+const SUPABASE_KEY = 'sb_publishable_aZmypCgSMmGJwQRqaCyjaQ_WdjmjkOd'; // llave pública: solo permite usar las 3 funciones de invitados
 const PLACE_ID = 'ChIJO-JeFph_QI4RgqkaGzHyoTI';            // identificador de "Hacienda La Victoria - Subachoque" en Google
 const MAPS_LINK = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Hacienda La Victoria - Subachoque') + '&query_place_id=' + PLACE_ID; // abre la ficha con nombre, fotos y reseñas
 const ITINERARIO = [                                        // momentos del día (img: ícono en acuarela cuando exista)
@@ -918,17 +950,33 @@ const ICONOS = {
 };
 const svgIcono = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`; // arma el ícono
 
-// ================== PERSONALIZACIÓN (?invitado=Nombre&cupos=2) ==================
-const params = new URLSearchParams(location.search);        // parámetros del link
-const nombreInvitado = params.get('invitado');              // nombre del invitado
-const cupos = parseInt(params.get('cupos'), 10);            // número de cupos (puede no venir)
-if (nombreInvitado) {                                       // si viene el nombre...
-  document.querySelector('[data-invitado]').textContent = nombreInvitado; // ...lo escribe en la carta
+// ================== INVITACIÓN PERSONAL (?i=código) ==================
+const codigoParam = (new URLSearchParams(location.search).get('i') || '').trim().toLowerCase(); // código del enlace personal
+const CODIGO = /^[a-z0-9]{6}$/.test(codigoParam) ? codigoParam : null; // solo se acepta el formato válido
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); // evita que un texto se interprete como HTML
+let INV = null;                                             // datos de la invitación (para, personas, canciones…)
+let estadoInv = CODIGO ? 'cargando' : 'sin-codigo';         // cargando | lista | sin-codigo | no-existe | error
+async function rpc(funcion, datos) {                        // llama una función de Supabase
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${funcion}`, { // dirección de la función
+    method: 'POST',                                         // las funciones se llaman con POST
+    headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY }, // formato y llave pública
+    body: JSON.stringify(datos)                             // parámetros
+  });
+  const cuerpo = await r.json().catch(() => null);          // respuesta (puede venir vacía)
+  if (!r.ok) throw new Error((cuerpo && cuerpo.message) || 'error_red'); // error controlado (p. ej. confirmacion_cerrada)
+  return cuerpo;                                            // resultado
 }
-function textoCupos() {                                     // frase de cupos para la hoja de confirmación
-  if (cupos === 1) return 'Hemos reservado <b>1 cupo</b> en tu honor.'; // una persona
-  if (cupos > 1) return `Hemos reservado <b>${cupos} cupos</b> en su honor.`; // varias personas
-  return 'Tu invitación es personal.';                      // sin dato de cupos
+async function cargarInvitacion() {                         // trae los datos del grupo
+  if (!CODIGO) { pintarInvitado(); return; }                // sin código: invitación general
+  estadoInv = 'cargando'; pintarRsvp(); pintarCanciones();  // muestra "cargando"
+  try {                                                     // intenta traerla
+    INV = await rpc('inv_ver', { p_codigo: CODIGO });       // datos del grupo (null si el código no existe)
+    estadoInv = INV ? 'lista' : 'no-existe';                // estado según la respuesta
+  } catch { estadoInv = 'error'; }                          // sin conexión u otro problema
+  pintarInvitado(); pintarRsvp(); pintarCanciones();        // actualiza carta y tarjetas
+}
+function pintarInvitado() {                                 // escribe el "Para" en la carta
+  document.querySelector('[data-invitado]').textContent = (INV && INV.para) || 'Nuestros queridos invitados'; // nombre o saludo general
 }
 
 // ================== HOJAS: CONTENIDO DE CADA UNA ==================
@@ -1021,22 +1069,16 @@ const HOJAS = [                                             // hojas en el orden
     ante: 'Ayúdanos a crear la playlist', tituloDetalle: '¡Que suene nuestra historia!', // encabezado
     cuerpo: () => `<p class="vela-texto">¿Qué canción no puede faltar en nuestra fiesta? Recomiéndanos la que te hace bailar, la que te recuerda a nosotros o la que nunca falla.</p>
       <div class="nota-icono"><span class="frio">${svgIcono('musica')}</span>Con tus canciones armaremos la música de la noche.</div>
-      ${PLAYLIST_LINK
-        ? `<a class="boton-oliva" href="${PLAYLIST_LINK}" target="_blank" rel="noopener">Recomendar una canción</a>`
-        : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">Recomendar una canción</a><div class="vela-texto pequeno">El enlace para recomendar canciones estará disponible muy pronto.</div>`}`
+      <div class="canciones" data-canciones></div>`
   },
   { // 7 · nos acompañas (confirmación)
     fondo: 'etiqueta_7.webp', flor: 'euca_1.webp',          // ilustración y ramita
     titulo: '¿Nos acompañas?', sub: 'Confirma tu asistencia a nuestro gran día', icono: 'calendario', toca: 'Toca aquí', // arco
     ante: 'Confirma tu asistencia', tituloDetalle: '¿Nos acompañas?', // encabezado
-    cuerpo: () => `<p class="vela-texto">${textoCupos()} Por favor confírmanos antes del <b>viernes 4 de diciembre</b>.</p>
-      <div class="plazo" data-conteo="rsvp"></div>
+    cuerpo: () => `<div class="rsvp" data-rsvp></div>
       <div class="pedidos">
         <p>Hemos preparado una celebración pensada para adultos; con todo nuestro cariño, les pedimos que esta vez nos acompañen <b>sin niños</b>.</p>
-      </div>
-      ${RSVP_LINK
-        ? `<a class="boton-oliva" href="${RSVP_LINK}" target="_blank" rel="noopener">Confirmar asistencia</a>`
-        : `<a class="boton-oliva" aria-disabled="true" href="#" onclick="return false">Confirmar asistencia</a><div class="vela-texto pequeno">El enlace para confirmar estará disponible muy pronto.</div>`}`
+      </div>`
   }
 ];
 
@@ -1186,6 +1228,137 @@ document.addEventListener('click', async e => {             // escucha clics en 
   setTimeout(() => { b.textContent = 'Copiar número'; }, 2200); // vuelve al texto original
 });
 
+// ================== CONFIRMACIÓN DE ASISTENCIA ==================
+let rsvpEditando = false;                                   // ¿está cambiando una respuesta ya enviada?
+let rsvpEleccion = {};                                      // { idPersona: true/false } elegido en pantalla
+let rsvpEnviando = false;                                   // evita doble envío
+let rsvpAviso = '';                                         // mensaje de error para mostrar
+const textoMensajeError = m => ({                           // traduce errores de la base a lenguaje amable
+  confirmacion_cerrada: 'Las confirmaciones ya cerraron.',  // fuera de plazo
+  respuestas_incompletas: 'Marca una opción para cada persona.', // falta alguien
+  codigo_invalido: 'No encontramos tu invitación. Usa el enlace que te enviamos por WhatsApp.', // código raro
+  limite_canciones: 'Ya recibimos muchas canciones de ustedes. ¡Gracias!', // tope de canciones
+  cancion_vacia: 'Escribe el nombre de la canción.',        // canción vacía
+  nombre_vacio: 'Escribe tu nombre.'                        // sin nombre
+})[m] || 'No pudimos conectarnos. Revisa tu internet e intenta de nuevo.'; // cualquier otro problema
+function pintarRsvp() {                                     // dibuja la tarjeta de confirmación según el estado
+  const caja = document.querySelector('[data-rsvp]');       // contenedor dentro de la tarjeta 7
+  if (!caja) return;                                        // aún no existe
+  const plazo = '<div class="plazo" data-conteo="rsvp"></div>'; // "Quedan N días para confirmar"
+  if (estadoInv === 'cargando') { caja.innerHTML = '<p class="vela-texto">Cargando tu invitación…</p>'; return; } // esperando
+  if (estadoInv === 'error') { caja.innerHTML = `<p class="vela-texto">${textoMensajeError()}</p><button class="boton-oliva" data-rsvp-op="reintentar">Intentar de nuevo</button>`; return; } // sin conexión
+  if (estadoInv !== 'lista') {                              // sin código o código inexistente
+    caja.innerHTML = `<p class="vela-texto">Por favor confírmanos antes del <b>viernes 4 de diciembre</b>.</p>${plazo}
+      <p class="rsvp-nota">Para confirmar, usa el enlace personal que te enviamos por WhatsApp. 💌</p>`; // instrucción
+    actualizarConteos(); return;                            // pinta el plazo y termina
+  }
+  const personas = INV.personas;                            // personas del grupo
+  const n = personas.length;                                // cupos
+  const cupos = n === 1 ? 'Tenemos <b>1 cupo</b> reservado para ti.' : `Tenemos <b>${n} cupos</b> reservados para ustedes.`; // singular o plural
+  const respondio = !!INV.respondido_en;                    // ¿ya habían respondido?
+  const resumen = () => {                                   // lista de quién asiste y quién no
+    const van = personas.filter(p => p.asiste).length;      // cuántos asisten
+    return `<ul class="rsvp-resumen">${personas.map(p => `<li class="${p.asiste ? 'si' : 'no'}"><span>${esc(p.nombre)}</span><b>${p.asiste ? '✓ Asiste' : 'No asiste'}</b></li>`).join('')}</ul>
+      <p class="rsvp-total">${van === 0 ? 'Nos harán mucha falta 💛' : `Asisten <b>${van}</b> de ${n}`}</p>`; // total
+  };
+  if (INV.cerrado) {                                        // pasó la fecha límite
+    caja.innerHTML = `<p class="vela-texto">${respondio ? 'Esta es la respuesta que recibimos:' : 'Las confirmaciones cerraron el <b>4 de diciembre</b>.'}</p>
+      ${respondio ? resumen() : '<p class="rsvp-nota">Si aún no nos confirmaste, escríbenos por WhatsApp. 💌</p>'}`; // resumen o instrucción
+    return;                                                 // sin formulario
+  }
+  if (respondio && !rsvpEditando) {                         // ya respondió: muestra el resumen
+    caja.innerHTML = `<p class="rsvp-gracias">¡Gracias por confirmar!</p>${resumen()}
+      <button class="enlace-suave" data-rsvp-op="editar">Cambiar mi respuesta</button>`; // opción de cambiar
+    return;                                                 // fin
+  }
+  const completo = personas.every(p => typeof rsvpEleccion[p.id] === 'boolean'); // ¿todas tienen opción?
+  caja.innerHTML = `<p class="vela-texto">${cupos} Por favor confírmanos antes del <b>viernes 4 de diciembre</b>.</p>${plazo}
+    <div class="rsvp-lista">${personas.map(p => `
+      <div class="rsvp-fila">
+        <span class="rsvp-nombre">${esc(p.nombre)}</span>
+        <div class="rsvp-opciones" role="group" aria-label="${esc(p.nombre)}">
+          <button class="rsvp-op si" aria-pressed="${rsvpEleccion[p.id] === true}" data-rsvp-op="marcar" data-id="${p.id}" data-valor="1">✓ Asiste</button>
+          <button class="rsvp-op no" aria-pressed="${rsvpEleccion[p.id] === false}" data-rsvp-op="marcar" data-id="${p.id}" data-valor="0">No asiste</button>
+        </div>
+      </div>`).join('')}</div>
+    ${rsvpAviso ? `<p class="rsvp-aviso">${esc(rsvpAviso)}</p>` : ''}
+    <button class="boton-oliva" data-rsvp-op="enviar" ${completo && !rsvpEnviando ? '' : 'disabled'}>${rsvpEnviando ? 'Enviando…' : 'Confirmar'}</button>
+    ${respondio ? '<button class="enlace-suave" data-rsvp-op="cancelar">Dejar como estaba</button>' : ''}`; // formulario
+  actualizarConteos();                                      // pinta el plazo
+}
+document.addEventListener('click', async e => {             // botones de la confirmación (delegados)
+  const b = e.target.closest('[data-rsvp-op]');             // ¿fue en uno de ellos?
+  if (!b) return;                                           // no: nada
+  e.stopPropagation();                                      // no cierra ni abre tarjetas
+  const op = b.dataset.rsvpOp;                              // qué acción
+  if (op === 'reintentar') { cargarInvitacion(); return; }  // vuelve a intentar la carga
+  if (op === 'marcar') { rsvpEleccion[b.dataset.id] = b.dataset.valor === '1'; rsvpAviso = ''; pintarRsvp(); return; } // marca sí/no
+  if (op === 'editar') {                                    // quiere cambiar su respuesta
+    rsvpEditando = true;                                    // modo edición
+    rsvpEleccion = Object.fromEntries(INV.personas.map(p => [p.id, p.asiste])); // parte de lo que había respondido
+    pintarRsvp(); return;                                   // dibuja el formulario
+  }
+  if (op === 'cancelar') { rsvpEditando = false; rsvpAviso = ''; pintarRsvp(); return; } // vuelve al resumen
+  if (op === 'enviar' && !rsvpEnviando) {                   // envía la confirmación
+    rsvpEnviando = true; rsvpAviso = ''; pintarRsvp();      // muestra "Enviando…"
+    try {                                                   // intenta guardar
+      INV = await rpc('inv_confirmar', { p_codigo: CODIGO, p_respuestas: rsvpEleccion }); // guarda y trae el estado nuevo
+      rsvpEditando = false;                                 // sale del modo edición
+    } catch (err) {                                         // algo falló
+      rsvpAviso = textoMensajeError(err.message);           // mensaje amable
+      if (err.message === 'confirmacion_cerrada') INV.cerrado = true; // se cerró mientras tanto
+    }
+    rsvpEnviando = false; pintarRsvp();                     // listo
+    const sc = document.querySelector('[data-rsvp]')?.closest('.vela-scroll'); // panel desplazable
+    if (sc) revisarDesplazamiento(sc);                      // actualiza el desvanecido
+  }
+});
+
+// ================== CANCIONES ==================
+let cancionAviso = '', cancionOk = false, cancionEnviando = false; // estado del formulario de canciones
+function pintarCanciones() {                                // dibuja el formulario de canciones
+  const caja = document.querySelector('[data-canciones]');  // contenedor dentro de la tarjeta 6
+  if (!caja) return;                                        // aún no existe
+  if (estadoInv === 'cargando') { caja.innerHTML = '<p class="vela-texto">Cargando…</p>'; return; } // esperando
+  const conCodigo = estadoInv === 'lista';                  // ¿se sabe quién es?
+  const propias = conCodigo ? INV.canciones : [];           // canciones que ya sugirió su grupo
+  caja.innerHTML = `<form class="cancion-form" data-cancion-form novalidate>
+      ${conCodigo ? '' : '<label>Tu nombre<input name="nombre" maxlength="80" autocomplete="name" required></label>'}
+      <label>Canción<input name="cancion" maxlength="120" required></label>
+      <label><span>Artista <small>(opcional)</small></span><input name="artista" maxlength="120"></label>
+      ${cancionAviso ? `<p class="rsvp-aviso">${esc(cancionAviso)}</p>` : ''}
+      ${cancionOk ? '<p class="rsvp-gracias">¡Gracias! 🎶 ¿Quieres sugerir otra?</p>' : ''}
+      <button class="boton-oliva" ${cancionEnviando ? 'disabled' : ''}>${cancionEnviando ? 'Enviando…' : 'Enviar canción'}</button>
+    </form>
+    ${propias.length ? `<div class="cancion-propias"><div class="vela-ante">Ya nos sugeriste</div><ul>${propias.map(c => `<li><b>${esc(c.cancion)}</b>${c.artista ? ` · ${esc(c.artista)}` : ''}</li>`).join('')}</ul></div>` : ''}`; // formulario + lista
+}
+document.addEventListener('submit', async e => {            // envío del formulario de canciones
+  const f = e.target.closest('[data-cancion-form]');        // ¿es el de canciones?
+  if (!f) return;                                           // no: nada
+  e.preventDefault();                                       // no recarga la página
+  if (cancionEnviando) return;                              // evita doble envío
+  const datos = Object.fromEntries(new FormData(f));        // valores escritos
+  const nombre = (datos.nombre || '').trim(), cancion = (datos.cancion || '').trim(), artista = (datos.artista || '').trim(); // limpios
+  cancionOk = false;                                        // borra el "gracias" anterior
+  if (!cancion) { cancionAviso = textoMensajeError('cancion_vacia'); pintarCanciones(); return; } // falta la canción
+  if (estadoInv !== 'lista' && !nombre) { cancionAviso = textoMensajeError('nombre_vacio'); pintarCanciones(); return; } // falta el nombre
+  cancionEnviando = true; cancionAviso = ''; pintarCanciones(); // muestra "Enviando…"
+  try {                                                     // intenta guardar
+    const r = await rpc('inv_cancion', { p_codigo: estadoInv === 'lista' ? CODIGO : null, p_nombre: nombre || null, p_cancion: cancion, p_artista: artista || null }); // guarda
+    if (estadoInv === 'lista' && r) INV = r;                // con código: trae sus canciones actualizadas
+    cancionOk = true;                                       // muestra el "gracias"
+  } catch (err) { cancionAviso = textoMensajeError(err.message); } // mensaje amable
+  cancionEnviando = false; pintarCanciones();               // listo
+  if (!cancionOk) {                                         // si falló, devuelve lo escrito para no perderlo
+    const g = document.querySelector('[data-cancion-form]'); // formulario nuevo
+    if (g.nombre) g.nombre.value = nombre; g.cancion.value = cancion; g.artista.value = artista; // restaura
+  } else if (estadoInv !== 'lista') {                       // sin código: conserva el nombre para la siguiente
+    document.querySelector('[data-cancion-form]').nombre.value = nombre; // deja el nombre escrito
+  }
+  const sc = document.querySelector('[data-canciones]')?.closest('.vela-scroll'); // panel desplazable
+  if (sc) revisarDesplazamiento(sc);                        // actualiza el desvanecido
+});
+
 // ================== CONTEO REGRESIVO ==================
 // data-conteo="corto"    → una línea: "faltan 110 días"
 // data-conteo="completo" → días, horas, minutos y segundos
@@ -1219,6 +1392,8 @@ function actualizarConteos() {                              // recalcula todos l
 }
 actualizarConteos();                                        // primera vez
 setInterval(actualizarConteos, 1000);                       // cada segundo
+pintarInvitado(); pintarRsvp(); pintarCanciones();          // estado inicial de la carta y de las dos tarjetas
+cargarInvitacion();                                         // trae los datos del enlace personal (si hay código)
 
 // ================== ABRIR EL SOBRE ==================
 const sobre = $('sobre');                                   // el sobre
