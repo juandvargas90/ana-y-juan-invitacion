@@ -976,7 +976,7 @@ async function cargarInvitacion() {                         // trae los datos de
   pintarInvitado(); pintarRsvp(); pintarCanciones();        // actualiza carta y tarjetas
 }
 function pintarInvitado() {                                 // escribe el "Para" en la carta
-  document.querySelector('[data-invitado]').textContent = (INV && INV.para) || 'Nuestros queridos invitados'; // nombre o saludo general
+  document.querySelectorAll('[data-invitado]').forEach(el => { el.textContent = (INV && INV.para) || 'Nuestros queridos invitados'; }); // nombre o saludo general, en las dos cartas
 }
 
 // ================== HOJAS: CONTENIDO DE CADA UNA ==================
