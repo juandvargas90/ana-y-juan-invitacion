@@ -1632,15 +1632,13 @@ function iniciarCarrusel() {                                // se llama al mostr
   marcarActiva();                                           // estado inicial
   $('flechaSig').classList.add('llama');                    // la flecha "siguiente" llama la atención al principio
   // --- paso automático: si nadie toca el carrusel, avanza solo y al final vuelve a la primera ---
-  const AUTO_MS = 4500;                                     // tiempo que se muestra cada tarjeta
-  const PAUSA_MS = 10000;                                   // tras tocar el carrusel, espera esto antes de seguir solo
+  const AUTO_MS = 3000;                                     // cada tarjeta se muestra 3 segundos
+  const PAUSA_MS = 3000;                                    // tras tocarlo, sigue rotando a los mismos 3 segundos
   let enPantalla = false, ultimoToque = 0, ultimoPaso = 0, encima = false; // estado del paso automático
   const tocado = () => { ultimoToque = Date.now(); };       // registra que la persona lo usó
   ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(ev => visor.addEventListener(ev, tocado, { passive: true })); // gestos en el carrusel
   [$('flechaAnt'), $('flechaSig')].forEach(b => b.addEventListener('pointerdown', tocado)); // flechas
   puntos.forEach(p => p.parentElement.addEventListener('pointerdown', tocado)); // puntos
-  visor.addEventListener('mouseenter', () => { encima = true; }); // con el mouse encima, no se mueve
-  visor.addEventListener('mouseleave', () => { encima = false; tocado(); }); // al salir, espera un poco
   new IntersectionObserver(e => {                           // ¿el carrusel está en pantalla?
     enPantalla = e[0].isIntersecting;                       // guarda el estado
     if (enPantalla) ultimoPaso = Date.now();                // al aparecer, deja ver la primera antes de avanzar
