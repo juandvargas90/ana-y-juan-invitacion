@@ -811,6 +811,22 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .reservados .reservados-fila.gama{ gap:0; } /* sin espacio: se superponen */
 .reservados .reservados-fila.gama i + i{ margin-left:-12px; } /* cada tono monta sobre el anterior */
 @media (prefers-reduced-motion:reduce){ .tarjeta.abierta .cerrar::after, .tarjeta.abierta .cerrar{ animation:none; } } /* sin movimiento si se pide */
+
+/* ===== Tarjeta de recuerdo: Jadito ===== */
+.tarjeta-recuerdo .arco, .tarjeta-recuerdo .lino-caja{ display:none; } /* sin arco ni lino: se ve completa la ilustración */
+.tarjeta-recuerdo .tarjeta-foto{ background-position:center 30%; } /* encuadre centrado en su carita */
+.banda-recuerdo{ position:absolute; left:0; right:0; bottom:0; z-index:1; padding:30% 7% 5.5%; text-align:center; container-type:inline-size; /* franja inferior */
+  background:linear-gradient(rgba(250,246,236,0), rgba(250,246,236,.82) 38%, rgba(250,246,236,.95)); transition:opacity .35s ease; } /* velo claro que sube desde abajo */
+.tarjeta.tapada .banda-recuerdo{ opacity:0; pointer-events:none; } /* al abrir, da paso al detalle */
+.banda-huella{ color:#a5864b; width:clamp(18px, 8cqw, 26px); margin:0 auto 1cqw; } /* huellita dorada */
+.banda-huella svg{ width:100%; height:auto; display:block; } /* tamaño del ícono */
+.banda-nombre{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(24px, 11cqw, 36px); line-height:1; color:#4a5638; } /* "Jadito" */
+.banda-sub{ margin-top:1.6cqw; font-family:var(--f-display); font-weight:500; font-size:clamp(11px, 4.2cqw, 14px); letter-spacing:.16em; text-transform:uppercase; color:#5d5a48; } /* "Siempre en nuestro corazón" */
+.banda-recuerdo .arco-toca{ margin-top:3cqw; } /* el mismo botón "Toca aquí" de las demás */
+.retrato-jadito{ width:150px; height:150px; margin:14px auto 6px; border-radius:50%; background:url('jadito_jardin.webp') 55% 37% / 260% auto no-repeat; /* su carita en un óvalo */
+  border:3px solid #fbf6ea; box-shadow:0 0 0 1px rgba(176,142,80,.7), 0 6px 16px -6px rgba(20,16,8,.45); } /* marco marfil con filete dorado */
+.recuerdo-texto{ font-family:var(--f-display); font-style:italic; font-size:20px; line-height:1.55; color:var(--tinta); margin:12px auto 10px; max-width:28ch; text-wrap:balance; } /* mensaje */
+.recuerdo-huella svg{ width:22px; height:22px; } /* huellita del adorno final */
 </style>
 </head>
 <body>
@@ -924,7 +940,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
     <button class="flecha flecha-sig" id="flechaSig" aria-label="Hoja siguiente">›</button> <!-- flecha adelante (solo con mouse) -->
   </div>
   <div class="puntos" id="puntos"></div> <!-- indicador -->
-  <div class="contador" id="contador" aria-live="polite">Tarjeta 1 de 7</div> <!-- en qué tarjeta vamos -->
+  <div class="contador" id="contador" aria-live="polite">Tarjeta 1 de 8</div> <!-- en qué tarjeta vamos -->
   <div class="pie">30 · 01 · 2027 · Hacienda La Victoria · <b>#AnaYJuan2027</b></div> <!-- pie -->
 </section>
 
@@ -963,7 +979,8 @@ const ICONOS = {
   reloj: '<circle cx="12" cy="12.5" r="8.5"/><path d="M12 7.5v5l3.2 2"/>', // reloj
   gancho: '<path d="M12 7.2a2.2 2.2 0 1 1 2.2-2.2c0 1.3-2.2 1.7-2.2 3.2M12 8.2l-9 7.3c-.7.6-.3 1.7.6 1.7h16.8c.9 0 1.3-1.1.6-1.7z"/><path d="M10.2 13.3l1.8 1 1.8-1v2l-1.8-1-1.8 1z" fill="currentColor"/>', // gancho con moño
   sobre: '<rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3.5 6.8l8.5 6.4 8.5-6.4"/><path d="M12 17.2l-1.6-1.5a1 1 0 0 1 1.6-.8 1 1 0 0 1 1.6.8z" fill="currentColor"/>', // sobre con corazón
-  nota: '<path d="M9.5 17.5V5.5l9-1.8v11.8"/><circle cx="7" cy="17.5" r="2.5" fill="currentColor"/><circle cx="16" cy="15.5" r="2.5" fill="currentColor"/>' // nota musical
+  nota: '<path d="M9.5 17.5V5.5l9-1.8v11.8"/><circle cx="7" cy="17.5" r="2.5" fill="currentColor"/><circle cx="16" cy="15.5" r="2.5" fill="currentColor"/>', // nota musical
+  huella: '<ellipse cx="6.6" cy="9.6" rx="1.8" ry="2.4" fill="currentColor"/><ellipse cx="10.4" cy="6.4" rx="1.9" ry="2.6" fill="currentColor"/><ellipse cx="14.8" cy="6.6" rx="1.9" ry="2.6" fill="currentColor"/><ellipse cx="18.2" cy="10.2" rx="1.7" ry="2.3" fill="currentColor"/><path d="M12.4 11.6c-2.9 0-5.8 3.5-5.8 6 0 1.7 1.3 2.6 2.9 2.3 1.2-.2 1.9-.6 2.9-.6s1.7.4 2.9.6c1.6.3 2.9-.6 2.9-2.3 0-2.5-2.9-6-5.8-6z" fill="currentColor"/>' // huellita
 };
 const svgIcono = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`; // arma el ícono
 
@@ -1017,7 +1034,7 @@ const linkCalendario = 'https://calendar.google.com/calendar/render?action=TEMPL
 
 const HOJAS = [                                             // hojas en el orden del carrusel
   { // 1 · nuestro gran día
-    fondo: 'etiqueta_1.webp', flor: 'euca_1.webp',          // ilustración y ramita del panel
+    fondo: 'jadito_familia.webp', flor: 'euca_1.webp',      // Ana, Juan y Jadito en el jardín (ilustración y ramita del panel)
     titulo: 'Nuestro gran día', sub: 'Sábado 30 de enero de 2027', icono: 'calendario', toca: 'Toca aquí', // tarjeta cerrada (arco)
     ante: 'Guarda la fecha', tituloDetalle: 'Nuestro gran día', // encabezado del detalle
     cuerpo: () => `${htmlCalendario()}
@@ -1096,6 +1113,15 @@ const HOJAS = [                                             // hojas en el orden
     cuerpo: () => `<p class="vela-texto">¿Qué canción no puede faltar en nuestra fiesta? Recomiéndanos la que te hace bailar, la que te recuerda a nosotros o la que nunca falla.</p>
       <div class="nota-icono"><span class="frio">${svgIcono('musica')}</span>Con tus canciones armaremos la música de la noche.</div>
       <div class="canciones" data-canciones></div>`
+  },
+  { // 8 · siempre con nosotros (homenaje a Jadito)
+    fondo: 'jadito_jardin.webp', flor: 'euca_2.webp',       // Jadito en el jardín (ilustración y ramita)
+    titulo: 'Siempre con nosotros', sub: 'Jadito', icono: 'huella', toca: 'Toca aquí', // textos (esta tarjeta usa la banda inferior en vez del arco)
+    especial: 'recuerdo',                                   // diseño propio: sin arco ni lino, para que se vea su carita
+    ante: 'Siempre con nosotros', tituloDetalle: 'Jadito',  // encabezado del detalle
+    cuerpo: () => `<div class="retrato-jadito" role="img" aria-label="Jadito"></div>
+      <p class="recuerdo-texto">Jadito ya no nos acompaña, pero fue parte de este sueño y de la familia que estamos formando. Siempre estará en nuestro corazón.</p>
+      <div class="adorno-corazon recuerdo-huella" aria-hidden="true"><i></i>${svgIcono('huella')}<i></i></div>`
   }
 ];
 
@@ -1196,7 +1222,7 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
   const hoja = document.createElement('div');               // posición del carrusel
   hoja.className = 'hoja';                                  // clase
   hoja.innerHTML = `
-    <div class="tarjeta" tabindex="0" role="button" aria-label="${h.titulo}">
+    <div class="tarjeta${h.especial ? ' tarjeta-' + h.especial : ''}" tabindex="0" role="button" aria-label="${h.titulo}">
       <div class="tarjeta-foto" style="background-image:url('${h.fondo}')"></div>
       <div class="arco">
         <div class="arco-firma">Ana &amp; Juan</div>
@@ -1208,6 +1234,12 @@ HOJAS.forEach((h, i) => {                                   // por cada hoja
         </div>
       </div>
       <div class="lino-caja"><img class="lino-img" src="lino_lateral.webp" alt=""><img class="tarjeta-sello" src="sello.webp" alt=""></div>
+      ${h.especial === 'recuerdo' ? `<div class="banda-recuerdo">
+        <div class="banda-huella">${svgIcono('huella')}</div>
+        <div class="banda-nombre">${h.sub}</div>
+        <div class="banda-sub">Siempre en nuestro corazón</div>
+        <div class="arco-toca"><span>${h.toca}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg></div>
+      </div>` : ''}
       <div class="vela vela-detalle">
         <div class="vela-scroll">
           <img class="vela-flor" src="${h.flor}" alt="">
