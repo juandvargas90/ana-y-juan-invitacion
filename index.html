@@ -1069,8 +1069,7 @@ const HOJAS = [                                             // hojas en el orden
     titulo: 'Código de vestimenta', sub: 'Formal · vestido largo', icono: 'gancho', toca: 'Toca aquí', // arco
     ante: 'Formal · vestido largo', tituloDetalle: 'Código de vestimenta', // encabezado
     cuerpo: () => `<div class="vestir">
-        <div class="recuadro"><div class="vestir-quien">Ellos</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p>
-          <div class="muestras"><i style="--c:#1f1f1c" title="Negro"></i><i style="--c:#3b3e42" title="Gris oxford"></i><i style="--c:#3d4a2f" title="Verde oliva"></i><i style="--c:#4a3628" title="Café"></i></div></div>
+        <div class="recuadro"><div class="vestir-quien">Ellos</div><p>Traje formal con corbata, preferiblemente en tonos oscuros.</p></div>
         <div class="recuadro"><div class="vestir-quien">Ellas</div><p>Vestido largo de gala, en el color de su preferencia, respetando los tonos reservados.</p></div>
       </div>
       <div class="reservados">
@@ -1080,7 +1079,7 @@ const HOJAS = [                                             // hojas en el orden
         <div class="vestir">
           <div class="recuadro"><div class="vestir-quien">Ellos</div>
             <div class="reservados-fila gama"><i style="--c:#1d2f57"></i><i style="--c:#2f5fa8"></i><i style="--c:#9cc0e6"></i></div>
-            <div class="reservado-color">Toda la gama de azules</div><p>Del celeste al azul oscuro, reservados para el novio y los padres.</p></div>
+            <div class="reservado-color">Toda la gama de azules</div><p>Reservados para el novio y los padres.</p></div>
           <div class="recuadro"><div class="vestir-quien">Ellas</div>
             <div class="reservados-fila"><i style="--c:#fbf9f3"></i><i style="--c:#6b1e2e"></i></div>
             <div class="reservado-color">Blanco y vinotinto</div><p>Reservados para la novia y las madres.</p></div>
@@ -1664,8 +1663,8 @@ function iniciarCarrusel() {                                // se llama al mostr
   marcarActiva();                                           // estado inicial
   $('flechaSig').classList.add('llama');                    // la flecha "siguiente" llama la atención al principio
   // --- paso automático: si nadie toca el carrusel, avanza solo y al final vuelve a la primera ---
-  const AUTO_MS = 4000;                                     // cada tarjeta se muestra 4 segundos
-  const PAUSA_MS = 4000;                                    // tras tocarlo, sigue rotando a los mismos 4 segundos
+  const AUTO_MS = 5000;                                     // cada tarjeta se muestra 5 segundos
+  const PAUSA_MS = 5000;                                    // tras tocarlo, sigue rotando a los mismos 5 segundos
   let enPantalla = false, ultimoToque = 0, ultimoPaso = 0, encima = false; // estado del paso automático
   const tocado = () => { ultimoToque = Date.now(); };       // registra que la persona lo usó
   ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(ev => visor.addEventListener(ev, tocado, { passive: true })); // gestos en el carrusel
