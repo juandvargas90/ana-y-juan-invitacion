@@ -102,7 +102,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .escena-sobre.alejando .pista{ opacity:0; transition:opacity 1.2s ease; } /* los textos se desvanecen */
 .encabezado{ position:relative; z-index:3; text-align:center; } /* textos sobre las flores */
 .antetitulo{
-  font-size:12.8px;           /* texto pequeño */
+  font-size:14.3px;           /* texto pequeño */
   letter-spacing:3.2px;       /* letras espaciadas estilo papelería */
   text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.9); /* halo claro para leerse sobre flores */
   text-transform:uppercase;   /* en mayúsculas */
@@ -118,7 +118,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   line-height:1.05;           /* interlineado compacto */
 }
 .nombres .y{ color:var(--oro); font-style:normal; margin:0 .18em; } /* el "&" en dorado */
-.fecha-mini{ margin-top:10px; font-size:14.4px; letter-spacing:4px; color:var(--tinta); text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.9); } /* fecha bajo los nombres (más contraste) */
+.fecha-mini{ margin-top:10px; font-size:15.6px; letter-spacing:4px; color:var(--tinta); text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.9); } /* fecha bajo los nombres (más contraste) */
 
 /* --- el sobre --- */
 .sobre-zona{
@@ -290,7 +290,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 .pista{
   position:relative; z-index:3; /* sobre las flores */
-  font-size:12.2px; letter-spacing:3px; text-transform:uppercase; /* pequeño y discreto */
+  font-size:13.7px; letter-spacing:3px; text-transform:uppercase; /* pequeño y discreto */
   color:var(--oro-texto);     /* dorado oscuro legible */
   text-align:center;          /* centrado */
   margin-top:-14px;           /* cerca del sobre */
@@ -334,8 +334,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 }
 .carta-esquina{ position:absolute; left:6px; bottom:6px; width:74px; transform:rotate(-8deg); pointer-events:none; } /* ramillete de esquina */
 .carta > .contenido{ position:relative; } /* el texto queda sobre el papel */
-.para{ font-size:12.8px; letter-spacing:4px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:6px; } /* etiqueta "Para" */
-.invitado{ font-family:var(--f-display); font-style:italic; font-size:clamp(21.6px, 5vw, 25px); color:var(--oliva-osc); margin-bottom:20px; text-wrap:balance; } /* invitado */
+.para{ font-size:14.3px; letter-spacing:4px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:6px; } /* etiqueta "Para" */
+.invitado{ font-family:var(--f-display); font-style:italic; font-size:clamp(22.5px, 5vw, 25px); color:var(--oliva-osc); margin-bottom:20px; text-wrap:balance; } /* invitado */
 .foto-marco{
   background:#fbf7ee;         /* marco blanco cálido de foto impresa */
   padding:6px;                /* borde blanco */
@@ -345,17 +345,17 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   max-width:100%;             /* nunca más ancha que la carta */
 }
 .foto-marco img{ width:100%; aspect-ratio:3/4; object-fit:cover; } /* foto de la pareja */
-.mensaje{ font-family:var(--f-display); font-style:italic; font-size:clamp(19.5px, 5vw, 22.5px); line-height:1.55; color:var(--tinta); margin:0 auto 18px; max-width:30ch; text-wrap:balance; } /* mensaje */
+.mensaje{ font-family:var(--f-display); font-style:italic; font-size:clamp(20.3px, 5vw, 23.4px); line-height:1.55; color:var(--tinta); margin:0 auto 18px; max-width:30ch; text-wrap:balance; } /* mensaje */
 .carta .nombres{ font-size:clamp(33.3px, 8vw, 41.6px); } /* nombres dentro de la carta */
-.carta .fecha{ margin-top:10px; font-size:14.9px; letter-spacing:5px; color:var(--oro-osc); font-variant-numeric:tabular-nums; } /* fecha */
-.carta .lugar{ margin-top:6px; font-size:12.8px; letter-spacing:3px; text-transform:uppercase; color:var(--tinta-suave); } /* lugar */
+.carta .fecha{ margin-top:10px; font-size:16.1px; letter-spacing:5px; color:var(--oro-osc); font-variant-numeric:tabular-nums; } /* fecha */
+.carta .lugar{ margin-top:6px; font-size:14.3px; letter-spacing:3px; text-transform:uppercase; color:var(--tinta-suave); } /* lugar */
 
 .boton-seguir{
   position:relative; z-index:2; /* sobre las flores */
   margin-top:14px;            /* separación con la carta (cerca) */
   display:flex; flex-direction:column; align-items:center; gap:6px; /* texto con línea */
   background:none; border:none; cursor:pointer; /* sin caja exterior */
-  font-size:13.4px; letter-spacing:2.6px; text-transform:uppercase; color:var(--tinta); /* tipografía legible */
+  font-size:14.5px; letter-spacing:2.6px; text-transform:uppercase; color:var(--tinta); /* tipografía legible */
 }
 .boton-seguir span{ padding:9px 20px; border:1px solid rgba(176,142,80,.6); border-radius:999px; background:rgba(247,242,230,.82); animation:flotar 2.4s ease-in-out infinite; } /* píldora con filete dorado que flota suave */
 .boton-seguir::after{ content:""; width:1px; height:10px; background:linear-gradient(var(--tinta-suave), transparent); } /* línea indicadora corta */
@@ -372,14 +372,14 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 }
 .hojas-encabezado{ position:relative; isolation:isolate; text-align:center; padding:10px 16px 4px; } /* títulos */
 .hojas-encabezado::before, .pie::before{ content:""; position:absolute; inset:-6px 6%; z-index:-1; background:radial-gradient(closest-side, rgba(248,243,232,.9), rgba(248,243,232,.6) 60%, transparent); pointer-events:none; } /* velo claro que separa el texto del lino */
-.hojas-encabezado .antetitulo{ font-size:13.4px; margin-bottom:0; } /* antetítulo un poco más grande */
+.hojas-encabezado .antetitulo{ font-size:14.5px; margin-bottom:0; } /* antetítulo un poco más grande */
 .hojas-encabezado .mini-sello{ width:52px; margin:0 auto 12px; filter:var(--sombra-objeto); } /* sello pequeño */
 .hojas-encabezado .antetitulo{ color:#5e4620; } /* antetítulo con dorado más profundo */
 .hojas-encabezado .antetitulo, .conteo-hojas, .hojas-pista, .pie{ text-shadow:0 0 10px rgba(247,240,226,.95), 0 0 3px rgba(247,240,226,.95); } /* halo claro: se despegan del lino */
 .pie{ opacity:1; } /* pie sin transparencia */
 .hojas-pista{ color:var(--tinta); } /* instrucción con el tono principal */
 .hojas-encabezado h2{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(27px, 6vw, 33.3px); color:var(--oliva-osc); margin:4px 0 2px; line-height:1.1; text-wrap:balance; } /* título */
-.hojas-pista{ font-size:12.8px; letter-spacing:1.6px; text-transform:uppercase; color:var(--tinta-suave); } /* instrucción (más legible) */
+.hojas-pista{ font-size:14.3px; letter-spacing:1.6px; text-transform:uppercase; color:var(--tinta-suave); } /* instrucción (más legible) */
 
 .hojas-visor{
   display:flex; align-items:center; /* tarjetas centradas */
@@ -441,8 +441,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .vela::before{ content:""; position:absolute; inset:6px; border:1px solid rgba(195,160,94,.55); pointer-events:none; } /* filete dorado */
 .vela-flor{ width:54px; margin:-46px auto 6px; filter:drop-shadow(2px 3px 3px rgba(30,28,16,.3)); } /* ramillete que sobresale */
 .vela-titulo{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(24.8px, 5.6vw, 28.1px); color:var(--oliva-osc); line-height:1.15; } /* título */
-.vela-sub{ margin-top:6px; font-size:11.6px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta-suave); } /* subtítulo */
-.vela-toca{ margin-top:12px; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* indicación */
+.vela-sub{ margin-top:6px; font-size:13px; letter-spacing:2.4px; text-transform:uppercase; color:var(--tinta-suave); } /* subtítulo */
+.vela-toca{ margin-top:12px; font-size:12.3px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* indicación */
 .tarjeta.expandida .vela-resumen{ opacity:0; pointer-events:none; } /* al abrir se oculta el resumen */
 .vela-detalle{
   top:9%;                     /* más arriba que el resumen */
@@ -455,12 +455,12 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 }
 .tarjeta.abierta .vela-detalle{ opacity:1; pointer-events:auto; } /* aparece cuando la tarjeta ya creció */
 .vela-detalle .vela-flor{ margin-top:-4px; } /* dentro del panel */
-.vela-ante{ font-size:12.2px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); margin:4px 0 8px; } /* antetítulo */
-.vela-texto{ font-size:14.9px; line-height:1.85; color:var(--tinta-suave); margin:12px 0 16px; } /* texto */
+.vela-ante{ font-size:13.7px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); margin:4px 0 8px; } /* antetítulo */
+.vela-texto{ font-size:16.1px; line-height:1.85; color:var(--tinta-suave); margin:12px 0 16px; } /* texto */
 .vela-texto b{ font-weight:400; color:var(--tinta); } /* resaltado suave */
 .boton-oliva{
   display:inline-block;       /* botón */
-  font-size:12.8px; letter-spacing:2.4px; text-transform:uppercase; /* tipografía */
+  font-size:14.3px; letter-spacing:2.4px; text-transform:uppercase; /* tipografía */
   color:var(--marfil);        /* texto marfil */
   background:var(--oliva) url('papel_oliva.webp') center / 300px auto; /* papel oliva */
   padding:12px 22px;          /* tamaño */
@@ -472,7 +472,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   position:absolute; top:12px; right:12px; /* esquina superior derecha */
   width:36px; height:36px; border-radius:50%; /* círculo */
   background:var(--marfil-vela); border:1px solid rgba(195,160,94,.6); /* papel con filete */
-  color:var(--oliva-osc); font-size:17.2px; /* la X */
+  color:var(--oliva-osc); font-size:17.9px; /* la X */
   display:flex; align-items:center; justify-content:center; /* centrada */
   cursor:pointer; z-index:4;  /* encima del contenido */
   opacity:0; pointer-events:none; /* oculto mientras está cerrada */
@@ -501,7 +501,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .punto-btn{ background:none; border:none; padding:0; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; } /* área tocable de cada punto */
 .punto{ width:6px; height:6px; border-radius:50%; background:var(--tinta-tenue); opacity:.5; transition:all .3s ease; } /* punto */
 .punto.activo{ background:var(--oro-osc); opacity:1; transform:scale(1.4); } /* punto actual */
-.pie{ position:relative; isolation:isolate; margin:0 auto 40px; padding:10px 16px; max-width:520px; text-align:center; font-size:13.4px; letter-spacing:2.4px; line-height:1.7; text-transform:uppercase; color:var(--oliva-osc); } /* pie (más contraste) */
+.pie{ position:relative; isolation:isolate; margin:0 auto 40px; padding:10px 16px; max-width:520px; text-align:center; font-size:14.5px; letter-spacing:2.4px; line-height:1.7; text-transform:uppercase; color:var(--oliva-osc); } /* pie (más contraste) */
 .pie b{ font-weight:400; color:#5e4620; } /* hashtag (dorado profundo) */
 
 /* pétalos: el contenedor cae (con sombra fija), la imagen interior gira y aletea */
@@ -510,16 +510,16 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 
 /* ---------- carta: bendición de los padres y conteo ---------- */
 .bendicion{ margin:4px auto 20px; max-width:30ch; } /* bloque de los padres */
-.bendicion-titulo{ font-family:var(--f-display); font-style:italic; font-size:17.2px; color:var(--tinta-suave); margin-bottom:10px; } /* "Con la bendición de nuestros padres" */
+.bendicion-titulo{ font-family:var(--f-display); font-style:italic; font-size:17.9px; color:var(--tinta-suave); margin-bottom:10px; } /* "Con la bendición de nuestros padres" */
 .padres{ display:flex; flex-direction:column; align-items:center; gap:4px; } /* las dos parejas */
-.padres-rol{ font-size:11.6px; letter-spacing:2.6px; text-transform:uppercase; color:var(--oro-texto); } /* "Padres de la novia / del novio" */
-.padres-pareja{ font-family:var(--f-display); font-size:17.8px; font-weight:500; color:var(--oliva-osc); line-height:1.3; } /* nombres */
-.padres-pareja .cruz{ font-family:var(--f-texto); font-size:13.4px; color:var(--oro-osc); margin-left:2px; vertical-align:2px; } /* la cruz † */
-.memoria{ display:block; font-style:italic; font-weight:400; font-size:14.9px; color:var(--tinta-suave); } /* "quien nos acompaña desde el cielo" */
+.padres-rol{ font-size:13px; letter-spacing:2.6px; text-transform:uppercase; color:var(--oro-texto); } /* "Padres de la novia / del novio" */
+.padres-pareja{ font-family:var(--f-display); font-size:18.5px; font-weight:500; color:var(--oliva-osc); line-height:1.3; } /* nombres */
+.padres-pareja .cruz{ font-family:var(--f-texto); font-size:14.5px; color:var(--oro-osc); margin-left:2px; vertical-align:2px; } /* la cruz † */
+.memoria{ display:block; font-style:italic; font-weight:400; font-size:16.1px; color:var(--tinta-suave); } /* "quien nos acompaña desde el cielo" */
 .padres-sep{ margin:8px 0 6px; width:46px; height:1px; background:linear-gradient(90deg, transparent, var(--oro), transparent); } /* línea dorada entre parejas */
-.conteo-carta{ margin-top:14px; display:inline-flex; align-items:center; gap:10px; font-size:12.8px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-texto); } /* "faltan 110 días" */
+.conteo-carta{ margin-top:14px; display:inline-flex; align-items:center; gap:10px; font-size:14.3px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-texto); } /* "faltan 110 días" */
 .conteo-carta::before, .conteo-carta::after{ content:""; width:18px; height:1px; background:var(--oro); opacity:.7; } /* hilos dorados a los lados */
-.conteo-hojas{ margin-top:8px; font-size:13.4px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-texto); } /* conteo en el encabezado de las hojas */
+.conteo-hojas{ margin-top:8px; font-size:14.5px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-texto); } /* conteo en el encabezado de las hojas */
 
 /* ---------- panel de detalle más amplio para hojas con mucho contenido ---------- */
 .vela-detalle{ top:4%; max-height:90%; width:min(88%, 420px); } /* más espacio en las hojas abiertas */
@@ -540,17 +540,17 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .vela-detalle::before{ z-index:2; } /* el marco dorado siempre por encima del contenido que se desplaza */
 .tarjeta-lugar{ flex:0 0 auto; } /* hueco que guarda el lugar de la tarjeta abierta */
 .vela-texto.centro{ margin:10px 0 12px; } /* texto centrado sin tanto aire */
-.vela-texto.pequeno{ font-size:14px; line-height:1.6; margin:8px 0 0; } /* texto pequeño */
+.vela-texto.pequeno{ font-size:15.1px; line-height:1.6; margin:8px 0 0; } /* texto pequeño */
 .botones{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; } /* dos botones juntos */
 
 /* ---------- calendario ---------- */
 .calendario{ margin:14px auto 4px; max-width:280px; } /* caja del calendario */
-.cal-mes{ font-family:var(--f-display); font-style:italic; font-size:21.6px; color:var(--oliva-osc); margin-bottom:8px; } /* "Enero 2027" */
-.cal-mes span{ font-style:normal; font-size:14.9px; letter-spacing:3px; color:var(--oro-osc); margin-left:4px; } /* año */
+.cal-mes{ font-family:var(--f-display); font-style:italic; font-size:22.5px; color:var(--oliva-osc); margin-bottom:8px; } /* "Enero 2027" */
+.cal-mes span{ font-style:normal; font-size:16.1px; letter-spacing:3px; color:var(--oro-osc); margin-left:4px; } /* año */
 .cal-grilla{ display:grid; grid-template-columns:repeat(7, 1fr); row-gap:4px; border-top:1px solid rgba(195,160,94,.5); border-bottom:1px solid rgba(195,160,94,.5); padding:8px 0; } /* cuadrícula de 7 columnas */
-.cal-dia{ font-size:11px; letter-spacing:1.5px; color:var(--oro-osc); padding-bottom:4px; } /* L M M J V S D */
-.cal-num{ position:relative; font-family:var(--f-display); font-size:17.2px; color:var(--tinta-suave); line-height:28px; font-variant-numeric:tabular-nums; } /* cada día */
-.cal-boda{ color:var(--oliva-osc); font-weight:600; font-size:18.4px; } /* el 30, resaltado */
+.cal-dia{ font-size:12.3px; letter-spacing:1.5px; color:var(--oro-osc); padding-bottom:4px; } /* L M M J V S D */
+.cal-num{ position:relative; font-family:var(--f-display); font-size:17.9px; color:var(--tinta-suave); line-height:28px; font-variant-numeric:tabular-nums; } /* cada día */
+.cal-boda{ color:var(--oliva-osc); font-weight:600; font-size:19.1px; } /* el 30, resaltado */
 .corazon{ position:absolute; left:50%; top:50%; width:46px; height:46px; transform:translate(-50%,-52%); overflow:visible; pointer-events:none; } /* corazón alrededor del 30 */
 .corazon path{ fill:none; stroke:var(--oro-osc); stroke-width:2.2; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset 1.6s cubic-bezier(.5,.1,.3,1) .5s; } /* trazo que se dibuja */
 .tarjeta.abierta .corazon path{ stroke-dashoffset:0; } /* al abrir la hoja, el corazón se dibuja a mano */
@@ -559,8 +559,8 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .conteo-grande{ display:flex; justify-content:center; gap:8px; margin:6px 0 16px; } /* cuatro casillas */
 .conteo-grande div{ min-width:56px; padding:8px 4px 6px; border:1px solid rgba(195,160,94,.55); background:rgba(255,255,255,.35); } /* casilla */
 .conteo-grande b{ display:block; font-family:var(--f-display); font-weight:500; font-size:25px; color:var(--oliva-osc); line-height:1; font-variant-numeric:tabular-nums; } /* número */
-.conteo-grande span{ display:block; margin-top:4px; font-size:10.4px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* etiqueta */
-.conteo-fin{ font-family:var(--f-display); font-style:italic; font-size:23.8px; color:var(--oliva-osc); } /* mensaje del día */
+.conteo-grande span{ display:block; margin-top:4px; font-size:11.6px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); } /* etiqueta */
+.conteo-fin{ font-family:var(--f-display); font-style:italic; font-size:24.8px; color:var(--oliva-osc); } /* mensaje del día */
 
 /* ---------- itinerario ---------- */
 .itinerario{ list-style:none; position:relative; margin:16px auto 4px; max-width:290px; text-align:left; } /* lista */
@@ -578,27 +578,27 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .itin-icono svg{ width:22px; height:22px; } /* ícono de línea */
 .itin-icono.con-img{ width:54px; height:54px; border-color:rgba(195,160,94,.4); } /* círculo más grande para la acuarela */
 .itin-icono img{ width:46px; height:46px; object-fit:contain; filter:drop-shadow(1px 2px 1.5px rgba(30,28,16,.18)); } /* ícono en acuarela con sombra suave */
-.itin-hora{ font-family:var(--f-display); font-size:22.7px; font-weight:500; color:var(--oliva-osc); text-align:right; padding-right:12px; font-variant-numeric:tabular-nums; line-height:1; } /* hora */
-.itin-hora small{ display:block; font-family:var(--f-texto); font-size:9.8px; letter-spacing:1.6px; text-transform:uppercase; color:var(--oro-osc); margin-top:3px; } /* p. m. */
-.itin-momento{ font-family:var(--f-display); font-style:italic; font-size:18.4px; color:var(--tinta); line-height:1.2; border-left:1px solid rgba(195,160,94,.4); padding-left:12px; } /* actividad */
+.itin-hora{ font-family:var(--f-display); font-size:23.6px; font-weight:500; color:var(--oliva-osc); text-align:right; padding-right:12px; font-variant-numeric:tabular-nums; line-height:1; } /* hora */
+.itin-hora small{ display:block; font-family:var(--f-texto); font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:var(--oro-osc); margin-top:3px; } /* p. m. */
+.itin-momento{ font-family:var(--f-display); font-style:italic; font-size:19.1px; color:var(--tinta); line-height:1.2; border-left:1px solid rgba(195,160,94,.4); padding-left:12px; } /* actividad */
 
 /* ---------- notas con ícono (parqueadero, frío) ---------- */
-.nota-icono{ display:flex; align-items:center; gap:10px; justify-content:center; text-align:left; font-size:13.8px; line-height:1.5; color:var(--tinta); margin:4px auto 16px; max-width:300px; } /* nota */
-.parqueo, .frio{ flex:0 0 28px; height:28px; border-radius:50%; border:1px solid var(--oro); color:var(--oro-osc); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-weight:600; font-size:17.3px; } /* círculo dorado */
+.nota-icono{ display:flex; align-items:center; gap:10px; justify-content:center; text-align:left; font-size:14.9px; line-height:1.5; color:var(--tinta); margin:4px auto 16px; max-width:300px; } /* nota */
+.parqueo, .frio{ flex:0 0 28px; height:28px; border-radius:50%; border:1px solid var(--oro); color:var(--oro-osc); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-weight:600; font-size:18px; } /* círculo dorado */
 .frio svg{ width:16px; height:16px; } /* luna */
 
 /* ---------- vestimenta ---------- */
 .vestir{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 12px; text-align:center; } /* dos columnas */
-.vestir p{ font-size:13.8px; line-height:1.6; color:var(--tinta-suave); } /* descripción */
-.vestir-quien{ font-family:var(--f-display); font-style:italic; font-size:19.4px; color:var(--oliva-osc); margin-bottom:4px; } /* Caballeros / Damas */
+.vestir p{ font-size:14.9px; line-height:1.6; color:var(--tinta-suave); } /* descripción */
+.vestir-quien{ font-family:var(--f-display); font-style:italic; font-size:20.2px; color:var(--oliva-osc); margin-bottom:4px; } /* Caballeros / Damas */
 .muestras{ display:flex; justify-content:center; gap:6px; margin-top:8px; } /* tonos sugeridos */
 .muestras i, .reservados-fila i{ width:20px; height:20px; border-radius:50%; background:var(--c); box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 1px 2px 3px rgba(30,28,16,.25); display:block; } /* muestra de color */
 .reservados{ border-top:1px solid rgba(195,160,94,.5); padding-top:12px; } /* bloque de reservados */
-.reservados-titulo{ font-size:11.6px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:10px; } /* título */
+.reservados-titulo{ font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:10px; } /* título */
 .reservados-fila{ display:flex; justify-content:center; gap:18px; } /* tres colores */
-.reservados-fila span{ display:flex; flex-direction:column; align-items:center; gap:4px; font-family:var(--f-display); font-size:17.2px; color:var(--oliva-osc); } /* color + nombre */
+.reservados-fila span{ display:flex; flex-direction:column; align-items:center; gap:4px; font-family:var(--f-display); font-size:17.9px; color:var(--oliva-osc); } /* color + nombre */
 .reservados-fila i{ width:30px; height:30px; } /* muestras más grandes */
-.reservados-fila small{ font-family:var(--f-texto); font-size:10.4px; letter-spacing:1.5px; text-transform:uppercase; color:var(--tinta-tenue); } /* para quién */
+.reservados-fila small{ font-family:var(--f-texto); font-size:11.6px; letter-spacing:1.5px; text-transform:uppercase; color:var(--tinta-tenue); } /* para quién */
 .vestir + .reservados + .nota-icono{ margin-top:14px; } /* separación con la nota de frío */
 
 /* ---------- regalos ---------- */
@@ -606,15 +606,15 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .mini-solapa{ position:absolute; inset:0 0 40% 0; background:inherit; clip-path:polygon(0 0, 100% 0, 50% 100%); filter:brightness(.92); } /* solapa */
 .mini-sobre img{ position:absolute; left:50%; top:60%; width:30px; transform:translate(-50%,-50%); filter:drop-shadow(1px 2px 1px rgba(20,16,8,.4)); } /* sello */
 .cuenta{ margin-top:4px; padding:12px; border:1px solid rgba(195,160,94,.5); background:rgba(255,255,255,.3); } /* datos de la cuenta */
-.cuenta-nota{ font-size:11.6px; letter-spacing:1.8px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:6px; } /* encabezado */
-.cuenta-dato{ font-size:13.8px; color:var(--tinta-suave); } /* banco y titular */
-.cuenta-numero{ font-family:var(--f-display); font-size:23.8px; font-weight:500; color:var(--oliva-osc); letter-spacing:1px; margin:2px 0; font-variant-numeric:tabular-nums; user-select:all; } /* número */
-.boton-copiar{ margin-top:8px; background:none; border:1px solid var(--oro); color:var(--oro-osc); font-size:11.6px; letter-spacing:2px; text-transform:uppercase; padding:7px 14px; cursor:pointer; } /* copiar */
+.cuenta-nota{ font-size:13px; letter-spacing:1.8px; text-transform:uppercase; color:var(--oro-osc); margin-bottom:6px; } /* encabezado */
+.cuenta-dato{ font-size:14.9px; color:var(--tinta-suave); } /* banco y titular */
+.cuenta-numero{ font-family:var(--f-display); font-size:24.8px; font-weight:500; color:var(--oliva-osc); letter-spacing:1px; margin:2px 0; font-variant-numeric:tabular-nums; user-select:all; } /* número */
+.boton-copiar{ margin-top:8px; background:none; border:1px solid var(--oro); color:var(--oro-osc); font-size:13px; letter-spacing:2px; text-transform:uppercase; padding:7px 14px; cursor:pointer; } /* copiar */
 
 /* ---------- confirmación ---------- */
-.plazo{ display:inline-block; font-size:12.2px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); border-top:1px solid rgba(195,160,94,.5); border-bottom:1px solid rgba(195,160,94,.5); padding:6px 4px; margin:-4px 0 14px; } /* días para confirmar */
+.plazo{ display:inline-block; font-size:13.7px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); border-top:1px solid rgba(195,160,94,.5); border-bottom:1px solid rgba(195,160,94,.5); padding:6px 4px; margin:-4px 0 14px; } /* días para confirmar */
 .pedidos{ text-align:center; margin-bottom:16px; } /* pedido de celebración sin niños */
-.pedidos p{ font-family:var(--f-display); font-style:italic; font-size:17.8px; line-height:1.5; color:var(--tinta-suave); margin-bottom:10px; } /* cada pedido */
+.pedidos p{ font-family:var(--f-display); font-style:italic; font-size:18.5px; line-height:1.5; color:var(--tinta-suave); margin-bottom:10px; } /* cada pedido */
 .pedidos b{ font-weight:600; font-style:normal; color:var(--oliva-osc); } /* resaltado */
 
 /* Animación ligada al desplazamiento: el navegador la calcula en la tarjeta gráfica, sin pasar por el código,
@@ -651,14 +651,14 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
   z-index:1;                  /* sobre la ilustración */
 }
 .arco::before{ content:""; position:absolute; inset:5px 5px 0; border:1px solid rgba(176,142,80,.7); border-bottom:none; border-radius:inherit; pointer-events:none; } /* filete dorado del arco */
-.arco-firma{ font-family:var(--f-display); font-weight:500; font-size:clamp(12.2px, 4.7cqw, 14.9px); letter-spacing:.24em; text-transform:uppercase; color:#85673a; } /* "ANA & JUAN" */
+.arco-firma{ font-family:var(--f-display); font-weight:500; font-size:clamp(13.7px, 5.1cqw, 16.1px); letter-spacing:.24em; text-transform:uppercase; color:#85673a; } /* "ANA & JUAN" */
 .arco-hilo{ width:24%; height:1px; margin:2.2cqw 0 2.6cqw; background:linear-gradient(90deg, transparent, #b08e50, transparent); } /* línea dorada fina */
-.arco-titulo{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(20.5px, 8.9cqw, 31.2px); line-height:1.02; color:#4a5638; text-wrap:balance; } /* título grande */
-.arco-sub{ margin-top:2.6cqw; font-family:var(--f-display); font-weight:500; font-size:clamp(10.4px, 3.9cqw, 14px); letter-spacing:.16em; text-transform:uppercase; color:#5d5a48; line-height:1.5; text-wrap:balance; } /* subtítulo */
+.arco-titulo{ font-family:var(--f-display); font-style:italic; font-weight:500; font-size:clamp(21.3px, 8.9cqw, 31.2px); line-height:1.02; color:#4a5638; text-wrap:balance; } /* título grande */
+.arco-sub{ margin-top:2.6cqw; font-family:var(--f-display); font-weight:500; font-size:clamp(11.6px, 4.2cqw, 15.1px); letter-spacing:.16em; text-transform:uppercase; color:#5d5a48; line-height:1.5; text-wrap:balance; } /* subtítulo */
 .arco-icono{ display:flex; align-items:center; gap:2.6cqw; margin-top:2.6cqw; color:#a5864b; width:100%; justify-content:center; } /* ícono con hilos */
 .arco-icono i{ flex:0 1 18%; height:1px; background:#b08e50; opacity:.7; } /* hilos dorados a los lados del ícono */
 .arco-icono svg{ width:clamp(16px, 7.6cqw, 24px); height:auto; } /* ícono dorado */
-.arco-toca{ margin-top:2cqw; font-family:var(--f-display); font-weight:600; font-size:clamp(11px, 3.9cqw, 13.4px); letter-spacing:.2em; text-transform:uppercase; color:var(--oro-texto); } /* "Toca para ver" */
+.arco-toca{ margin-top:2cqw; font-family:var(--f-display); font-weight:600; font-size:clamp(12.3px, 4.2cqw, 14.5px); letter-spacing:.2em; text-transform:uppercase; color:var(--oro-texto); } /* "Toca para ver" */
 .arco-flecha{ margin-top:1.8cqw; width:clamp(20px, 8cqw, 28px); aspect-ratio:1; border-radius:50%; border:1px solid #a5864b; color:#a5864b; display:flex; align-items:center; justify-content:center; } /* botón circular con flecha */
 .arco-flecha svg{ width:45%; height:auto; } /* flecha */
 .lino-caja{ position:absolute; top:0; right:0; height:100%; aspect-ratio:372 / 1350; z-index:2; pointer-events:none; transition:opacity .35s ease; } /* franja de lino a la derecha */
@@ -670,7 +670,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .arco, .lino-caja{ transition:opacity .4s ease; } /* reaparecen con un fundido corto */
 .vela-flor{ width:auto; height:56px; } /* ramita del panel (proporción vertical) */
 .lugar-nombre{ font-family:var(--f-display); font-size:25px; font-weight:500; color:var(--oliva-osc); margin-top:12px; } /* nombre del lugar */
-.lugar-sub{ font-size:11.6px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); margin-top:2px; } /* municipio */
+.lugar-sub{ font-size:13px; letter-spacing:2.4px; text-transform:uppercase; color:var(--oro-osc); margin-top:2px; } /* municipio */
 
 /* ---------- carrusel de fotos de la carta ---------- */
 .fotos{ position:relative; width:100%; aspect-ratio:3/4; overflow:hidden; background:#e9e2d3; } /* ventana del carrusel */
@@ -689,7 +689,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .foto-punto.activo span{ width:16px; opacity:1; } /* el actual se alarga */
 @media (prefers-reduced-motion:reduce){ .foto-marco .foto.activa, .foto-marco .foto.sale{ transform:none; } } /* sin acercamiento si se pide menos movimiento */
 .regalo-texto{ margin-bottom:6px; } /* texto de regalos */
-.adorno-corazon{ display:flex; align-items:center; justify-content:center; gap:10px; color:var(--oro-osc); font-size:17.2px; margin:2px 0 4px; } /* adorno final */
+.adorno-corazon{ display:flex; align-items:center; justify-content:center; gap:10px; color:var(--oro-osc); font-size:17.9px; margin:2px 0 4px; } /* adorno final */
 .adorno-corazon i{ width:44px; height:1px; background:linear-gradient(90deg, transparent, var(--oro)); } /* hilo izquierdo */
 .adorno-corazon i:last-child{ background:linear-gradient(90deg, var(--oro), transparent); } /* hilo derecho */
 .mini-sobre{ width:132px; height:88px; margin:16px auto 10px; } /* sobrecito un poco más grande */
@@ -698,7 +698,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; } } /* sin animaciones si se pide */
 
 /* ===== Pistas discretas (segunda prueba) ===== */
-.contador{ text-align:center; margin:-14px 0 18px; font-size:13px; letter-spacing:1.5px; color:var(--oliva-osc); font-weight:600; text-shadow:0 0 8px rgba(247,240,226,.95); } /* "Tarjeta 3 de 7" */
+.contador{ text-align:center; margin:-14px 0 18px; font-size:14px; letter-spacing:1.5px; color:var(--oliva-osc); font-weight:600; text-shadow:0 0 8px rgba(247,240,226,.95); } /* "Tarjeta 3 de 7" */
 /* flechas: papel marfil translúcido con filete dorado (ya no compiten con la tarjeta) */
 .flecha{ z-index:61; width:42px; height:42px; background:rgba(251,246,234,.8); color:var(--oro-texto); border:1px solid rgba(176,142,80,.75); font-size:26px; padding-bottom:3px; box-shadow:0 2px 5px rgba(20,16,8,.18); } /* discretas pero visibles */
 @media (hover:hover) and (pointer:fine){ .flecha{ width:46px; height:46px; } .flecha:hover{ background:#fbf6ea; color:var(--oliva-osc); } } /* con mouse: un poco más grandes y se aclaran al pasar */
@@ -721,7 +721,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 @keyframes aro-boton{ 0%{ opacity:.9; transform:scale(1); } 70%,100%{ opacity:0; transform:scale(1.18, 1.5); } } /* el aro crece y se desvanece */
 @keyframes empujon{ 0%,55%,100%{ transform:translateX(0); } 70%{ transform:translateX(3px); } 85%{ transform:translateX(0); } } /* la flechita se adelanta un poco */
 .arco-flecha{ display:none; } /* el círculo anterior ya no hace falta */
-@media (prefers-reduced-motion:reduce){ .flecha-sig, .flecha-ant, .flecha-sig.llama::after, .hojas-fila.asoma, .tarjeta.activa .arco-toca::after, .tarjeta.activa .arco-toca > svg{ animation:none; } } /* sin movimiento si el equipo lo pide */
+@media (prefers-reduced-motion:reduce){ .flecha-sig, .flecha-ant, .flecha-sig.llama::after, .tarjeta.activa .arco-toca::after, .tarjeta.activa .arco-toca > svg{ animation:none; } } /* sin movimiento si el equipo lo pide */
 
 /* ===== Sello entre la carta y las tarjetas ===== */
 .separador-sello{ display:flex; align-items:center; justify-content:center; gap:12px; margin:4px auto 6px; max-width:300px; } /* filete · sello · filete */
@@ -730,7 +730,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .separador-sello img{ width:58px; height:auto; transform:rotate(-8deg); filter:drop-shadow(1px 2px 1.5px rgba(20,16,8,.45)) drop-shadow(3px 6px 6px rgba(20,16,8,.22)); } /* sello de cera pequeño con sombra */
 /* ===== Tarjeta "Nuestro gran día" ===== */
 .cal-sabado{ color:var(--oliva-osc); font-weight:700; } /* la S de sábado, más fuerte */
-.cal-boda{ color:#5a1a26; font-weight:700; font-size:19.5px; z-index:0; } /* el 30 en vinotinto oscuro */
+.cal-boda{ color:#5a1a26; font-weight:700; font-size:20.3px; z-index:0; } /* el 30 en vinotinto oscuro */
 .corazon{ width:52px; height:52px; z-index:-1; } /* corazón un poco más grande, detrás del número */
 .corazon path{ stroke:#a07c3c; stroke-width:3; fill:rgba(214,170,150,0); transition:stroke-dashoffset 1.6s cubic-bezier(.5,.1,.3,1) .5s, fill .8s ease 2s; } /* trazo más grueso; el relleno llega al final */
 .tarjeta.abierta .corazon path{ fill:rgba(214,170,150,.45); } /* se rellena de rosa suave tras dibujarse */
@@ -738,7 +738,7 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 @keyframes latido{ 0%,100%{ transform:translate(-50%,-52%) scale(1); } 20%{ transform:translate(-50%,-52%) scale(1.14); } 40%{ transform:translate(-50%,-52%) scale(1); } 60%{ transform:translate(-50%,-52%) scale(1.08); } } /* latido doble */
 .fecha-boda{ font-family:var(--f-display); font-style:italic; font-size:24px; color:var(--oliva-osc); margin:12px 0 0; } /* "Sábado 30 de enero" */
 .hora-boda{ margin:2px 0 10px; } /* la hora pegada a la fecha */
-.conteo-titulo{ display:flex; align-items:center; justify-content:center; gap:10px; font-size:12.5px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); margin:0 0 8px; } /* "— FALTAN —" */
+.conteo-titulo{ display:flex; align-items:center; justify-content:center; gap:10px; font-size:14px; letter-spacing:3px; text-transform:uppercase; color:var(--oro-osc); margin:0 0 8px; } /* "— FALTAN —" */
 .conteo-titulo i{ width:34px; height:1px; background:rgba(176,142,80,.7); } /* filetes a los lados */
 /* ===== "Toca aquí": eco del borde más visible ===== */
 .arco-toca::after, .arco-toca::before{ content:""; position:absolute; inset:-1px; border-radius:inherit; border:1.6px solid rgba(160,124,60,.95); box-shadow:0 0 8px rgba(195,160,94,.55); opacity:0; pointer-events:none; } /* dos ecos dorados con brillo */
@@ -751,49 +751,66 @@ button{ font:inherit; color:inherit; } /* botones heredan la tipografía */
 .vestir{ gap:10px; align-items:stretch; } /* las dos cajas con la misma altura */
 .recuadro{ position:relative; border:1px solid rgba(176,142,80,.55); border-radius:10px; background:rgba(255,255,255,.4); padding:12px 8px 12px; display:flex; flex-direction:column; align-items:center; } /* recuadro con filete dorado */
 .recuadro::before{ content:""; position:absolute; inset:3px; border:1px solid rgba(176,142,80,.22); border-radius:8px; pointer-events:none; } /* segundo filete interior, más tenue */
-.recuadro p{ font-size:13.4px; line-height:1.5; } /* descripción dentro del recuadro */
-.vestir-quien{ font-size:21px; margin-bottom:6px; } /* "Ellos" / "Ellas" un poco más grande */
+.recuadro p{ font-size:14.5px; line-height:1.5; } /* descripción dentro del recuadro */
+.vestir-quien{ font-size:21.8px; margin-bottom:6px; } /* "Ellos" / "Ellas" un poco más grande */
 .reservados{ border-top:1px solid rgba(195,160,94,.5); padding-top:14px; margin-top:4px; } /* separador con la sección anterior */
 .reservados .vela-ante{ margin:0 0 2px; } /* "COLORES RESERVADOS" */
-.reservados-titulo2{ font-family:var(--f-display); font-style:italic; font-size:22px; color:var(--oliva-osc); line-height:1.2; } /* "Un detalle especial" */
-.reservados-intro{ font-size:13.8px; line-height:1.55; color:var(--tinta-suave); margin:6px 0 2px; } /* texto de introducción */
+.reservados-titulo2{ font-family:var(--f-display); font-style:italic; font-size:22.9px; color:var(--oliva-osc); line-height:1.2; } /* "Un detalle especial" */
+.reservados-intro{ font-size:14.9px; line-height:1.55; color:var(--tinta-suave); margin:6px 0 2px; } /* texto de introducción */
 .reservados .reservados-fila{ gap:10px; margin:2px 0 6px; } /* círculos de color */
 .reservados .reservados-fila i{ width:40px; height:40px; } /* círculos grandes como en la referencia */
-@media (max-width:360px){ .reservados .reservados-fila i{ width:32px; height:32px; } .recuadro p{ font-size:12.6px; } } /* pantallas de 320 px */
-.reservado-color{ font-family:var(--f-display); font-size:17.5px; color:var(--oliva-osc); line-height:1.2; margin-bottom:4px; } /* nombre del color */
-.reservados-cierre{ font-family:var(--f-display); font-style:italic; font-size:15.5px; line-height:1.45; color:var(--tinta-suave); margin:12px 0 0; } /* cierre amable */
+@media (max-width:360px){ .reservados .reservados-fila i{ width:32px; height:32px; } .recuadro p{ font-size:14.1px; } } /* pantallas de 320 px */
+.reservado-color{ font-family:var(--f-display); font-size:18.2px; color:var(--oliva-osc); line-height:1.2; margin-bottom:4px; } /* nombre del color */
+.reservados-cierre{ font-family:var(--f-display); font-style:italic; font-size:16.7px; line-height:1.45; color:var(--tinta-suave); margin:12px 0 0; } /* cierre amable */
 
 /* ===== Confirmación de asistencia ===== */
 .rsvp-lista{ display:flex; flex-direction:column; gap:10px; margin:4px 0 14px; text-align:left; } /* una fila por persona */
 .rsvp-fila{ border:1px solid rgba(176,142,80,.45); border-radius:10px; background:rgba(255,255,255,.45); padding:10px 10px 10px 12px; } /* recuadro por persona */
-.rsvp-nombre{ display:block; font-family:var(--f-display); font-size:19px; color:var(--oliva-osc); margin-bottom:8px; } /* nombre */
+.rsvp-nombre{ display:block; font-family:var(--f-display); font-size:19.8px; color:var(--oliva-osc); margin-bottom:8px; } /* nombre */
 .rsvp-opciones{ display:grid; grid-template-columns:1fr 1fr; gap:8px; } /* dos botones iguales */
-.rsvp-op{ min-height:44px; border-radius:999px; border:1px solid rgba(176,142,80,.75); background:#fbf7ee; color:var(--tinta-suave); font:inherit; font-size:14.5px; cursor:pointer; transition:background .2s ease, color .2s ease; } /* botón grande, fácil de tocar */
+.rsvp-op{ min-height:44px; border-radius:999px; border:1px solid rgba(176,142,80,.75); background:#fbf7ee; color:var(--tinta-suave); font:inherit; font-size:15.7px; cursor:pointer; transition:background .2s ease, color .2s ease; } /* botón grande, fácil de tocar */
 .rsvp-op.si[aria-pressed="true"]{ background:var(--oliva-osc); border-color:var(--oliva-osc); color:#fbf6ea; } /* "Asiste" marcado */
 .rsvp-op.no[aria-pressed="true"]{ background:#6b1e2e; border-color:#6b1e2e; color:#fbf6ea; } /* "No asiste" marcado (vinotinto) */
 .boton-oliva{ border:none; font-family:inherit; cursor:pointer; } /* el botón también sirve como <button> */
 .boton-oliva:disabled{ opacity:.5; cursor:default; } /* inactivo hasta marcar a todos */
-.enlace-suave{ display:block; margin:12px auto 0; background:none; border:none; font:inherit; font-size:14px; color:var(--oro-texto); text-decoration:underline; text-underline-offset:3px; cursor:pointer; } /* "Cambiar mi respuesta" */
-.rsvp-gracias{ font-family:var(--f-display); font-style:italic; font-size:21px; color:var(--oliva-osc); margin:4px 0 10px; } /* ¡Gracias! */
+.enlace-suave{ display:block; margin:12px auto 0; background:none; border:none; font:inherit; font-size:15.1px; color:var(--oro-texto); text-decoration:underline; text-underline-offset:3px; cursor:pointer; } /* "Cambiar mi respuesta" */
+.rsvp-gracias{ font-family:var(--f-display); font-style:italic; font-size:21.8px; color:var(--oliva-osc); margin:4px 0 10px; } /* ¡Gracias! */
 .rsvp-resumen{ list-style:none; margin:0 auto 8px; max-width:300px; text-align:left; } /* resumen de respuestas */
-.rsvp-resumen li{ display:flex; justify-content:space-between; gap:10px; padding:8px 4px; border-bottom:1px solid rgba(176,142,80,.3); font-size:15px; color:var(--tinta); } /* una persona */
+.rsvp-resumen li{ display:flex; justify-content:space-between; gap:10px; padding:8px 4px; border-bottom:1px solid rgba(176,142,80,.3); font-size:16.2px; color:var(--tinta); } /* una persona */
 .rsvp-resumen li b{ font-weight:600; color:var(--oliva-osc); white-space:nowrap; } /* su respuesta */
 .rsvp-resumen li.no b{ color:#6b1e2e; } /* "No asiste" en vinotinto */
-.rsvp-total{ font-size:14.5px; color:var(--tinta-suave); margin-bottom:4px; } /* "Asisten 3 de 4" */
-.rsvp-nota{ font-family:var(--f-display); font-style:italic; font-size:17px; line-height:1.5; color:var(--tinta-suave); margin:0 0 14px; } /* instrucción sin código */
-.rsvp-aviso{ font-size:14px; color:#6b1e2e; margin:0 0 10px; } /* mensaje de error */
+.rsvp-total{ font-size:15.7px; color:var(--tinta-suave); margin-bottom:4px; } /* "Asisten 3 de 4" */
+.rsvp-nota{ font-family:var(--f-display); font-style:italic; font-size:17.7px; line-height:1.5; color:var(--tinta-suave); margin:0 0 14px; } /* instrucción sin código */
+.rsvp-aviso{ font-size:15.1px; color:#6b1e2e; margin:0 0 10px; } /* mensaje de error */
 .rsvp{ margin-bottom:16px; } /* separación con el pedido de "sin niños" */
 /* ===== Canciones ===== */
 .cancion-form{ display:flex; flex-direction:column; gap:10px; text-align:left; margin:4px 0 6px; } /* formulario en columna */
-.cancion-form label{ display:flex; flex-direction:column; gap:4px; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--oro-osc); } /* etiqueta */
+.cancion-form label{ display:flex; flex-direction:column; gap:4px; font-size:14px; letter-spacing:1.5px; text-transform:uppercase; color:var(--oro-osc); } /* etiqueta */
 .cancion-form label small{ text-transform:none; letter-spacing:0; color:var(--tinta-tenue); } /* "(opcional)" */
-.cancion-form input{ font:inherit; font-size:16px; letter-spacing:0; text-transform:none; color:var(--tinta); background:rgba(255,255,255,.7); border:1px solid rgba(176,142,80,.6); border-radius:8px; padding:11px 12px; } /* campo (16px: el iPhone no hace zoom) */
+.cancion-form input{ font:inherit; font-size:17.3px; letter-spacing:0; text-transform:none; color:var(--tinta); background:rgba(255,255,255,.7); border:1px solid rgba(176,142,80,.6); border-radius:8px; padding:11px 12px; } /* campo (16px: el iPhone no hace zoom) */
 .cancion-form input:focus{ outline:2px solid rgba(176,142,80,.55); outline-offset:1px; } /* campo activo */
 .cancion-form .boton-oliva{ align-self:center; margin-top:4px; } /* botón centrado */
 .cancion-form .rsvp-gracias, .cancion-form .rsvp-aviso{ text-align:center; margin:0; } /* mensajes centrados */
 .cancion-propias{ margin-top:16px; border-top:1px solid rgba(176,142,80,.4); padding-top:12px; } /* lo que ya sugirió */
-.cancion-propias ul{ list-style:none; font-size:14.5px; line-height:1.6; color:var(--tinta-suave); } /* lista */
+.cancion-propias ul{ list-style:none; font-size:15.7px; line-height:1.6; color:var(--tinta-suave); } /* lista */
 .cancion-propias b{ font-weight:600; color:var(--tinta); } /* nombre de la canción */
+
+/* ===== X de cerrar más visible ===== */
+.cerrar{ width:44px; height:44px; top:10px; right:10px; background:var(--oliva-osc); color:#fbf6ea; border:2px solid #d9c08a; font-size:20px; box-shadow:0 3px 8px rgba(20,16,8,.35); } /* círculo verde con X clara */
+.cerrar::after{ content:""; position:absolute; inset:-2px; border-radius:50%; border:2px solid rgba(201,168,106,.95); opacity:0; pointer-events:none; } /* aro dorado */
+.tarjeta.abierta .cerrar::after{ animation:aro-cerrar 2.2s ease-out .6s infinite; } /* respira mientras la tarjeta está abierta */
+@keyframes aro-cerrar{ 0%{ opacity:.95; transform:scale(1); } 70%,100%{ opacity:0; transform:scale(1.55); } } /* crece y se desvanece */
+.tarjeta.abierta .cerrar{ animation:asoma-x .5s cubic-bezier(.3,1.6,.5,1) .35s both; } /* aparece con un pequeño rebote */
+@keyframes asoma-x{ from{ transform:scale(.4); opacity:0; } to{ transform:scale(1); opacity:1; } } /* rebote */
+/* ===== "Toca el sello para abrir": lienzo desgastado detrás del texto ===== */
+.pista{ font-size:15px; font-weight:600; letter-spacing:2.6px; color:#4e3a18; margin-top:-8px; padding:12px 30px; isolation:isolate; text-shadow:0 0 6px rgba(250,245,233,.9); } /* más grande y oscuro */
+.pista::before{ content:""; position:absolute; inset:-22px -34px; z-index:-1; pointer-events:none; /* zona amplia para que el desvanecido sea suave */
+  background:radial-gradient(closest-side, rgba(251,247,236,.96) 0%, rgba(251,247,236,.9) 45%, rgba(251,247,236,.55) 72%, rgba(251,247,236,0) 100%), /* centro claro que se apaga sin borde */
+    radial-gradient(closest-side at 78% 42%, rgba(251,247,236,.45), rgba(251,247,236,0)), radial-gradient(closest-side at 22% 60%, rgba(251,247,236,.4), rgba(251,247,236,0)); } /* manchas irregulares del lienzo gastado */
+/* ===== Gama de azules: tres círculos superpuestos ===== */
+.reservados .reservados-fila.gama{ gap:0; } /* sin espacio: se superponen */
+.reservados .reservados-fila.gama i + i{ margin-left:-12px; } /* cada tono monta sobre el anterior */
+@media (prefers-reduced-motion:reduce){ .tarjeta.abierta .cerrar::after, .tarjeta.abierta .cerrar{ animation:none; } } /* sin movimiento si se pide */
 </style>
 </head>
 <body>
@@ -1045,8 +1062,8 @@ const HOJAS = [                                             // hojas en el orden
         <p class="reservados-intro">Con cariño, les pedimos tener en cuenta los siguientes colores reservados para nuestra familia.</p>
         <div class="vestir">
           <div class="recuadro"><div class="vestir-quien">Ellos</div>
-            <div class="reservados-fila"><i style="--c:#2f4a78"></i></div>
-            <div class="reservado-color">Azul</div><p>Reservado para el novio y los padres.</p></div>
+            <div class="reservados-fila gama"><i style="--c:#1d2f57"></i><i style="--c:#2f5fa8"></i><i style="--c:#9cc0e6"></i></div>
+            <div class="reservado-color">Toda la gama de azules</div><p>Del celeste al azul oscuro, reservados para el novio y los padres.</p></div>
           <div class="recuadro"><div class="vestir-quien">Ellas</div>
             <div class="reservados-fila"><i style="--c:#fbf9f3"></i><i style="--c:#6b1e2e"></i></div>
             <div class="reservado-color">Blanco y vinotinto</div><p>Reservados para la novia y las madres.</p></div>
@@ -1063,15 +1080,7 @@ const HOJAS = [                                             // hojas en el orden
       <p class="vela-texto regalo-texto">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, el día de la boda tendremos una <b>lluvia de sobres</b>.</p>
       <div class="adorno-corazon" aria-hidden="true"><i></i><span>♡</span><i></i></div>`
   },
-  { // 6 · que suene nuestra historia (playlist)
-    fondo: 'etiqueta_6.webp', flor: 'euca_3.webp',          // ilustración y ramita
-    titulo: '¡Que suene nuestra historia!', sub: 'Ayúdanos a crear la playlist', icono: 'nota', toca: 'Toca aquí', // arco
-    ante: 'Ayúdanos a crear la playlist', tituloDetalle: '¡Que suene nuestra historia!', // encabezado
-    cuerpo: () => `<p class="vela-texto">¿Qué canción no puede faltar en nuestra fiesta? Recomiéndanos la que te hace bailar, la que te recuerda a nosotros o la que nunca falla.</p>
-      <div class="nota-icono"><span class="frio">${svgIcono('musica')}</span>Con tus canciones armaremos la música de la noche.</div>
-      <div class="canciones" data-canciones></div>`
-  },
-  { // 7 · nos acompañas (confirmación)
+  { // 6 · nos acompañas (confirmación)
     fondo: 'etiqueta_7.webp', flor: 'euca_1.webp',          // ilustración y ramita
     titulo: '¿Nos acompañas?', sub: 'Confirma tu asistencia a nuestro gran día', icono: 'calendario', toca: 'Toca aquí', // arco
     ante: 'Confirma tu asistencia', tituloDetalle: '¿Nos acompañas?', // encabezado
@@ -1079,6 +1088,14 @@ const HOJAS = [                                             // hojas en el orden
       <div class="pedidos">
         <p>Hemos preparado una celebración pensada para adultos; con todo nuestro cariño, les pedimos que esta vez nos acompañen <b>sin niños</b>.</p>
       </div>`
+  },
+  { // 7 · que suene nuestra historia (playlist)
+    fondo: 'etiqueta_6.webp', flor: 'euca_3.webp',          // ilustración y ramita
+    titulo: '¡Que suene nuestra historia!', sub: 'Ayúdanos a crear la playlist', icono: 'nota', toca: 'Toca aquí', // arco
+    ante: 'Ayúdanos a crear la playlist', tituloDetalle: '¡Que suene nuestra historia!', // encabezado
+    cuerpo: () => `<p class="vela-texto">¿Qué canción no puede faltar en nuestra fiesta? Recomiéndanos la que te hace bailar, la que te recuerda a nosotros o la que nunca falla.</p>
+      <div class="nota-icono"><span class="frio">${svgIcono('musica')}</span>Con tus canciones armaremos la música de la noche.</div>
+      <div class="canciones" data-canciones></div>`
   }
 ];
 
@@ -1401,11 +1418,26 @@ const escenaSobre = $('escenaSobre');                       // escena 1
 const escenaCarta = $('escenaCarta');                       // escena 2
 const escenaHojas = $('escenaHojas');                       // escena 3
 let abierto = false;                                        // evita abrir dos veces
+// ---------- música de fondo ----------
+const musica = new Audio();                                 // reproductor sin controles visibles
+musica.preload = 'none';                                    // no se descarga hasta tocar el sello (la página abre rápido)
+musica.loop = true;                                         // se repite mientras la persona siga en la invitación
+musica.src = 'musica.mp3';                                  // tramo 0:18–4:37 con entrada y salida suaves
+let musicaActiva = false;                                   // ¿ya empezó a sonar?
+function iniciarMusica() {                                  // se llama dentro del toque del sello (requisito de los celulares)
+  musica.play().then(() => { musicaActiva = true; }).catch(() => {}); // si el equipo no deja, la invitación sigue sin música
+}
+document.addEventListener('visibilitychange', () => {       // al cambiar de app o bloquear el celular
+  if (!musicaActiva) return;                                // si no ha sonado, nada
+  if (document.hidden) musica.pause();                      // se pausa al salir…
+  else musica.play().catch(() => {});                       // …y sigue donde iba al volver
+});
 raiz.classList.add('bloqueado');                            // sin scroll hasta terminar la apertura
 
 async function abrirSobre() {                               // secuencia completa de apertura
   if (abierto) return;                                      // ya se abrió
   abierto = true;                                           // marca abierto
+  iniciarMusica();                                          // la canción empieza junto con la apertura (mismo toque)
   acomodarClon();                                           // asegura la escala con la pantalla actual
 
   sobre.classList.add('sello-suelto');                      // 1) el sello se desprende un poco del papel
@@ -1599,12 +1631,27 @@ function iniciarCarrusel() {                                // se llama al mostr
   addEventListener('resize', () => { ajustarBordes(); medirCentros(); marcarActiva(); }); // al cambiar el tamaño o girar el celular
   marcarActiva();                                           // estado inicial
   $('flechaSig').classList.add('llama');                    // la flecha "siguiente" llama la atención al principio
-  new IntersectionObserver((e, obs) => {                    // cuando el carrusel aparece en pantalla por primera vez
-    if (!e[0].isIntersecting) return;                       // aún no se ve
-    obs.disconnect();                                       // solo una vez
-    setTimeout(() => { if (actual === 0 && !abiertaT) fila.classList.add('asoma'); }, 700); // se asoma la siguiente tarjeta
-  }, { threshold: .6 }).observe(visor);                     // con buena parte visible
-  fila.addEventListener('animationend', () => fila.classList.remove('asoma')); // limpia al terminar
+  // --- paso automático: si nadie toca el carrusel, avanza solo y al final vuelve a la primera ---
+  const AUTO_MS = 4500;                                     // tiempo que se muestra cada tarjeta
+  const PAUSA_MS = 10000;                                   // tras tocar el carrusel, espera esto antes de seguir solo
+  let enPantalla = false, ultimoToque = 0, ultimoPaso = 0, encima = false; // estado del paso automático
+  const tocado = () => { ultimoToque = Date.now(); };       // registra que la persona lo usó
+  ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(ev => visor.addEventListener(ev, tocado, { passive: true })); // gestos en el carrusel
+  [$('flechaAnt'), $('flechaSig')].forEach(b => b.addEventListener('pointerdown', tocado)); // flechas
+  puntos.forEach(p => p.parentElement.addEventListener('pointerdown', tocado)); // puntos
+  visor.addEventListener('mouseenter', () => { encima = true; }); // con el mouse encima, no se mueve
+  visor.addEventListener('mouseleave', () => { encima = false; tocado(); }); // al salir, espera un poco
+  new IntersectionObserver(e => {                           // ¿el carrusel está en pantalla?
+    enPantalla = e[0].isIntersecting;                       // guarda el estado
+    if (enPantalla) ultimoPaso = Date.now();                // al aparecer, deja ver la primera antes de avanzar
+  }, { threshold: .5 }).observe(visor);                     // con al menos la mitad visible
+  setInterval(() => {                                       // revisa dos veces por segundo
+    const ahora = Date.now();                               // momento actual
+    if (!enPantalla || encima || abiertaT || ocupado || document.hidden) return; // no se mueve si no se ve o hay una abierta
+    if (ahora - ultimoToque < PAUSA_MS || ahora - ultimoPaso < AUTO_MS) return; // respeta al que está mirando
+    ultimoPaso = ahora;                                     // marca el paso
+    irA(actual >= hojas.length - 1 ? 0 : actual + 1);       // siguiente; después de la última, vuelve a la primera
+  }, 500);                                                  // cada medio segundo
   $('flechaAnt').addEventListener('click', () => irA(actual - 1)); // flecha atrás
   $('flechaSig').addEventListener('click', () => irA(actual + 1)); // flecha adelante
   puntos.forEach((p, i) => p.parentElement.addEventListener('click', () => irA(i))); // los puntos también llevan a su tarjeta
